@@ -5,5 +5,5 @@ package Command.ServerCommand;
  */
 
 public enum CommandType {
-    S_CREATE_GAME, S_POLL, S_JOIN_GAME, S_LOGIN, S_REGISTER
+    S_CREATE_GAME, S_POLL, S_JOIN_GAME, S_LOGIN, S_REGISTER, S_SEND_MESSAGE, S_ASSIGN_DEST_CARDS //TODO: Check type names with client
 }

@@ -1,6 +1,6 @@
 package Result;
 
-public class SendMessageResult {
+public class SendMessageResult implements iResult {
     private String errorMessage;
     private boolean success;
 

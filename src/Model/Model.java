@@ -1,6 +1,7 @@
 package Model;
 
 import Command.ClientCommand.*;
+import Result.AssignDestCardsResult;
 import Result.GameInfoResult;
 import Result.GetCommandsResult;
 import com.google.gson.Gson;
@@ -159,6 +160,17 @@ public class Model {
                 users.get(userName).addCommand(commandData);
             }
         }
+    }
+
+    public AssignDestCardsResult assignDestCards(String player, List<Integer> cards) {
+        AssignDestCardsResult res = new AssignDestCardsResult();
+        return res;
+        //TODO: Implement
+    }
+
+    public boolean sendMessage(Chat data) {
+        return true;
+        //TODO: Implement
     }
 
     public HashMap<String, Game> getGames() {
