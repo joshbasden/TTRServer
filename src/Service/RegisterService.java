@@ -12,10 +12,10 @@ public class RegisterService {
     Model model = Model.getInstance();
     public RegisterResult register(RegisterRequest req) {
         RegisterResult res = new RegisterResult();
-        if (model.createUser(req.getUserName(), req.getPassword())) {
-            res.setUserName(req.getUserName());
+        if (model.createUser(req.getUsername(), req.getPassword())) {
+            res.setUsername(req.getUsername());
             res.setSuccess(true);
-            model.addAllAddableGamesToCommandLists(req.getUserName());
+            model.addAllAddableGamesToCommandLists(req.getUsername());
             return res;
         }
         res.setErrorMessage("Invalid username or password");

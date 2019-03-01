@@ -11,6 +11,6 @@ import Result.GetCommandsResult;
 public class GetCommandsService {
     Model model = Model.getInstance();
     public GetCommandsResult getCommands(GetCommandsRequest req) {
-        return model.getCommands(req.getUserName());
+        return model.getCommands(req.getUsername());
     }
 }

@@ -1,19 +1,19 @@
 package Command.ClientCommand;
 
-import Result.GameInfoResult;
+import Model.GameInfo;
 
 /**
  * Created by jbasden on 1/29/19.
  */
 
 public class AddGameCommand implements iClientCommand {
-    private GameInfoResult gameInfo;
+    private GameInfo gameInfo;
 
-    public GameInfoResult getGameInfo() {
+    public GameInfo getGameInfo() {
         return gameInfo;
     }
 
-    public void setGameInfo(GameInfoResult gameInfo) {
+    public void setGameInfo(GameInfo gameInfo) {
         this.gameInfo = gameInfo;
     }
 

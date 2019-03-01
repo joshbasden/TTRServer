@@ -7,7 +7,7 @@ package Result;
 public class LoginResult implements iResult {
     private String errorMessage;
     private boolean success;
-    private String userName;
+    private String username;
 
     public String getErrorMessage() {
         return errorMessage;
@@ -25,11 +25,11 @@ public class LoginResult implements iResult {
         this.success = success;
     }
 
-    public String getUserName() {
-	return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-	this.userName = userName;
+    public void setUsername(String username) {
+	this.username = username;
     }
 }

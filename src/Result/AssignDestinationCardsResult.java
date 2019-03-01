@@ -1,13 +1,13 @@
 package Result;
 
-import Model.DestCard;
+import Model.DestinationCard;
 
 import java.util.List;
 
-public class AssignDestCardsResult implements iResult {
+public class AssignDestinationCardsResult implements iResult {
     private String errorMessage;
     private boolean success;
-    private List<DestCard> destCards;
+    private List<DestinationCard> destinationCards;
 
     public String getErrorMessage() {
         return errorMessage;
@@ -25,12 +25,12 @@ public class AssignDestCardsResult implements iResult {
         this.success = success;
     }
 
-    public List<DestCard> getDestCards() {
-        return destCards;
+    public List<DestinationCard> getDestinationCards() {
+        return destinationCards;
     }
 
-    public void setDestCards(List<DestCard> destCards) {
-        this.destCards = destCards;
+    public void setDestinationCards(List<DestinationCard> destinationCards) {
+        this.destinationCards = destinationCards;
     }
 }
 

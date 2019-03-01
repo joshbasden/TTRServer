@@ -61,7 +61,7 @@ public class ServerCommandHandler implements HttpHandler {
 
                 // get the command object
                 data = getCommandObject(type, reqData);
-                System.out.println("a request came through");
+                System.out.println(String.format("A %s was received.", data));
                 response = execute();
                 jsonStr = gson.toJson(response);
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);

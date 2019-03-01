@@ -1,15 +1,15 @@
 package Request;
 
-import Model.Chat;
+import Model.Event;
 
 public class SendMessageRequest implements iRequest {
-    private Chat data;
+    private Event data;
 
-    public Chat getData() {
+    public Event getData() {
         return data;
     }
 
-    public void setData(Chat data) {
+    public void setData(Event data) {
         this.data = data;
     }
 }

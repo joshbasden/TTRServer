@@ -1,6 +1,6 @@
-package Result;
+package Model;
 
-public class GameInfoResult {
+public class GameInfo {
     String gameName;
     int numPlayers;
 

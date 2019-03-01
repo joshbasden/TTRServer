@@ -1,8 +1,7 @@
 package Model;
 
 import Command.ClientCommand.*;
-import Result.AssignDestCardsResult;
-import Result.GameInfoResult;
+import Result.AssignDestinationCardsResult;
 import Result.GetCommandsResult;
 import com.google.gson.Gson;
 
@@ -44,14 +43,14 @@ public class Model {
         CommandData commandData = new CommandData();
         commandData.setType(ClientCommandType.C_CREATE_GAME);
         AddGameCommand addGameCommand = new AddGameCommand();
-        GameInfoResult gameInfo = new GameInfoResult();
+        GameInfo gameInfo = new GameInfo();
         gameInfo.setNumPlayers(numPlayers);
         gameInfo.setGameName(gameName);
         addGameCommand.setGameInfo(gameInfo);
 
         commandData.setData(new Gson().toJson(addGameCommand));
         for (User user: users.values()) {
-            if (!user.getUserName().equals(userName)) {
+            if (!user.getUsername().equals(userName)) {
                 user.addCommand(commandData);
             }
         }
@@ -65,17 +64,17 @@ public class Model {
         return users.get(userName).getPassword().equals(password);
     }
 
-    public boolean createUser(String userName, String password) {
-        if (users.containsKey(userName)) {
+    public boolean createUser(String username, String password) {
+        if (users.containsKey(username)) {
             return false;
         }
-        if (userName.length() == 0 || password.length() == 0) {
+        if (username.length() == 0 || password.length() == 0) {
             return false;
         }
         User user = new User();
-        user.setUserName(userName);
+        user.setUsername(username);
         user.setPassword(password);
-        users.put(userName, user);
+        users.put(username, user);
         return true;
     }
 
@@ -88,7 +87,7 @@ public class Model {
             if (game.getNumPlayers() == game.getGamePlayers().size()) {
                 List<String> userNamesOfPlayers = new ArrayList<>();
                 for (Player player : game.getGamePlayers().values()) {
-                    userNamesOfPlayers.add(player.getUserName());
+                    userNamesOfPlayers.add(player.getUsername());
                 }
                 CommandData commandData = new CommandData();
                 commandData.setType(ClientCommandType.C_BEGIN_PLAY);
@@ -106,7 +105,7 @@ public class Model {
                 removeGameCommand.setGameName(gameName);
                 commandData.setData(new Gson().toJson(removeGameCommand));
                 for (User user: users.values()) {
-                    if (!userNamesOfPlayers.contains(user.getUserName())) {
+                    if (!userNamesOfPlayers.contains(user.getUsername())) {
                         user.addCommand(commandData);
                     }
                 }
@@ -131,7 +130,7 @@ public class Model {
     public GetCommandsResult getCommands(String userName) {
         GetCommandsResult res = new GetCommandsResult();
         User user = users.get(userName);
-        res.setUserName(userName);
+        res.setUsername(userName);
         if (user == null) {
             res.setErrorMessage("User does not exist");
             res.setSuccess(false);
@@ -151,7 +150,7 @@ public class Model {
                 commandData = new CommandData();
                 commandData.setType(ClientCommandType.C_CREATE_GAME);
                 AddGameCommand addGameCommand = new AddGameCommand();
-                GameInfoResult gameInfo = new GameInfoResult();
+                GameInfo gameInfo = new GameInfo();
                 gameInfo.setGameName(gameToCheck.getGameName());
                 System.out.println(gameToCheck.getGameName());
                 gameInfo.setNumPlayers(gameToCheck.getNumPlayers());
@@ -162,13 +161,13 @@ public class Model {
         }
     }
 
-    public AssignDestCardsResult assignDestCards(String player, List<Integer> cards) {
-        AssignDestCardsResult res = new AssignDestCardsResult();
+    public AssignDestinationCardsResult assignDestCards(String player, List<Integer> cards) {
+        AssignDestinationCardsResult res = new AssignDestinationCardsResult();
         return res;
         //TODO: Implement
     }
 
-    public boolean sendMessage(Chat data) {
+    public boolean sendMessage(Event data) {
         return true;
         //TODO: Implement
     }

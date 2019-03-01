@@ -11,10 +11,10 @@ public class LoginService {
     Model.Model model = Model.Model.getInstance();
     public LoginResult login(LoginRequest req) {
         LoginResult res = new LoginResult();
-        if (model.authenticateUser(req.getUserName(), req.getPassword())) {
+        if (model.authenticateUser(req.getUsername(), req.getPassword())) {
             res.setSuccess(true);
-	        res.setUserName(req.getUserName());
-	        model.addAllAddableGamesToCommandLists(req.getUserName());
+	        res.setUsername(req.getUsername());
+	        model.addAllAddableGamesToCommandLists(req.getUsername());
         }
         else {
             res.setErrorMessage("Invalid Login Credentials");

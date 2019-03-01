@@ -1,9 +1,9 @@
 package Service;
 
 import Model.Model;
+import Model.GameInfo;
 import Request.CreateGameRequest;
 import Result.CreateGameResult;
-import Result.GameInfoResult;
 
 /**
  * Created by jbasden on 1/29/19.
@@ -13,8 +13,8 @@ public class CreateGameService {
     Model model = Model.getInstance();
     public CreateGameResult createGame(CreateGameRequest req) {
         CreateGameResult res = new CreateGameResult();
-        GameInfoResult gameInfo = new GameInfoResult();
-        if (model.createGame(req.getGameName(), req.getNumPlayers(), req.getUserName())) {
+        GameInfo gameInfo = new GameInfo();
+        if (model.createGame(req.getGameName(), req.getNumPlayers(), req.getUsername())) {
             gameInfo.setGameName(req.getGameName());
             gameInfo.setNumPlayers(req.getNumPlayers());
             res.setGameInfo(gameInfo);

@@ -2,7 +2,7 @@ package Request;
 
 import java.util.List;
 
-public class AssignDestCardsRequest implements iRequest {
+public class AssignDestinationCardsRequest implements iRequest {
     private String player;
     private List<Integer> ids;
 

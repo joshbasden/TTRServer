@@ -15,18 +15,18 @@ public class Game {
     private int numPlayers;
     private boolean started;
 
-    public boolean addPlayer(String userName) {
-        if (gamePlayers.containsKey(userName)) {
+    public boolean addPlayer(String username) {
+        if (gamePlayers.containsKey(username)) {
             return false;
         }
         if (gamePlayers.size() == numPlayers) {
             return false;
         }
         Player newPlayer = new Player();
-        newPlayer.setUserName(userName);
+        newPlayer.setUsername(username);
         int numPlayersSoFar = gamePlayers.size();
         newPlayer.setColor(playerColors.get(numPlayersSoFar));
-        gamePlayers.put(userName, newPlayer);
+        gamePlayers.put(username, newPlayer);
         return true;
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 public class GetCommandsResult implements iResult {
     private String errorMessage;
     private boolean success;
-    private String userName;
+    private String username;
     private List<iClientCommand> commandList;
 
     public String getErrorMessage() {
@@ -30,12 +30,12 @@ public class GetCommandsResult implements iResult {
         this.success = success;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public List<iClientCommand> getCommandList() {

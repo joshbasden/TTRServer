@@ -1,18 +1,18 @@
 package Command.ServerCommand;
 
-import Request.AssignDestCardsRequest;
+import Request.AssignDestinationCardsRequest;
 import Request.iRequest;
-import Result.AssignDestCardsResult;
+import Result.AssignDestinationCardsResult;
 import Service.AssignDestCardsService;
 
-public class AssignDestCardsCommand implements iServerCommand {
+public class AssignDestinationCardsCommand implements iServerCommand {
     private iRequest data;
-    public AssignDestCardsCommand(iRequest request) {
+    public AssignDestinationCardsCommand(iRequest request) {
         data = request;
     }
-    public AssignDestCardsResult execute() {
+    public AssignDestinationCardsResult execute() {
         AssignDestCardsService assignDestCardsService = new AssignDestCardsService();
-        return assignDestCardsService.assignDestCards((AssignDestCardsRequest)data);
+        return assignDestCardsService.assignDestCards((AssignDestinationCardsRequest)data);
     }
 
     public iRequest getData() {

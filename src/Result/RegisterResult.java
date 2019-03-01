@@ -7,7 +7,7 @@ package Result;
 public class RegisterResult implements iResult {
     private String errorMessage;
     private boolean success;
-    private String userName;
+    private String username;
 
     public String getErrorMessage() {
         return errorMessage;
@@ -25,7 +25,7 @@ public class RegisterResult implements iResult {
         this.success = success;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
