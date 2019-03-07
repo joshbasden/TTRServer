@@ -52,9 +52,7 @@ public class Model {
 
         commandData.setData(new Gson().toJson(addGameCommand));
         for (User user: users.values()) {
-            if (!user.getUsername().equals(userName)) {
-                user.addCommand(commandData);
-            }
+            user.addCommand(commandData);
         }
         return true;
     }
@@ -130,6 +128,7 @@ public class Model {
             return false;
         }
         if (game.addPlayer(userName)) {
+            System.out.println("player added");
             if (game.getNumPlayers() == game.getGamePlayers().size()) {
                 beginGame(gameName);
             }

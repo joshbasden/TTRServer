@@ -15,15 +15,11 @@ public class CreateGameService {
         CreateGameResult res = new CreateGameResult();
         GameInfo gameInfo = new GameInfo();
         if (model.createGame(req.getGameName(), req.getNumPlayers(), req.getUsername())) {
-            gameInfo.setGameName(req.getGameName());
-            gameInfo.setNumPlayers(req.getNumPlayers());
-            res.setGameInfo(gameInfo);
             res.setSuccess(true);
             return res;
         }
         res.setErrorMessage("Invalid Game Name");
         res.setSuccess(false);
-        res.setGameInfo(null);
         return res;
     }
 }

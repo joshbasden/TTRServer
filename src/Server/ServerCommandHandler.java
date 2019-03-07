@@ -40,6 +40,12 @@ public class ServerCommandHandler implements HttpHandler {
             case S_JOIN_GAME:
                 JoinGameCommand joinGameCommand = new JoinGameCommand(data);
                 return joinGameCommand.execute();
+            case S_ASSIGN_DEST:
+                AssignDestinationCardsCommand assignDestinationCardsCommand = new AssignDestinationCardsCommand(data);
+                return assignDestinationCardsCommand.execute();
+            case S_SEND_MESSAGE:
+                SendMessageCommand sendMessageCommand = new SendMessageCommand(data);
+                return sendMessageCommand.execute();
             default:
                 return null;
         }
@@ -64,6 +70,8 @@ public class ServerCommandHandler implements HttpHandler {
                 System.out.println(String.format("A %s was received.", data));
                 response = execute();
                 jsonStr = gson.toJson(response);
+                System.out.println(jsonStr);
+                System.out.println("\n");
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream respBody = exchange.getResponseBody();
                 writeString(jsonStr, respBody);
@@ -101,6 +109,10 @@ public class ServerCommandHandler implements HttpHandler {
                 return gson.fromJson(reqData, CreateGameRequest.class);
             case S_POLL:
                 return gson.fromJson(reqData, GetCommandsRequest.class);
+            case S_ASSIGN_DEST:
+                return gson.fromJson(reqData, AssignDestinationCardsRequest.class);
+            case S_SEND_MESSAGE:
+                return gson.fromJson(reqData, SendMessageRequest.class);
             default:
                 return null;
         }
@@ -117,6 +129,10 @@ public class ServerCommandHandler implements HttpHandler {
                 return CommandType.S_CREATE_GAME;
             case "S_POLL":
                 return CommandType.S_POLL;
+            case "S_ASSIGN_DEST":
+                return CommandType.S_ASSIGN_DEST;
+            case "S_SEND_MESSAGE":
+                return CommandType.S_SEND_MESSAGE;
             default:
                 return null;
         }

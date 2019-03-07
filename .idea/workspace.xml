@@ -2,35 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="870aa915-2fa8-4c44-8182-4924684d5687" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/json/DestinationCards.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/json/DestinationCardsWithIds.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/json/TrainCarCards.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/Board.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/City.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/DestinationCardDeck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/DestinationCardHand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/EventType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/PlayerColor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/PlayerInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/Route.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/RouteColor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/TrainCarCardDeck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/TrainCarCardHand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/TrainCarCardType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/iCard.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/iDeck.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Model/iHand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Command/ServerCommand/AssignDestinationCardsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Command/ServerCommand/AssignDestinationCardsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/DestinationCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/DestinationCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Model/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/TrainCarCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/TrainCarCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Result/JoinGameResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Result/JoinGameResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/AssignDestCardsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/AssignDestinationCardsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Result/CreateGameResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Result/CreateGameResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server/ServerCommandHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/ServerCommandHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/CreateGameService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/CreateGameService.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,8 +18,35 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
+            <state relative-caret-position="386">
               <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Server/ServerCommandHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-464">
+              <caret line="129" column="26" lean-forward="true" selection-start-line="129" selection-start-column="26" selection-end-line="129" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Command/ServerCommand/JoinGameCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="39">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Service/JoinGameService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="94">
+              <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -52,84 +54,36 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/Model.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-240">
-              <caret line="185" column="55" selection-start-line="185" selection-start-column="55" selection-end-line="185" selection-end-column="55" />
+            <state relative-caret-position="-117">
+              <caret line="224" column="107" lean-forward="true" selection-start-line="224" selection-start-column="107" selection-end-line="224" selection-end-column="107" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#createGame#0;class#Model#0" />
                 <element signature="method#authenticateUser#0;class#Model#0" />
                 <element signature="method#createUser#0;class#Model#0" />
                 <element signature="method#sendChooseDestinationCardsCommand#0;class#Model#0" />
-                <element signature="method#beginGame#0;class#Model#0" />
-                <element signature="method#joinGame#0;class#Model#0" />
                 <element signature="method#getPlayerColor#0;class#Model#0" />
                 <element signature="method#getCommands#0;class#Model#0" />
                 <element signature="method#addAllAddableGamesToCommandLists#0;class#Model#0" />
                 <element signature="method#sendDealTrainCardsCommands#0;class#Model#0" />
                 <element signature="method#getAssociatedGame#0;class#Model#0" />
                 <element signature="method#getAssociatedPlayer#0;class#Model#0" />
-                <element signature="method#assignDestinationCards#0;class#Model#0" />
                 <element signature="method#sendMessage#0;class#Model#0" />
-                <element signature="e#10357#10358#0" expanded="true" />
-                <element signature="e#10448#10449#0" expanded="true" />
-                <element signature="e#10523#10524#0" expanded="true" />
-                <element signature="e#10614#10615#0" expanded="true" />
+                <element signature="e#10331#10332#0" expanded="true" />
+                <element signature="e#10422#10423#0" expanded="true" />
+                <element signature="e#10497#10498#0" expanded="true" />
+                <element signature="e#10588#10589#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/DestinationCardHand.java">
+        <entry file="file://$PROJECT_DIR$/src/Service/CreateGameService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="32" column="37" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
+            <state relative-caret-position="238">
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/json/TrainCarCards.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="28" selection-start-line="12" selection-start-column="28" selection-end-line="12" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/TrainCarCardType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="1" lean-forward="true" selection-start-line="4" selection-start-column="1" selection-end-line="4" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/Board.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Model/TrainCarCardDeck.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="47" lean-forward="true" selection-start-line="13" selection-start-column="47" selection-end-line="13" selection-end-column="47" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#678#679#0" expanded="true" />
-                <element signature="e#712#713#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -138,7 +92,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Model/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
+            <state relative-caret-position="-340">
               <caret line="5" selection-start-line="5" selection-end-line="5" />
               <folding>
                 <element signature="method#determineOrder#0;class#Game#0" />
@@ -203,7 +157,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Model/DestCard.java" />
         <option value="$PROJECT_DIR$/src/Service/SendMessageService.java" />
         <option value="$PROJECT_DIR$/src/Command/ClientCommand/ClientCommandType.java" />
         <option value="$PROJECT_DIR$/src/Command/ServerCommand/CommandType.java" />
@@ -220,12 +173,10 @@
         <option value="$PROJECT_DIR$/src/Command/ClientCommand/ChooseDestinationCardsCommand.java" />
         <option value="$PROJECT_DIR$/src/Command/ClientCommand/DealTrainCarCardsCommand.java" />
         <option value="$PROJECT_DIR$/src/Command/ClientCommand/AddEventCommand.java" />
-        <option value="$PROJECT_DIR$/src/Service/CreateGameService.java" />
         <option value="$PROJECT_DIR$/src/Service/JoinGameService.java" />
         <option value="$PROJECT_DIR$/src/Service/GetCommandsService.java" />
         <option value="$PROJECT_DIR$/src/Service/LoginService.java" />
         <option value="$PROJECT_DIR$/src/Service/RegisterService.java" />
-        <option value="$PROJECT_DIR$/src/Server/ServerCommandHandler.java" />
         <option value="$PROJECT_DIR$/src/Model/EventType.java" />
         <option value="$PROJECT_DIR$/src/Model/Event.java" />
         <option value="$PROJECT_DIR$/src/Model/RouteColor.java" />
@@ -252,8 +203,11 @@
         <option value="$PROJECT_DIR$/src/Model/TrainCarCardDeck.java" />
         <option value="$PROJECT_DIR$/src/Model/TrainCarCardType.java" />
         <option value="$PROJECT_DIR$/json/TrainCarCards.json" />
-        <option value="$PROJECT_DIR$/src/Model/Model.java" />
         <option value="$PROJECT_DIR$/src/Model/Game.java" />
+        <option value="$PROJECT_DIR$/src/Model/Model.java" />
+        <option value="$PROJECT_DIR$/src/Service/CreateGameService.java" />
+        <option value="$PROJECT_DIR$/src/Result/CreateGameResult.java" />
+        <option value="$PROJECT_DIR$/src/Server/ServerCommandHandler.java" />
       </list>
     </option>
   </component>
@@ -346,7 +300,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551978203148" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551988839346" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../cs-340/visitorPattern" />
     <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
@@ -416,7 +370,7 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21860817" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21860817" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -425,7 +379,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3289689" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3289689" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -473,35 +427,6 @@
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Result/LoginResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
-          <folding>
-            <element signature="e#557#558#0" expanded="true" />
-            <element signature="e#589#590#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Result/RegisterResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Request/JoinGameRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="50" lean-forward="true" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
-          <folding>
-            <element signature="e#357#358#0" expanded="true" />
-            <element signature="e#388#389#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Request/GetCommandsRequest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -509,17 +434,6 @@
           <folding>
             <element signature="e#177#178#0" expanded="true" />
             <element signature="e#208#209#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Request/CreateGameRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
-          <folding>
-            <element signature="e#547#548#0" expanded="true" />
-            <element signature="e#578#579#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -535,16 +449,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Service/CreateGameService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="33" lean-forward="true" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -598,13 +502,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Server/ServerCommandHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="63" column="54" selection-start-line="63" selection-start-column="54" selection-end-line="63" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Command/ClientCommand/ChooseDestinationCardsCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -620,13 +517,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Command/ServerCommand/CommandType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -766,13 +656,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Service/JoinGameService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Result/JoinGameResult.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -849,13 +732,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Command/ServerCommand/AssignDestinationCardsCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Service/AssignDestinationCardsService.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -863,13 +739,6 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Request/AssignDestinationCardsRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -950,37 +819,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/Model.java">
+    <entry file="file://$PROJECT_DIR$/src/Model/DestinationCardHand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-240">
-          <caret line="185" column="55" selection-start-line="185" selection-start-column="55" selection-end-line="185" selection-end-column="55" />
+        <state relative-caret-position="182">
+          <caret line="32" column="37" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#createGame#0;class#Model#0" />
-            <element signature="method#authenticateUser#0;class#Model#0" />
-            <element signature="method#createUser#0;class#Model#0" />
-            <element signature="method#sendChooseDestinationCardsCommand#0;class#Model#0" />
-            <element signature="method#beginGame#0;class#Model#0" />
-            <element signature="method#joinGame#0;class#Model#0" />
-            <element signature="method#getPlayerColor#0;class#Model#0" />
-            <element signature="method#getCommands#0;class#Model#0" />
-            <element signature="method#addAllAddableGamesToCommandLists#0;class#Model#0" />
-            <element signature="method#sendDealTrainCardsCommands#0;class#Model#0" />
-            <element signature="method#getAssociatedGame#0;class#Model#0" />
-            <element signature="method#getAssociatedPlayer#0;class#Model#0" />
-            <element signature="method#assignDestinationCards#0;class#Model#0" />
-            <element signature="method#sendMessage#0;class#Model#0" />
-            <element signature="e#10357#10358#0" expanded="true" />
-            <element signature="e#10448#10449#0" expanded="true" />
-            <element signature="e#10523#10524#0" expanded="true" />
-            <element signature="e#10614#10615#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Model/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
+        <state relative-caret-position="-340">
           <caret line="5" selection-start-line="5" selection-end-line="5" />
           <folding>
             <element signature="method#determineOrder#0;class#Game#0" />
@@ -1019,19 +870,110 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Model/DestinationCardHand.java">
+    <entry file="file://$PROJECT_DIR$/src/Command/ServerCommand/JoinGameCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="32" column="37" selection-start-line="32" selection-start-column="37" selection-end-line="32" selection-end-column="37" />
+        <state relative-caret-position="39">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Service/JoinGameService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Command/ServerCommand/CreateGameCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Request/CreateGameRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="32" column="32" selection-start-line="32" selection-start-column="32" selection-end-line="32" selection-end-column="32" />
+          <folding>
+            <element signature="e#547#548#0" expanded="true" />
+            <element signature="e#578#579#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Result/CreateGameResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="97">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Service/CreateGameService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Request/AssignDestinationCardsRequest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="25" selection-start-line="4" selection-start-column="25" selection-end-line="4" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Command/ServerCommand/CommandType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="21" lean-forward="true" selection-start-line="7" selection-start-column="21" selection-end-line="7" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Server/ServerCommandHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-464">
+          <caret line="129" column="26" lean-forward="true" selection-start-line="129" selection-start-column="26" selection-end-line="129" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Command/ServerCommand/AssignDestinationCardsCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="24" column="1" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Model/Model.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-117">
+          <caret line="224" column="107" lean-forward="true" selection-start-line="224" selection-start-column="107" selection-end-line="224" selection-end-column="107" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#authenticateUser#0;class#Model#0" />
+            <element signature="method#createUser#0;class#Model#0" />
+            <element signature="method#sendChooseDestinationCardsCommand#0;class#Model#0" />
+            <element signature="method#getPlayerColor#0;class#Model#0" />
+            <element signature="method#getCommands#0;class#Model#0" />
+            <element signature="method#addAllAddableGamesToCommandLists#0;class#Model#0" />
+            <element signature="method#sendDealTrainCardsCommands#0;class#Model#0" />
+            <element signature="method#getAssociatedGame#0;class#Model#0" />
+            <element signature="method#getAssociatedPlayer#0;class#Model#0" />
+            <element signature="method#sendMessage#0;class#Model#0" />
+            <element signature="e#10331#10332#0" expanded="true" />
+            <element signature="e#10422#10423#0" expanded="true" />
+            <element signature="e#10497#10498#0" expanded="true" />
+            <element signature="e#10588#10589#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
+        <state relative-caret-position="386">
           <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
         </state>
       </provider>

@@ -9,7 +9,6 @@ import Model.GameInfo;
 public class CreateGameResult implements iResult {
     private String errorMessage;
     private boolean success;
-    GameInfo gameInfo;
 
     public String getErrorMessage() {
         return errorMessage;
@@ -27,11 +26,4 @@ public class CreateGameResult implements iResult {
         this.success = success;
     }
 
-    public GameInfo getGameInfo() {
-        return gameInfo;
-    }
-
-    public void setGameInfo(GameInfo gameInfo) {
-        this.gameInfo = gameInfo;
-    }
 }
