@@ -1,5 +1,8 @@
 package Result;
 
+import Model.Player;
+import Model.PlayerColor;
+
 /**
  * Created by jbasden on 1/29/19.
  */
@@ -10,7 +13,7 @@ public class JoinGameResult implements iResult {
     private String username;
     private String gameName;
     private int numPlayers;
-    private String playerColor;
+    private PlayerColor playerColor;
 
     public String getErrorMessage() {
         return errorMessage;
@@ -28,11 +31,11 @@ public class JoinGameResult implements iResult {
         this.success = success;
     }
 
-    public String getPlayerColor() {
+    public PlayerColor getPlayerColor() {
         return playerColor;
     }
 
-    public void setPlayerColor(String playerColor) {
+    public void setPlayerColor(PlayerColor playerColor) {
         this.playerColor = playerColor;
     }
 

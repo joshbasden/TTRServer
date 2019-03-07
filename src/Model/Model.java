@@ -1,6 +1,7 @@
 package Model;
 
 import Command.ClientCommand.*;
+import Command.ServerCommand.CommandType;
 import Result.AssignDestinationCardsResult;
 import Result.GetCommandsResult;
 import com.google.gson.Gson;
@@ -8,6 +9,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 /**
  * Created by jbasden on 1/30/19.
@@ -78,6 +80,50 @@ public class Model {
         return true;
     }
 
+    public void sendChooseDestinationCardsCommand(String username, String gameName) {
+        Game game = games.get(gameName);
+        ChooseDestinationCardsCommand chooseDestinationCardsCommand = new ChooseDestinationCardsCommand();
+        List<DestinationCard> destinationCardsToChooseFrom = new ArrayList<>();
+        for (int i = 0; i < 3; ++i) {
+            destinationCardsToChooseFrom.add((DestinationCard) game.getBoard().getDestinationDeck().draw());
+        }
+        chooseDestinationCardsCommand.setDestinationCards(destinationCardsToChooseFrom);
+        CommandData commandData = new CommandData();
+        commandData.setType(ClientCommandType.C_DEST_CARD);
+        commandData.setData(new Gson().toJson(chooseDestinationCardsCommand));
+        users.get(username).addCommand(commandData);
+    }
+
+    public void beginGame(String gameName) {
+        Game game = games.get(gameName);
+        game.readInCardLists();
+        List<String> userNamesOfPlayers = new ArrayList<>();
+        for (Player player : game.getGamePlayers().values()) {
+            userNamesOfPlayers.add(player.getUsername());
+        }
+        CommandData commandData = new CommandData();
+        commandData.setType(ClientCommandType.C_BEGIN_PLAY);
+        BeginGameCommand beginGameCommand = new BeginGameCommand();
+        beginGameCommand.setGameName(gameName);
+        beginGameCommand.setGame(game);
+        commandData.setData(new Gson().toJson(beginGameCommand));
+        for (String user : userNamesOfPlayers) {
+            users.get(user).addCommand(commandData);
+            sendChooseDestinationCardsCommand(user, gameName);
+        }
+        game.setStarted(true);
+        commandData = new CommandData();
+        commandData.setType(ClientCommandType.C_REMOVE_GAME);
+        RemoveGameCommand removeGameCommand = new RemoveGameCommand();
+        removeGameCommand.setGameName(gameName);
+        commandData.setData(new Gson().toJson(removeGameCommand));
+        for (User user: users.values()) {
+            if (!userNamesOfPlayers.contains(user.getUsername())) {
+                user.addCommand(commandData);
+            }
+        }
+    }
+
     public boolean joinGame(String userName, String gameName) {
         Game game = games.get(gameName);
         if (game == null) {
@@ -85,44 +131,21 @@ public class Model {
         }
         if (game.addPlayer(userName)) {
             if (game.getNumPlayers() == game.getGamePlayers().size()) {
-                List<String> userNamesOfPlayers = new ArrayList<>();
-                for (Player player : game.getGamePlayers().values()) {
-                    userNamesOfPlayers.add(player.getUsername());
-                }
-                CommandData commandData = new CommandData();
-                commandData.setType(ClientCommandType.C_BEGIN_PLAY);
-                BeginGameCommand beginGameCommand = new BeginGameCommand();
-                beginGameCommand.setGameName(gameName);
-                beginGameCommand.setGame(game);
-                commandData.setData(new Gson().toJson(beginGameCommand));
-                for (String user : userNamesOfPlayers) {
-                    users.get(user).addCommand(commandData);
-                }
-                game.setStarted(true);
-                commandData = new CommandData();
-                commandData.setType(ClientCommandType.C_REMOVE_GAME);
-                RemoveGameCommand removeGameCommand = new RemoveGameCommand();
-                removeGameCommand.setGameName(gameName);
-                commandData.setData(new Gson().toJson(removeGameCommand));
-                for (User user: users.values()) {
-                    if (!userNamesOfPlayers.contains(user.getUsername())) {
-                        user.addCommand(commandData);
-                    }
-                }
+                beginGame(gameName);
             }
             return true;
         }
         return false;
     }
 
-    public String getPlayerColor(String gameName, String userName) {
+    public PlayerColor getPlayerColor(String gameName, String userName) {
         Game game = games.get(gameName);
         if (game == null) {
-            return "False Color";
+            return PlayerColor.FAKE_COLOR;
         }
         Player player = game.getGamePlayers().get(userName);
         if (player == null) {
-            return "False Color";
+            return PlayerColor.FAKE_COLOR;
         }
         return player.getColor();
     }
@@ -152,7 +175,6 @@ public class Model {
                 AddGameCommand addGameCommand = new AddGameCommand();
                 GameInfo gameInfo = new GameInfo();
                 gameInfo.setGameName(gameToCheck.getGameName());
-                System.out.println(gameToCheck.getGameName());
                 gameInfo.setNumPlayers(gameToCheck.getNumPlayers());
                 addGameCommand.setGameInfo(gameInfo);
                 commandData.setData(new Gson().toJson(addGameCommand));
@@ -161,15 +183,93 @@ public class Model {
         }
     }
 
-    public AssignDestinationCardsResult assignDestCards(String player, List<Integer> cards) {
+    private void sendDealTrainCardsCommands(Game game) {
+        Board board = game.getBoard();
+        for (String username: game.getGamePlayers().keySet()) {
+            CommandData commandData = new CommandData();
+            DealTrainCarCardsCommand dealTrainCarCardsCommand = new DealTrainCarCardsCommand();
+            List<TrainCarCard> cards = new ArrayList<>();
+            TrainCarCard card = new TrainCarCard();
+            for (int i = 0; i < 4; ++i) {
+                card = (TrainCarCard)board.getTrainDeck().draw();
+                cards.add(card);
+            }
+            dealTrainCarCardsCommand.setTrainCarCards(cards);
+            commandData.setType(ClientCommandType.C_FIRST_HAND);
+            commandData.setData(new Gson().toJson(dealTrainCarCardsCommand));
+            users.get(username).addCommand(commandData);
+        }
+    }
+
+    private Game getAssociatedGame(String playerUsername) {
+        for (Game gameToCheck: games.values()) {
+            for (Player playerToCheck: gameToCheck.getGamePlayers().values()) {
+                if (playerToCheck.getUsername().equals(playerUsername)) {
+                    return gameToCheck;
+                }
+            }
+        }
+        return new Game();
+    }
+
+    private Player getAssociatedPlayer(String playerUsername) {
+        for (Game gameToCheck: games.values()) {
+            for (Player playerToCheck: gameToCheck.getGamePlayers().values()) {
+                if (playerToCheck.getUsername().equals(playerUsername)) {
+                    return playerToCheck;
+                }
+            }
+        }
+        return new Player();
+    }
+
+    public AssignDestinationCardsResult assignDestinationCards(String playerUsername, List<Integer> cards) {
         AssignDestinationCardsResult res = new AssignDestinationCardsResult();
+        Game game = getAssociatedGame(playerUsername);
+        if (game.getGamePlayers().size() == 0) {
+            res.setErrorMessage("No Game was found with that player");
+            res.setSuccess(false);
+            return res;
+        }
+        Player player = getAssociatedPlayer(playerUsername);
+        if (!player.getUsername().equals(playerUsername)) {
+            res.setErrorMessage("No game was found with that player");
+            res.setSuccess(false);
+            return res;
+        }
+        List<DestinationCard> cardsAdded = new ArrayList<>();
+        DestinationCard cardToAdd = new DestinationCard();
+        for (Integer cardId : cards) {
+            cardToAdd = player.getDestinationCardHand().addCardById(cardId);
+            cardsAdded.add(cardToAdd);
+        }
+        res.setSuccess(true);
+        res.setDestinationCards(cardsAdded);
+        int numReceivedSoFar = game.getNumDestinationCardChoicesReceived() + 1;
+        game.setNumDestinationCardChoicesReceived(numReceivedSoFar);
+        if (numReceivedSoFar == game.getNumPlayers()) {
+            sendDealTrainCardsCommands(game);
+        }
         return res;
-        //TODO: Implement
     }
 
     public boolean sendMessage(Event data) {
+        Game game = getAssociatedGame(data.getUsername());
+        if (game.getGamePlayers().size() == 0) {
+            return false;
+        }
+        AddEventCommand addEventCommand = new AddEventCommand();
+        addEventCommand.setEvent(data);
+        CommandData commandData = new CommandData();
+        commandData.setType(ClientCommandType.C_EVENT);
+        commandData.setData(new Gson().toJson(addEventCommand));
+        game.addEvent(data);
+        User user = new User();
+        for (String username: game.getGamePlayers().keySet()) {
+            user = users.get(username);
+            user.addCommand(addEventCommand);
+        }
         return true;
-        //TODO: Implement
     }
 
     public HashMap<String, Game> getGames() {

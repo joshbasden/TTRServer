@@ -3,7 +3,7 @@ package Command.ServerCommand;
 import Request.AssignDestinationCardsRequest;
 import Request.iRequest;
 import Result.AssignDestinationCardsResult;
-import Service.AssignDestCardsService;
+import Service.AssignDestinationCardsService;
 
 public class AssignDestinationCardsCommand implements iServerCommand {
     private iRequest data;
@@ -11,8 +11,8 @@ public class AssignDestinationCardsCommand implements iServerCommand {
         data = request;
     }
     public AssignDestinationCardsResult execute() {
-        AssignDestCardsService assignDestCardsService = new AssignDestCardsService();
-        return assignDestCardsService.assignDestCards((AssignDestinationCardsRequest)data);
+        AssignDestinationCardsService assignDestinationCardsService = new AssignDestinationCardsService();
+        return assignDestinationCardsService.assignDestinationCards((AssignDestinationCardsRequest)data);
     }
 
     public iRequest getData() {
