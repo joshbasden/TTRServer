@@ -2,6 +2,7 @@ package Server;
 
 import Command.ServerCommand.*;
 import Request.*;
+import Result.DrawDestinationCardsResult;
 import Result.iResult;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
@@ -46,6 +47,9 @@ public class ServerCommandHandler implements HttpHandler {
             case S_SEND_MESSAGE:
                 SendMessageCommand sendMessageCommand = new SendMessageCommand(data);
                 return sendMessageCommand.execute();
+            case S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE:
+                DrawDestinationCardsCommand drawDestinationCardsCommand = new DrawDestinationCardsCommand(data);
+                return drawDestinationCardsCommand.execute();
             default:
                 return null;
         }
@@ -113,6 +117,8 @@ public class ServerCommandHandler implements HttpHandler {
                 return gson.fromJson(reqData, AssignDestinationCardsRequest.class);
             case S_SEND_MESSAGE:
                 return gson.fromJson(reqData, SendMessageRequest.class);
+            case S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE:
+                return gson.fromJson(reqData, DrawDestinationCardsRequest.class);
             default:
                 return null;
         }
@@ -133,6 +139,8 @@ public class ServerCommandHandler implements HttpHandler {
                 return CommandType.S_ASSIGN_DEST;
             case "S_SEND_MESSAGE":
                 return CommandType.S_SEND_MESSAGE;
+            case "S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE":
+                return CommandType.S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE;
             default:
                 return null;
         }

@@ -2,7 +2,10 @@ package Model;
 
 import Command.ClientCommand.*;
 import Command.ServerCommand.CommandType;
+import Command.ServerCommand.DrawDestinationCardsCommand;
+import Request.DrawDestinationCardsRequest;
 import Result.AssignDestinationCardsResult;
+import Result.DrawDestinationCardsResult;
 import Result.GetCommandsResult;
 import com.google.gson.Gson;
 
@@ -78,18 +81,16 @@ public class Model {
         return true;
     }
 
-    public void sendChooseDestinationCardsCommand(String username, String gameName) {
-        Game game = games.get(gameName);
-        ChooseDestinationCardsCommand chooseDestinationCardsCommand = new ChooseDestinationCardsCommand();
+    public DrawDestinationCardsResult drawDestinationCards(String username) {
+        Game game = getAssociatedGame(username);
         List<DestinationCard> destinationCardsToChooseFrom = new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
             destinationCardsToChooseFrom.add((DestinationCard) game.getBoard().getDestinationDeck().draw());
         }
-        chooseDestinationCardsCommand.setDestinationCards(destinationCardsToChooseFrom);
-        CommandData commandData = new CommandData();
-        commandData.setType(ClientCommandType.C_DEST_CARD);
-        commandData.setData(new Gson().toJson(chooseDestinationCardsCommand));
-        users.get(username).addCommand(commandData);
+        DrawDestinationCardsResult drawDestinationCardsResult = new DrawDestinationCardsResult();
+        drawDestinationCardsResult.setDestinationCards(destinationCardsToChooseFrom);
+        drawDestinationCardsResult.setSuccess(true);
+        return drawDestinationCardsResult;
     }
 
     public void beginGame(String gameName) {
@@ -107,7 +108,7 @@ public class Model {
         commandData.setData(new Gson().toJson(beginGameCommand));
         for (String user : userNamesOfPlayers) {
             users.get(user).addCommand(commandData);
-            sendChooseDestinationCardsCommand(user, gameName);
+            //sendChooseDestinationCardsCommand(user, gameName);
         }
         game.setStarted(true);
         commandData = new CommandData();
