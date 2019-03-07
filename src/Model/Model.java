@@ -266,7 +266,7 @@ public class Model {
         User user = new User();
         for (String username: game.getGamePlayers().keySet()) {
             user = users.get(username);
-            user.addCommand(addEventCommand);
+            user.addCommand(commandData);
         }
         return true;
     }
