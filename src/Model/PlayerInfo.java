@@ -3,8 +3,8 @@ package Model;
 public class PlayerInfo {
     private String username;
     private PlayerColor color;
-    private int score;
-    private int numTrains;
+    private int score = 0;
+    private int numTrains = 45;
     private int numTrainCards;
     private int numDestCards;
 

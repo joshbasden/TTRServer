@@ -1,17 +1,18 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class TrainCarCardDeck implements iDeck {
-    private List<iCard> discardPile;
-    private List<iCard> drawPile;
-    private List<iCard> faceUpCards;
+    private List<iCard> discardPile = new ArrayList<>();
+    private List<iCard> drawPile = new ArrayList<>();
+    private List<iCard> faceUpCards = new ArrayList<>();
 
     public iCard draw() {
         int numRemaining = drawPile.size();
         Random rand = new Random();
-        int randomCardIndex = rand.nextInt((numRemaining) + 1); //TODO: Check bounds on this
+        int randomCardIndex = rand.nextInt(numRemaining);
         TrainCarCard card = (TrainCarCard) drawPile.get(randomCardIndex);
         drawPile.remove(randomCardIndex);
         return card;

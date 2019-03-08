@@ -10,7 +10,7 @@ public class DestinationCardDeck implements iDeck {
     public iCard draw() {
         int numRemaining = cards.size();
         Random rand = new Random();
-        int randomCardIndex = rand.nextInt((numRemaining) + 1); //TODO: Check bounds on this
+        int randomCardIndex = rand.nextInt(numRemaining);
         DestinationCard card = (DestinationCard)cards.get(randomCardIndex);
         cards.remove(randomCardIndex);
         return card;

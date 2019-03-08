@@ -10,8 +10,8 @@ import java.util.List;
 public class Player {
     private String username;
     private PlayerColor color;
-    private int score;
-    private int numTrains;
+    private int score = 0;
+    private int numTrains = 45;
     private DestinationCardHand destinationCardHand = new DestinationCardHand();
     private TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
     private List<Route> routesOwned = new ArrayList<>();

@@ -19,18 +19,39 @@ import java.util.List;
  */
 
 public class Model {
+    private HashMap<String, Game> games = new HashMap<>();
+    private HashMap<String, User> users = new HashMap<>();
+
     private static final Model instance = new Model();
 
     public static Model getInstance() {
         return instance;
     }
 
-    private Model() {}
+    private Model() {
+        initializeInfo();
+    }
 
-    private HashMap<String, Game> games = new HashMap<>();
-    private HashMap<String, User> users = new HashMap<>();
+    private void initializeInfo() {
+        createUser("d", "d");
+        createUser("dd", "d");
+        createUser("ddd", "d");
+        createUser("dddd", "d");
+        createUser("ddddd", "d");
+        createUser("brad", "b");
+        createUser("brad2", "b");
+        createUser("zach","z");
+        createUser("zach2","z");
+        createUser("josh", "j");
+        createUser("josh2", "j");
+        createGame("game with two players", 2);
+        createGame("game with three players", 3);
+        createGame("game with four players", 4);
+        createGame("game with five players", 5);
+        createGame("Another game with two players, just in case it's needed", 2);
+    }
 
-    public boolean createGame(String gameName, int numPlayers, String userName) {
+    public boolean createGame(String gameName, int numPlayers) {
         if (games.containsKey(gameName)) {
             return false;
         }
@@ -110,7 +131,6 @@ public class Model {
         commandData.setData(new Gson().toJson(beginGameCommand));
         for (String user : userNamesOfPlayers) {
             users.get(user).addCommand(commandData);
-            //sendChooseDestinationCardsCommand(user, gameName);
         }
         game.setStarted(true);
         commandData = new CommandData();
@@ -190,7 +210,7 @@ public class Model {
             CommandData commandData = new CommandData();
             DealTrainCarCardsCommand dealTrainCarCardsCommand = new DealTrainCarCardsCommand();
             List<TrainCarCard> cards = new ArrayList<>();
-            TrainCarCard card = new TrainCarCard();
+            TrainCarCard card;
             for (int i = 0; i < 4; ++i) {
                 card = (TrainCarCard)board.getTrainDeck().draw();
                 cards.add(card);
@@ -267,7 +287,7 @@ public class Model {
         commandData.setType(ClientCommandType.C_EVENT);
         commandData.setData(new Gson().toJson(addEventCommand));
         game.addEvent(data);
-        User user = new User();
+        User user;
         for (String username: game.getGamePlayers().keySet()) {
             user = users.get(username);
             user.addCommand(commandData);

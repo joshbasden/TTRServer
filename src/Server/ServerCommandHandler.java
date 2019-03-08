@@ -67,7 +67,7 @@ public class ServerCommandHandler implements HttpHandler {
                 Gson gson = new Gson();
                 // get the type from the header
                 String header = getHeader(exchange.getRequestHeaders());
-                type = getCommandType(header);
+                type = CommandType.valueOf(header);
                 data = getCommandObject(type, reqData);
                 response = execute();
                 jsonStr = gson.toJson(response);
@@ -78,7 +78,7 @@ public class ServerCommandHandler implements HttpHandler {
                     System.out.println("");
                 }
                 else {
-                    //System.out.print("P"); //TODO:Figure out who
+                    System.out.print("P"); //TODO:Figure out who
                 }
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream respBody = exchange.getResponseBody();
@@ -101,9 +101,7 @@ public class ServerCommandHandler implements HttpHandler {
             e.printStackTrace();
         }
     }
-    /*
-        The readString method shows how to read a String from an InputStream.
-    */
+
     private iRequest getCommandObject(CommandType type, String reqData){
         Gson gson = new Gson();
 
@@ -128,34 +126,14 @@ public class ServerCommandHandler implements HttpHandler {
                 return null;
         }
     }
-    private CommandType getCommandType(String s){
-        switch (s) {
-            case "S_LOGIN":
-                return CommandType.S_LOGIN;
-            case "S_REGISTER":
-                return CommandType.S_REGISTER;
-            case "S_JOIN_GAME":
-                return CommandType.S_JOIN_GAME;
-            case "S_CREATE_GAME":
-                return CommandType.S_CREATE_GAME;
-            case "S_POLL":
-                return CommandType.S_POLL;
-            case "S_ASSIGN_DEST":
-                return CommandType.S_ASSIGN_DEST;
-            case "S_SEND_MESSAGE":
-                return CommandType.S_SEND_MESSAGE;
-            case "S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE":
-                return CommandType.S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE;
-            default:
-                return null;
-        }
-    }
+
 
     private String getHeader(Headers h){
-        try{
+        try {
             List<String> values = h.get("type");
             return values.get(0);
-        }catch (Exception e){
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -171,9 +149,8 @@ public class ServerCommandHandler implements HttpHandler {
         }
         return sb.toString();
     }
-    /*
-        The writeString method shows how to write a String to an OutputStream.
-    */
+
+
     private void writeString(String str, OutputStream os) throws IOException {
         OutputStreamWriter sw = new OutputStreamWriter(os);
         sw.write(str);
