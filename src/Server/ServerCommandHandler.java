@@ -3,6 +3,7 @@ package Server;
 import Command.ServerCommand.*;
 import Request.*;
 import Result.DrawDestinationCardsResult;
+import Result.SendMessageResult;
 import Result.iResult;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
@@ -68,14 +69,18 @@ public class ServerCommandHandler implements HttpHandler {
                 // get the type from the header
                 String header = getHeader(exchange.getRequestHeaders());
                 type = getCommandType(header);
-
-                // get the command object
                 data = getCommandObject(type, reqData);
-                System.out.println(String.format("A %s was received.", data));
                 response = execute();
                 jsonStr = gson.toJson(response);
-                System.out.println(jsonStr);
-                System.out.println("\n");
+                if (!(type == CommandType.S_POLL)) {
+                    System.out.println("");
+                    System.out.println(String.format("A %s was received.", data));
+                    System.out.println(jsonStr);
+                    System.out.println("");
+                }
+                else {
+                    //System.out.print("P"); //TODO:Figure out who
+                }
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream respBody = exchange.getResponseBody();
                 writeString(jsonStr, respBody);
