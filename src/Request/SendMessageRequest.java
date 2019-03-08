@@ -3,13 +3,13 @@ package Request;
 import Model.Event;
 
 public class SendMessageRequest implements iRequest {
-    private Event data;
+    private Event event;
 
     public Event getData() {
-        return data;
+        return event;
     }
 
     public void setData(Event data) {
-        this.data = data;
+        this.event = data;
     }
 }
