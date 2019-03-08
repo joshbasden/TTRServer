@@ -96,6 +96,7 @@ public class Model {
     public void beginGame(String gameName) {
         Game game = games.get(gameName);
         game.readInCardLists();
+        game.determineOrder();
         List<String> userNamesOfPlayers = new ArrayList<>();
         for (Player player : game.getGamePlayers().values()) {
             userNamesOfPlayers.add(player.getUsername());
@@ -129,7 +130,6 @@ public class Model {
             return false;
         }
         if (game.addPlayer(userName)) {
-            System.out.println("player added");
             if (game.getNumPlayers() == game.getGamePlayers().size()) {
                 beginGame(gameName);
             }
@@ -194,7 +194,9 @@ public class Model {
                 card = (TrainCarCard)board.getTrainDeck().draw();
                 cards.add(card);
             }
-            dealTrainCarCardsCommand.setTrainCarCards(cards);
+            TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
+            trainCarCardHand.setCards(cards);
+            dealTrainCarCardsCommand.setHand(trainCarCardHand);
             commandData.setType(ClientCommandType.C_FIRST_HAND);
             commandData.setData(new Gson().toJson(dealTrainCarCardsCommand));
             users.get(username).addCommand(commandData);

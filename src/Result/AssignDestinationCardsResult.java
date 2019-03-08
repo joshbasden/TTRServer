@@ -8,7 +8,6 @@ import java.util.List;
 public class AssignDestinationCardsResult implements iResult {
     private String errorMessage;
     private boolean success;
-    private List<DestinationCard> destinationCards;
     private DestinationCardHand hand;
 
     public String getErrorMessage() {
@@ -27,12 +26,8 @@ public class AssignDestinationCardsResult implements iResult {
         this.success = success;
     }
 
-    public List<DestinationCard> getDestinationCards() {
-        return destinationCards;
-    }
 
     public void setDestinationCards(List<DestinationCard> destinationCards) {
-        this.destinationCards = destinationCards;
         hand = new DestinationCardHand();
         hand.setCards(destinationCards);
     }

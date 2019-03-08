@@ -1,17 +1,18 @@
 package Command.ClientCommand;
 
 import Model.TrainCarCard;
+import Model.TrainCarCardHand;
 
 import java.util.List;
 
 public class DealTrainCarCardsCommand implements iClientCommand {
-    private List<TrainCarCard> trainCarCards;
+    private TrainCarCardHand hand;
 
-    public List<TrainCarCard> getTrainCarCards() {
-        return trainCarCards;
+    public TrainCarCardHand getHand() {
+        return hand;
     }
 
-    public void setTrainCarCards(List<TrainCarCard> trainCarCards) {
-        this.trainCarCards = trainCarCards;
+    public void setHand(TrainCarCardHand hand) {
+        this.hand = hand;
     }
 }
