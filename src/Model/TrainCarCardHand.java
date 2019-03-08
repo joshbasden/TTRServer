@@ -1,9 +1,10 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TrainCarCardHand implements iHand {
-    private List<TrainCarCard> cards;
+    private List<TrainCarCard> cards = new ArrayList<>();
 
     public List<TrainCarCard> getCards() {
         return cards;

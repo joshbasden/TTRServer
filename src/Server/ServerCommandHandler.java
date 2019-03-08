@@ -65,7 +65,6 @@ public class ServerCommandHandler implements HttpHandler {
                 InputStream reqBody = exchange.getRequestBody();
                 String reqData = readString(reqBody);
                 Gson gson = new Gson();
-
                 // get the type from the header
                 String header = getHeader(exchange.getRequestHeaders());
                 type = getCommandType(header);
@@ -89,6 +88,7 @@ public class ServerCommandHandler implements HttpHandler {
             }
 
             if (!success) {
+                System.out.println("Bad request came through");
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
                 OutputStream respBody = exchange.getResponseBody();
                 respBody.close();
