@@ -34,16 +34,45 @@ public class Model {
 
     private void initializeInfo() {
         createUser("d", "d");
-        createUser("dd", "d");
-        createUser("ddd", "d");
-        createUser("dddd", "d");
-        createUser("ddddd", "d");
-        createUser("brad", "b");
-        createUser("brad2", "b");
-        createUser("zach","z");
-        createUser("zach2","z");
-        createUser("josh", "j");
-        createUser("josh2", "j");
+        createUser("d2", "d");
+        createUser("d3", "d");
+        createUser("d4", "d");
+        createUser("d5", "d");
+        createUser("d6", "d");
+        createUser("d7", "d");
+        createUser("d8", "d");
+        createUser("d9", "d");
+        createUser("d10", "d");
+        createUser("b", "b");
+        createUser("b2", "b");
+        createUser("b3", "b");
+        createUser("b4", "b");
+        createUser("b5", "b");
+        createUser("b6", "b");
+        createUser("b7", "b");
+        createUser("b8", "b");
+        createUser("b9", "b");
+        createUser("b10", "b");
+        createUser("z","z");
+        createUser("z2","z");
+        createUser("z3","z");
+        createUser("z4","z");
+        createUser("z5","z");
+        createUser("z6","z");
+        createUser("z7","z");
+        createUser("z8","z");
+        createUser("z9","z");
+        createUser("z10","z");
+        createUser("j", "j");
+        createUser("j2", "j");
+        createUser("j3", "j");
+        createUser("j4", "j");
+        createUser("j5", "j");
+        createUser("j6", "j");
+        createUser("j7", "j");
+        createUser("j8", "j");
+        createUser("j9", "j");
+        createUser("j10", "j");
         createGame("game with two players", 2);
         createGame("game with three players", 3);
         createGame("game with four players", 4);
@@ -282,6 +311,9 @@ public class Model {
             return false;
         }
         AddEventCommand addEventCommand = new AddEventCommand();
+        if (data.getType().toString().equals("MESSAGE")) {
+            data.setContent(" " + data.getUsername() + ": " + data.getContent());
+        }
         addEventCommand.setEvent(data);
         CommandData commandData = new CommandData();
         commandData.setType(ClientCommandType.C_EVENT);
