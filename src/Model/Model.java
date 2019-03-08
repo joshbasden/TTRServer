@@ -97,6 +97,7 @@ public class Model {
         Game game = games.get(gameName);
         game.readInCardLists();
         game.determineOrder();
+        game.computePlayerStats();
         List<String> userNamesOfPlayers = new ArrayList<>();
         for (Player player : game.getGamePlayers().values()) {
             userNamesOfPlayers.add(player.getUsername());

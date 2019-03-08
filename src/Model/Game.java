@@ -111,7 +111,7 @@ public class Game {
     }
 
 
-    public List<PlayerInfo> computePlayerStats() {
+    public void computePlayerStats() {
         List<PlayerInfo> playerInfos = new ArrayList<>();
         PlayerInfo playerInfo;
         for (Player player: gamePlayers.values()) {
@@ -124,7 +124,7 @@ public class Game {
             playerInfo.setScore(player.getScore());
             playerInfos.add(playerInfo);
         }
-        return playerInfos;
+        playerStats =  playerInfos;
     }
 
     public String getGameName() {
