@@ -6,8 +6,8 @@ import java.util.Map;
 public class Board {
     private Map<Integer, Route> routes = new HashMap<>();
     private Map<Integer, City> cities = new HashMap<>();
-    private iDeck destinationDeck = new DestinationCardDeck();
-    private iDeck trainDeck = new TrainCarCardDeck();
+    private DestinationCardDeck destinationDeck = new DestinationCardDeck();
+    private TrainCarCardDeck trainDeck = new TrainCarCardDeck();
 
     public Map<Integer, Route> getRoutes() {
         return routes;
@@ -25,11 +25,11 @@ public class Board {
         this.cities = cities;
     }
 
-    public iDeck getDestinationDeck() {
+    public DestinationCardDeck getDestinationDeck() {
         return destinationDeck;
     }
 
-    public void setDestinationDeck(iDeck destinationDeck) {
+    public void setDestinationDeck(DestinationCardDeck destinationDeck) {
         this.destinationDeck = destinationDeck;
     }
 
@@ -37,7 +37,7 @@ public class Board {
         return trainDeck;
     }
 
-    public void setTrainDeck(iDeck trainDeck) {
+    public void setTrainDeck(TrainCarCardDeck trainDeck) {
         this.trainDeck = trainDeck;
     }
 }

@@ -16,6 +16,10 @@ public class DestinationCardDeck implements iDeck {
         return card;
     }
 
+    public void addCard(DestinationCard card) {
+        cards.add(card);
+    }
+
     public List<iCard> getCards() {
         return cards;
     }

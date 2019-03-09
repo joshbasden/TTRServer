@@ -1,9 +1,6 @@
 package Model;
 
 import Command.ClientCommand.*;
-import Command.ServerCommand.CommandType;
-import Command.ServerCommand.DrawDestinationCardsCommand;
-import Request.DrawDestinationCardsRequest;
 import Result.AssignDestinationCardsResult;
 import Result.DrawDestinationCardsResult;
 import Result.GetCommandsResult;
@@ -134,9 +131,13 @@ public class Model {
     public DrawDestinationCardsResult drawDestinationCards(String username) {
         Game game = getAssociatedGame(username);
         List<DestinationCard> destinationCardsToChooseFrom = new ArrayList<>();
+        List<DestinationCard> groupOfDestinationCardsSentOut = new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
-            destinationCardsToChooseFrom.add((DestinationCard) game.getBoard().getDestinationDeck().draw());
+            DestinationCard card = (DestinationCard)game.getBoard().getDestinationDeck().draw();
+            groupOfDestinationCardsSentOut.add(card);
+            destinationCardsToChooseFrom.add(card);
         }
+        game.addGroupOfDestinationCardIdsSentOut(groupOfDestinationCardsSentOut);
         DrawDestinationCardsResult drawDestinationCardsResult = new DrawDestinationCardsResult();
         drawDestinationCardsResult.setDestinationCards(destinationCardsToChooseFrom);
         drawDestinationCardsResult.setSuccess(true);
@@ -278,6 +279,7 @@ public class Model {
     public AssignDestinationCardsResult assignDestinationCards(String playerUsername, List<Integer> cards) {
         AssignDestinationCardsResult res = new AssignDestinationCardsResult();
         Game game = getAssociatedGame(playerUsername);
+        game.figureOutWhichDestinationCardShouldGoBackInTheDeck(cards);
         if (game.getGamePlayers().size() == 0) {
             res.setErrorMessage("No Game was found with that player");
             res.setSuccess(false);

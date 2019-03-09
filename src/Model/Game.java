@@ -25,6 +25,7 @@ public class Game {
     private List<String> turnOrder = new ArrayList<>();
     private List<PlayerColor> playerColors = new ArrayList<PlayerColor>(Arrays.asList(PlayerColor.BLUE, PlayerColor.GREEN, PlayerColor.RED, PlayerColor.YELLOW, PlayerColor.BLACK));
     private int numDestinationCardChoicesReceived;
+    private List<List<DestinationCard>> destinationCardGroups = new ArrayList<>();
 
     public boolean addPlayer(String username) {
         if (gamePlayers.containsKey(username)) {
@@ -55,7 +56,7 @@ public class Game {
             String jsonString = new String(Files.readAllBytes(Paths.get("json/DestinationCardsWithIds.json")));
             JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
             JsonArray cards = (JsonArray)obj.get("cards");
-            iDeck destinationDeck = new DestinationCardDeck();
+            DestinationCardDeck destinationDeck = new DestinationCardDeck();
             List<iCard> destinationCards = new ArrayList<>();
             for (int i = 0; i < cards.size(); ++i) {
                 DestinationCard card = new DestinationCard();
@@ -77,7 +78,7 @@ public class Game {
             String jsonString = new String(Files.readAllBytes(Paths.get("json/TrainCarCards.json")));
             JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
             JsonArray cards = (JsonArray)obj.get("cards");
-            iDeck trainCarCardDeck = new TrainCarCardDeck();
+            TrainCarCardDeck trainCarCardDeck = new TrainCarCardDeck();
             List<iCard> trainCarCards = new ArrayList<>();
             for (int i = 0; i < cards.size(); ++i) {
                 TrainCarCard card = new TrainCarCard();
@@ -125,6 +126,31 @@ public class Game {
             playerInfos.add(playerInfo);
         }
         playerStats =  playerInfos;
+    }
+
+    public void addGroupOfDestinationCardIdsSentOut(List<DestinationCard> groupOfCards) {
+        destinationCardGroups.add(groupOfCards);
+    }
+
+    public void figureOutWhichDestinationCardShouldGoBackInTheDeck(List<Integer> cardsSentBack) {
+        if (cardsSentBack.size() == 0) {
+            System.out.println("No destination cards were sent back. Houston we have a problem.");
+        }
+        int anIdSentBack = cardsSentBack.get(0);
+        List<DestinationCard> groupSentOut = new ArrayList<>();
+        for (List<DestinationCard> group: destinationCardGroups) {
+            for (DestinationCard card: group) {
+                if (card.getId() == anIdSentBack) {
+                    groupSentOut = group;
+                }
+            }
+        }
+        for (DestinationCard card: groupSentOut) {
+            if (!cardsSentBack.contains(card.getId())) {
+                getBoard().getDestinationDeck().addCard(card);
+            }
+        }
+        destinationCardGroups.remove(groupSentOut);
     }
 
     public String getGameName() {
