@@ -137,7 +137,7 @@ public class Model {
             groupOfDestinationCardsSentOut.add(card);
             destinationCardsToChooseFrom.add(card);
         }
-        game.addGroupOfDestinationCardIdsSentOut(groupOfDestinationCardsSentOut);
+        //game.addGroupOfDestinationCardIdsSentOut(groupOfDestinationCardsSentOut); TODO: FIX
         DrawDestinationCardsResult drawDestinationCardsResult = new DrawDestinationCardsResult();
         drawDestinationCardsResult.setDestinationCards(destinationCardsToChooseFrom);
         drawDestinationCardsResult.setSuccess(true);
@@ -279,7 +279,7 @@ public class Model {
     public AssignDestinationCardsResult assignDestinationCards(String playerUsername, List<Integer> cards) {
         AssignDestinationCardsResult res = new AssignDestinationCardsResult();
         Game game = getAssociatedGame(playerUsername);
-        game.figureOutWhichDestinationCardShouldGoBackInTheDeck(cards);
+        //game.figureOutWhichDestinationCardShouldGoBackInTheDeck(cards); TODO: FIX
         if (game.getGamePlayers().size() == 0) {
             res.setErrorMessage("No Game was found with that player");
             res.setSuccess(false);

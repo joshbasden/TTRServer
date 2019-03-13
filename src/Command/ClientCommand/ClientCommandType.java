@@ -1,6 +1,18 @@
 package Command.ClientCommand;
 
 public enum ClientCommandType {
-    C_BEGIN_PLAY, C_CREATE_GAME, C_REMOVE_GAME, C_EVENT, C_DEST_CARD, C_FIRST_HAND
-    //BEGIN_PLAY: BeginGame, CREATE_GAME: AddGame, EVENT: AddEvent, DEST_CARD: ChooseDestinationCards, FIRST_HAND: DealTrainCarCards
+    C_BEGIN_PLAY,
+    C_CREATE_GAME,
+    C_REMOVE_GAME,
+    C_EVENT,
+    C_FIRST_HAND,
+    C_END_GAME,
+    C_ADVANCE_TURN,
+    C_CLAIM_ROUTE,
+    C_REPLACE_ONE_FACE_UP,
+    C_REPLACE_ALL_FACE_UP,
+    C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE,
+    C_UPDATE_PLAYER_STATS
+
+    //BEGIN_PLAY: BeginGame, CREATE_GAME: AddGame, EVENT: AddEvent, FIRST_HAND: DealTrainCarCards
 }
