@@ -1,0 +1,548 @@
+{
+  "0": {
+    "id": 0,
+    "city1": 0,
+    "city2": 1,
+    "numTracks": 5,
+    "color": "GREEN"
+  },
+  "1": {
+    "id": 1,
+    "city1": 0,
+    "city2": 2,
+    "numTracks": 6,
+    "color": "BLUE"
+  },
+  "2": {
+    "id": 2,
+    "city1": 1,
+    "city2": 2,
+    "numTracks": 6,
+    "color": "ORANGE"
+  },
+  "3": {
+    "id": 3,
+    "city1": 0,
+    "city2": 3,
+    "numTracks": 1,
+    "color": "GRAY"
+  },
+  "4": {
+    "id": 4,
+    "city1": 3,
+    "city2": 4,
+    "numTracks": 1,
+    "color": "GRAY"
+  },
+  "5": {
+    "id": 5,
+    "city1": 4,
+    "city2": 5,
+    "numTracks": 3,
+    "color": "GRAY"
+  },
+  "6": {
+    "id": 6,
+    "city1": 3,
+    "city2": 5,
+    "numTracks": 4,
+    "color": "GRAY"
+  },
+  "7": {
+    "id": 7,
+    "city1": 5,
+    "city2": 6,
+    "numTracks": 4,
+    "color": "GRAY"
+  },
+  "8": {
+    "id": 8,
+    "city1": 3,
+    "city2": 6,
+    "numTracks": 6,
+    "color": "YELLOW"
+  },
+  "9": {
+    "id": 9,
+    "city1": 2,
+    "city2": 6,
+    "numTracks": 3,
+    "color": "PINK"
+  },
+  "10": {
+    "id": 10,
+    "city1": 2,
+    "city2": 7,
+    "numTracks": 3,
+    "color": "ORANGE"
+  },
+  "11": {
+    "id": 11,
+    "city1": 7,
+    "city2": 8,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "12": {
+    "id": 12,
+    "city1": 9,
+    "city2": 12,
+    "numTracks": 5,
+    "color": "WHITE"
+  },
+  "13": {
+    "id": 13,
+    "city1": 9,
+    "city2": 10,
+    "numTracks": 3,
+    "color": "GRAY"
+  },
+  "14": {
+    "id": 14,
+    "city1": 9,
+    "city2": 11,
+    "numTracks": 3,
+    "color": "GRAY"
+  },
+  "15": {
+    "id": 15,
+    "city1": 8,
+    "city2": 9,
+    "numTracks": 3,
+    "color": "GRAY"
+  },
+  "16": {
+    "id": 16,
+    "city1": 8,
+    "city2": 10,
+    "numTracks": 6,
+    "color": "BLACK"
+  },
+  "17": {
+    "id": 17,
+    "city1": 2,
+    "city2": 12,
+    "numTracks": 3,
+    "color": "RED"
+  },
+  "18": {
+    "id": 18,
+    "city1": 1,
+    "city2": 8,
+    "numTracks": 3,
+    "color": "YELLOW"
+  },
+  "19": {
+    "id": 19,
+    "city1": 6,
+    "city2": 12,
+    "numTracks": 4,
+    "color": "GREEN"
+  },
+  "20": {
+    "id": 20,
+    "city1": 11,
+    "city2": 12,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "21": {
+    "id": 21,
+    "city1": 10,
+    "city2": 11,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "22": {
+    "id": 22,
+    "city1": 5,
+    "city2": 13,
+    "numTracks": 6,
+    "color": "WHITE"
+  },
+  "23": {
+    "id": 23,
+    "city1": 6,
+    "city2": 13,
+    "numTracks": 4,
+    "color": "BLUE"
+  },
+  "24": {
+    "id": 24,
+    "city1": 6,
+    "city2": 14,
+    "numTracks": 6,
+    "color": "ORANGE"
+  },
+  "25": {
+    "id": 25,
+    "city1": 13,
+    "city2": 14,
+    "numTracks": 4,
+    "color": "BLACK"
+  },
+  "26": {
+    "id": 26,
+    "city1": 12,
+    "city2": 15,
+    "numTracks": 4,
+    "color": "PINK"
+  },
+  "27": {
+    "id": 27,
+    "city1": 6,
+    "city2": 15,
+    "numTracks": 5,
+    "color": "RED"
+  },
+  "28": {
+    "id": 28,
+    "city1": 14,
+    "city2": 15,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "29": {
+    "id": 29,
+    "city1": 12,
+    "city2": 16,
+    "numTracks": 4,
+    "color": "BLACK"
+  },
+  "30": {
+    "id": 30,
+    "city1": 15,
+    "city2": 16,
+    "numTracks": 1,
+    "color": "GRAY"
+  },
+  "31": {
+    "id": 31,
+    "city1": 12,
+    "city2": 17,
+    "numTracks": 4,
+    "color": "RED"
+  },
+  "32": {
+    "id": 32,
+    "city1": 16,
+    "city2": 17,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "33": {
+    "id": 33,
+    "city1": 11,
+    "city2": 17,
+    "numTracks": 3,
+    "color": "BLUE"
+  },
+  "34": {
+    "id": 34,
+    "city1": 10,
+    "city2": 17,
+    "numTracks": 5,
+    "color": "YELLOW"
+  },
+  "35": {
+    "id": 35,
+    "city1": 17,
+    "city2": 18,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "36": {
+    "id": 36,
+    "city1": 10,
+    "city2": 18,
+    "numTracks": 4,
+    "color": "RED"
+  },
+  "37": {
+    "id": 37,
+    "city1": 18,
+    "city2": 19,
+    "numTracks": 1,
+    "color": "GRAY"
+  },
+  "38": {
+    "id": 38,
+    "city1": 10,
+    "city2": 19,
+    "numTracks": 6,
+    "color": "GREEN"
+  },
+  "39": {
+    "id": 39,
+    "city1": 19,
+    "city2": 20,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "40": {
+    "id": 40,
+    "city1": 18,
+    "city2": 21,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "41": {
+    "id": 41,
+    "city1": 17,
+    "city2": 21,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "42": {
+    "id": 42,
+    "city1": 20,
+    "city2": 21,
+    "numTracks": 3,
+    "color": "GREEN"
+  },
+  "43": {
+    "id": 43,
+    "city1": 21,
+    "city2": 22,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "44": {
+    "id": 44,
+    "city1": 16,
+    "city2": 22,
+    "numTracks": 2,
+    "color": "PINK"
+  },
+  "45": {
+    "id": 45,
+    "city1": 22,
+    "city2": 23,
+    "numTracks": 2,
+    "color": "WHITE"
+  },
+  "46": {
+    "id": 46,
+    "city1": 15,
+    "city2": 23,
+    "numTracks": 4,
+    "color": "BLUE"
+  },
+  "47": {
+    "id": 47,
+    "city1": 14,
+    "city2": 23,
+    "numTracks": 3,
+    "color": "RED"
+  },
+  "48": {
+    "id": 48,
+    "city1": 14,
+    "city2": 24,
+    "numTracks": 3,
+    "color": "GRAY"
+  },
+  "49": {
+    "id": 49,
+    "city1": 13,
+    "city2": 24,
+    "numTracks": 6,
+    "color": "GRAY"
+  },
+  "50": {
+    "id": 50,
+    "city1": 24,
+    "city2": 25,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "51": {
+    "id": 51,
+    "city1": 14,
+    "city2": 25,
+    "numTracks": 6,
+    "color": "PINK"
+  },
+  "52": {
+    "id": 52,
+    "city1": 23,
+    "city2": 25,
+    "numTracks": 4,
+    "color": "WHITE"
+  },
+  "53": {
+    "id": 53,
+    "city1": 23,
+    "city2": 26,
+    "numTracks": 3,
+    "color": "ORANGE"
+  },
+  "54": {
+    "id": 54,
+    "city1": 22,
+    "city2": 26,
+    "numTracks": 5,
+    "color": "GREEN"
+  },
+  "55": {
+    "id": 55,
+    "city1": 26,
+    "city2": 27,
+    "numTracks": 4,
+    "color": "YELLOW"
+  },
+  "56": {
+    "id": 56,
+    "city1": 22,
+    "city2": 27,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "57": {
+    "id": 57,
+    "city1": 21,
+    "city2": 27,
+    "numTracks": 3,
+    "color": "WHITE"
+  },
+  "58": {
+    "id": 58,
+    "city1": 27,
+    "city2": 28,
+    "numTracks": 1,
+    "color": "GRAY"
+  },
+  "59": {
+    "id": 59,
+    "city1": 20,
+    "city2": 28,
+    "numTracks": 4,
+    "color": "YELLOW"
+  },
+  "60": {
+    "id": 60,
+    "city1": 20,
+    "city2": 29,
+    "numTracks": 6,
+    "color": "RED"
+  },
+  "61": {
+    "id": 61,
+    "city1": 28,
+    "city2": 29,
+    "numTracks": 5,
+    "color": "BLUE"
+  },
+  "62": {
+    "id": 62,
+    "city1": 28,
+    "city2": 30,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "63": {
+    "id": 63,
+    "city1": 29,
+    "city2": 30,
+    "numTracks": 4,
+    "color": "PINK"
+  },
+  "64": {
+    "id": 64,
+    "city1": 30,
+    "city2": 31,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "65": {
+    "id": 65,
+    "city1": 28,
+    "city2": 31,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "66": {
+    "id": 66,
+    "city1": 27,
+    "city2": 31,
+    "numTracks": 3,
+    "color": "BLACK"
+  },
+  "67": {
+    "id": 67,
+    "city1": 31,
+    "city2": 32,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "68": {
+    "id": 68,
+    "city1": 26,
+    "city2": 31,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "69": {
+    "id": 69,
+    "city1": 26,
+    "city2": 32,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "70": {
+    "id": 70,
+    "city1": 32,
+    "city2": 33,
+    "numTracks": 2,
+    "color": "ORANGE"
+  },
+  "71": {
+    "id": 71,
+    "city1": 26,
+    "city2": 33,
+    "numTracks": 2,
+    "color": "GREEN"
+  },
+  "72": {
+    "id": 72,
+    "city1": 33,
+    "city2": 34,
+    "numTracks": 2,
+    "color": "RED"
+  },
+  "73": {
+    "id": 73,
+    "city1": 33,
+    "city2": 35,
+    "numTracks": 3,
+    "color": "BLUE"
+  },
+  "74": {
+    "id": 74,
+    "city1": 34,
+    "city2": 35,
+    "numTracks": 2,
+    "color": "GRAY"
+  },
+  "75": {
+    "id": 75,
+    "city1": 24,
+    "city2": 35,
+    "numTracks": 5,
+    "color": "BLACK"
+  },
+  "76": {
+    "id": 76,
+    "city1": 25,
+    "city2": 35,
+    "numTracks": 3,
+    "color": "GRAY"
+  },
+  "77": {
+    "id": 77,
+    "city1": 25,
+    "city2": 26,
+    "numTracks": 2,
+    "color": "GRAY"
+  }
+}

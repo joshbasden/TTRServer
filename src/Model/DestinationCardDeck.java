@@ -16,6 +16,18 @@ public class DestinationCardDeck implements iDeck {
         return card;
     }
 
+    public DestinationCard getCardById(int id) {
+        DestinationCard destinationCard;
+        for (iCard card: cards) {
+            destinationCard = (DestinationCard)card;
+            if (destinationCard.getId() == id) {
+                return destinationCard;
+            }
+        }
+        System.out.println("ERROR: CARD WITH THAT ID WAS NOT FOUND!!!");
+        return null;
+    }
+
     public void addCard(DestinationCard card) {
         cards.add(card);
     }

@@ -7,7 +7,12 @@ import Result.ClaimRouteResult;
 import Result.DrawDestinationCardsResult;
 import Result.GetCommandsResult;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +25,8 @@ import java.util.List;
 public class Model {
     private HashMap<String, Game> games = new HashMap<>();
     private HashMap<String, User> users = new HashMap<>();
+    private DestinationCardDeck destinationDeck = new DestinationCardDeck();
+    private TrainCarCardDeck trainCarCardDeck = new TrainCarCardDeck();
 
     private static final Model instance = new Model();
 
@@ -32,6 +39,66 @@ public class Model {
     }
 
     private void initializeInfo() {
+        readInCardLists();
+        createFakeInfo();
+    }
+
+    private void readInCardLists() {
+        try {
+            Gson gson = new Gson();
+            String jsonString = new String(Files.readAllBytes(Paths.get("json/DestinationCards.json")));
+            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
+            JsonArray cards = (JsonArray)obj.get("cards");
+            List<iCard> destinationCards = new ArrayList<>();
+            for (int i = 0; i < cards.size(); ++i) {
+                DestinationCard card = new DestinationCard();
+                JsonObject jsonCard = (JsonObject)cards.get(i);
+                card.setId(i);
+                card.setCity1(Integer.parseInt(jsonCard.get("city1").toString()));
+                card.setCity2(Integer.parseInt(jsonCard.get("city2").toString()));
+                card.setPoints(Integer.parseInt(jsonCard.get("points").toString()));
+                destinationCards.add(card);
+            }
+            destinationDeck.setCards(destinationCards);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Gson gson = new Gson();
+            String jsonString = new String(Files.readAllBytes(Paths.get("json/TrainCarCards.json")));
+            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
+            JsonArray cards = (JsonArray)obj.get("cards");
+            List<iCard> trainCarCards = new ArrayList<>();
+            for (int i = 0; i < cards.size(); ++i) {
+                TrainCarCard card = new TrainCarCard();
+                JsonObject jsonCard = (JsonObject)cards.get(i);
+                String type = jsonCard.get("type").toString();
+                type = type.substring(1,type.length() - 1);
+                TrainCarCardType enumType = TrainCarCardType.valueOf(type);
+                card.setType(enumType);
+                trainCarCards.add(card);
+            }
+            trainCarCardDeck.setDrawPile(trainCarCards);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public DestinationCardDeck getDestinationDeckCopy() {
+        DestinationCardDeck newDeck = new DestinationCardDeck();
+        newDeck.setCards(destinationDeck.getCards());
+        return newDeck;
+    }
+
+    public TrainCarCardDeck getTrainCarCardDeckCopy() {
+        TrainCarCardDeck newDeck = new TrainCarCardDeck();
+        newDeck.setDrawPile(trainCarCardDeck.getDrawPile());
+        return newDeck;
+    }
+
+    private void createFakeInfo() {
         createUser("d", "d");
         createUser("d2", "d");
         createUser("d3", "d");
@@ -148,7 +215,7 @@ public class Model {
 
     public void beginGame(String gameName) {
         Game game = games.get(gameName);
-        game.readInCardLists();
+        game.initializeCardLists();
         game.determineOrder();
         game.computePlayerStats();
         List<String> userNamesOfPlayers = new ArrayList<>();
@@ -293,9 +360,10 @@ public class Model {
             return res;
         }
         List<DestinationCard> cardsAdded = new ArrayList<>();
-        DestinationCard cardToAdd = new DestinationCard();
+        DestinationCard cardToAdd;
         for (Integer cardId : cards) {
-            cardToAdd = player.getDestinationCardHand().addCardById(cardId);
+            cardToAdd = destinationDeck.getCardById(cardId);
+            player.getDestinationCardHand().addCard(cardToAdd);
             cardsAdded.add(cardToAdd);
         }
         res.setSuccess(true);

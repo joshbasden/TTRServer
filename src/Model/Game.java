@@ -28,13 +28,6 @@
 
 package Model;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -42,7 +35,7 @@ import java.util.*;
  */
 
 public class Game {
-
+    Model model = Model.getInstance();
     private Map<String, Player> gamePlayers = new HashMap<>();
     private List<PlayerInfo> playerStats = new ArrayList<>();
     private GameInfo gameInfo = new GameInfo();
@@ -114,69 +107,9 @@ public class Game {
         eventHistory.add(event);
     }
 
-    /**
-     * Parses through the JSON files containing the decks of cards that will be used in the game
-     *
-     * @pre board != null
-     *
-     * @post gamePlayers == old(gamePlayers)
-     * @post playerStats == old(playerStats)
-     * @post gameInfo == old(gameInfo)
-     * @post started == old(started)
-     * @post board.getDestinationDeck() matches the contents of the destination deck JSON file
-     * @post board.getTrainDeck() matches the contents of the train car card deck JSON file
-     * @post eventHistory == old(eventHistory)
-     * @post turnOrder == old(turnOrder)
-     * @post numDestinationCardChoicesReceived == old(numDestinationCardChoicesReceieved)
-     *
-     * @throws IOException if the JSON files do not exist in the project
-     *
-     */
-    public void readInCardLists() {
-        try {
-            Gson gson = new Gson();
-            String jsonString = new String(Files.readAllBytes(Paths.get("json/DestinationCardsWithIds.json")));
-            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
-            JsonArray cards = (JsonArray)obj.get("cards");
-            DestinationCardDeck destinationDeck = new DestinationCardDeck();
-            List<iCard> destinationCards = new ArrayList<>();
-            for (int i = 0; i < cards.size(); ++i) {
-                DestinationCard card = new DestinationCard();
-                JsonObject jsonCard = (JsonObject)cards.get(i);
-                card.setId(i);
-                card.setCity1(Integer.parseInt(jsonCard.get("city1").toString()));
-                card.setCity2(Integer.parseInt(jsonCard.get("city2").toString()));
-                card.setPoints(Integer.parseInt(jsonCard.get("points").toString()));
-                destinationCards.add(card);
-            }
-            ((DestinationCardDeck) destinationDeck).setCards(destinationCards);
-            board.setDestinationDeck(destinationDeck);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Gson gson = new Gson();
-            String jsonString = new String(Files.readAllBytes(Paths.get("json/TrainCarCards.json")));
-            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
-            JsonArray cards = (JsonArray)obj.get("cards");
-            TrainCarCardDeck trainCarCardDeck = new TrainCarCardDeck();
-            List<iCard> trainCarCards = new ArrayList<>();
-            for (int i = 0; i < cards.size(); ++i) {
-                TrainCarCard card = new TrainCarCard();
-                JsonObject jsonCard = (JsonObject)cards.get(i);
-                String type = jsonCard.get("type").toString();
-                type = type.substring(1,type.length() - 1);
-                TrainCarCardType enumType = TrainCarCardType.valueOf(type);
-                card.setType(enumType);
-                trainCarCards.add(card);
-            }
-            ((TrainCarCardDeck) trainCarCardDeck).setDrawPile(trainCarCards);
-            board.setTrainDeck(trainCarCardDeck);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void initializeCardLists() {
+        board.setDestinationDeck(model.getDestinationDeckCopy());
+        board.setTrainDeck(model.getTrainCarCardDeckCopy());
     }
 
     /**

@@ -1,0 +1,218 @@
+{
+  "0": {
+    "id": 0,
+    "latitude": 350,
+    "longitude": 250,
+    "name": "Portland"
+  },
+  "1": {
+    "id": 1,
+    "latitude": 725,
+    "longitude": 125,
+    "name": "San Francisco"
+  },
+  "2": {
+    "id": 2,
+    "latitude": 640,
+    "longitude": 630,
+    "name": "Salt Lake City"
+  },
+  "3": {
+    "id": 3,
+    "latitude": 215,
+    "longitude": 300,
+    "name": "Seattle"
+  },
+  "4": {
+    "id": 4,
+    "latitude": 85,
+    "longitude": 325,
+    "name": "Vancouver"
+  },
+  "5": {
+    "id": 5,
+    "latitude": 80,
+    "longitude": 620,
+    "name": "Calgary"
+  },
+  "6": {
+    "id": 6,
+    "latitude": 425,
+    "longitude": 825,
+    "name": "Helena"
+  },
+  "7": {
+    "id": 7,
+    "latitude": 860,
+    "longitude": 435,
+    "name": "Las Vegas"
+  },
+  "8": {
+    "id": 8,
+    "latitude": 1000,
+    "longitude": 300,
+    "name": "Los Angeles"
+  },
+  "9": {
+    "id": 9,
+    "latitude": 1000,
+    "longitude": 575,
+    "name": "Phoenix"
+  },
+  "10": {
+    "id": 10,
+    "latitude": 1200,
+    "longitude": 850,
+    "name": "El Paso"
+  },
+  "11": {
+    "id": 11,
+    "latitude": 990,
+    "longitude": 870,
+    "name": "Santa Fe"
+  },
+  "12": {
+    "id": 12,
+    "latitude": 775,
+    "longitude": 890,
+    "name": "Denver"
+  },
+  "13": {
+    "id": 13,
+    "latitude": 175,
+    "longitude": 1150,
+    "name": "Winnipeg"
+  },
+  "14": {
+    "id": 14,
+    "latitude": 475,
+    "longitude": 1435,
+    "name": "Duluth"
+  },
+  "15": {
+    "id": 15,
+    "latitude": 640,
+    "longitude": 1275,
+    "name": "Omaha"
+  },
+  "16": {
+    "id": 16,
+    "latitude": 800,
+    "longitude": 1350,
+    "name": "Kansas City"
+  },
+  "17": {
+    "id": 17,
+    "latitude": 1010,
+    "longitude": 1250,
+    "name": "Oklahoma City"
+  },
+  "18": {
+    "id": 18,
+    "latitude": 1175,
+    "longitude": 1250,
+    "name": "Dallas"
+  },
+  "19": {
+    "id": 19,
+    "latitude": 1275,
+    "longitude": 1350,
+    "name": "Houston"
+  },
+  "20": {
+    "id": 20,
+    "latitude": 1300,
+    "longitude": 1540,
+    "name": "New Orleans"
+  },
+  "21": {
+    "id": 21,
+    "latitude": 1020,
+    "longitude": 1490,
+    "name": "Little Rock"
+  },
+  "22": {
+    "id": 22,
+    "latitude": 820,
+    "longitude": 1535,
+    "name": "Saint Louis"
+  },
+  "23": {
+    "id": 23,
+    "latitude": 640,
+    "longitude": 1650,
+    "name": "Chicago"
+  },
+  "24": {
+    "id": 24,
+    "latitude": 375,
+    "longitude": 1775,
+    "name": "Sault St. Marie"
+  },
+  "25": {
+    "id": 25,
+    "latitude": 475,
+    "longitude": 1970,
+    "name": "Toronto"
+  },
+  "26": {
+    "id": 26,
+    "latitude": 640,
+    "longitude": 2050,
+    "name": "Pittsburgh"
+  },
+  "27": {
+    "id": 27,
+    "latitude": 960,
+    "longitude": 1770,
+    "name": "Nashville"
+  },
+  "28": {
+    "id": 28,
+    "latitude": 1070,
+    "longitude": 1870,
+    "name": "Atlanta"
+  },
+  "29": {
+    "id": 29,
+    "latitude": 1500,
+    "longitude": 2090,
+    "name": "Miami"
+  },
+  "30": {
+    "id": 30,
+    "latitude": 1100,
+    "longitude": 2060,
+    "name": "Charleston"
+  },
+  "31": {
+    "id": 31,
+    "latitude": 945,
+    "longitude": 2030,
+    "name": "Raleigh"
+  },
+  "32": {
+    "id": 32,
+    "latitude": 750,
+    "longitude": 2155,
+    "name": "Washington D.C."
+  },
+  "33": {
+    "id": 33,
+    "latitude": 620,
+    "longitude": 2250,
+    "name": "New York City"
+  },
+  "34": {
+    "id": 34,
+    "latitude": 500,
+    "longitude": 2340,
+    "name": "Boston"
+  },
+  "35": {
+    "id": 35,
+    "latitude": 290,
+    "longitude": 2190,
+    "name": "Montreal"
+  }
+}
