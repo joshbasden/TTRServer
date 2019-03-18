@@ -2,6 +2,7 @@ package Server;
 
 import Command.ServerCommand.*;
 import Request.*;
+import Result.AssignFirstDestinationCardsResult;
 import Result.DrawDestinationCardsResult;
 import Result.SendMessageResult;
 import Result.iResult;
@@ -45,6 +46,9 @@ public class ServerCommandHandler implements HttpHandler {
             case S_ASSIGN_DEST:
                 AssignDestinationCardsCommand assignDestinationCardsCommand = new AssignDestinationCardsCommand(data);
                 return assignDestinationCardsCommand.execute();
+            case S_ASSIGN_FIRST_DEST:
+                AssignFirstDestinationCardsCommand assignFirstDestinationCardsCommand = new AssignFirstDestinationCardsCommand(data);
+                return assignFirstDestinationCardsCommand.execute();
             case S_SEND_MESSAGE:
                 SendMessageCommand sendMessageCommand = new SendMessageCommand(data);
                 return sendMessageCommand.execute();
@@ -121,6 +125,8 @@ public class ServerCommandHandler implements HttpHandler {
                 return gson.fromJson(reqData, GetCommandsRequest.class);
             case S_ASSIGN_DEST:
                 return gson.fromJson(reqData, AssignDestinationCardsRequest.class);
+            case S_ASSIGN_FIRST_DEST:
+                return gson.fromJson(reqData, AssignFirstDestinationCardsRequest.class);
             case S_SEND_MESSAGE:
                 return gson.fromJson(reqData, SendMessageRequest.class);
             case S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE:

@@ -2,7 +2,7 @@ package Request;
 
 import java.util.List;
 
-public class AssignDestinationCardsRequest implements iRequest {
+public class AssignFirstDestinationCardsRequest implements iRequest {
     private String player;
     private List<Integer> chosen;
     private List<Integer> notChosen;
