@@ -51,6 +51,9 @@ public class ServerCommandHandler implements HttpHandler {
             case S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE:
                 DrawDestinationCardsCommand drawDestinationCardsCommand = new DrawDestinationCardsCommand(data);
                 return drawDestinationCardsCommand.execute();
+            case S_CLAIM_ROUTE:
+                ClaimRouteCommand claimRouteCommand = new ClaimRouteCommand(data);
+                return claimRouteCommand.execute();
             default:
                 return null;
         }
@@ -122,6 +125,8 @@ public class ServerCommandHandler implements HttpHandler {
                 return gson.fromJson(reqData, SendMessageRequest.class);
             case S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE:
                 return gson.fromJson(reqData, DrawDestinationCardsRequest.class);
+            case S_CLAIM_ROUTE:
+                return gson.fromJson(reqData, ClaimRouteRequest.class);
             default:
                 return null;
         }

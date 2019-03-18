@@ -1,7 +1,9 @@
 package Model;
 
 import Command.ClientCommand.*;
+import Request.ClaimRouteRequest;
 import Result.AssignDestinationCardsResult;
+import Result.ClaimRouteResult;
 import Result.DrawDestinationCardsResult;
 import Result.GetCommandsResult;
 import com.google.gson.Gson;
@@ -279,7 +281,6 @@ public class Model {
     public AssignDestinationCardsResult assignDestinationCards(String playerUsername, List<Integer> cards) {
         AssignDestinationCardsResult res = new AssignDestinationCardsResult();
         Game game = getAssociatedGame(playerUsername);
-        //game.figureOutWhichDestinationCardShouldGoBackInTheDeck(cards); TODO: FIX
         if (game.getGamePlayers().size() == 0) {
             res.setErrorMessage("No Game was found with that player");
             res.setSuccess(false);
@@ -327,6 +328,19 @@ public class Model {
             user.addCommand(commandData);
         }
         return true;
+    }
+
+    public ClaimRouteResult claimRoute(ClaimRouteRequest req) {
+        ClaimRouteResult res = new ClaimRouteResult();
+        String username = req.getUsername();
+        Game game = getAssociatedGame(username);
+        if (game.claimRoute(username, req.getId())) {
+            res.setSuccess(true);
+            return res;
+        }
+        res.setSuccess(false);
+        res.setErrorMessage("Route was not able to be claimed");
+        return res;
     }
 
     public HashMap<String, Game> getGames() {

@@ -235,6 +235,11 @@ public class Game {
         playerStats =  playerInfos;
     }
 
+    public boolean claimRoute(String username, int id) {
+        return true;
+        //TODO: Implement
+    }
+
     /**
      * Getters and setters defined below
      * I assume these are self-explanatory enough, and do not need to be commented.
