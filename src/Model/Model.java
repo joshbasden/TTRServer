@@ -1,11 +1,10 @@
 package Model;
 
 import Command.ClientCommand.*;
+import Request.AssignDestinationCardsRequest;
+import Request.AssignFirstDestinationCardsRequest;
 import Request.ClaimRouteRequest;
-import Result.AssignDestinationCardsResult;
-import Result.ClaimRouteResult;
-import Result.DrawDestinationCardsResult;
-import Result.GetCommandsResult;
+import Result.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -206,7 +205,6 @@ public class Model {
             groupOfDestinationCardsSentOut.add(card);
             destinationCardsToChooseFrom.add(card);
         }
-        //game.addGroupOfDestinationCardIdsSentOut(groupOfDestinationCardsSentOut); TODO: FIX
         DrawDestinationCardsResult drawDestinationCardsResult = new DrawDestinationCardsResult();
         drawDestinationCardsResult.setDestinationCards(destinationCardsToChooseFrom);
         drawDestinationCardsResult.setSuccess(true);
@@ -345,8 +343,9 @@ public class Model {
         return new Player();
     }
 
-    public AssignDestinationCardsResult assignDestinationCards(String playerUsername, List<Integer> cards) {
+    public AssignDestinationCardsResult assignDestinationCards(AssignDestinationCardsRequest req) {
         AssignDestinationCardsResult res = new AssignDestinationCardsResult();
+        String playerUsername = req.getPlayer();
         Game game = getAssociatedGame(playerUsername);
         if (game.getGamePlayers().size() == 0) {
             res.setErrorMessage("No Game was found with that player");
@@ -361,13 +360,50 @@ public class Model {
         }
         List<DestinationCard> cardsAdded = new ArrayList<>();
         DestinationCard cardToAdd;
-        for (Integer cardId : cards) {
+        for (Integer cardId : req.getChosen()) {
             cardToAdd = destinationDeck.getCardById(cardId);
             player.getDestinationCardHand().addCard(cardToAdd);
             cardsAdded.add(cardToAdd);
         }
+        for (Integer cardId: req.getNotChosen()) {
+            cardToAdd = destinationDeck.getCardById(cardId);
+            game.getBoard().getDestinationDeck().addCard(cardToAdd);
+        }
         res.setSuccess(true);
-        res.setDestinationCards(cardsAdded);
+        res.setCards(cardsAdded);
+        return res;
+    }
+
+    public AssignFirstDestinationCardsResult assignFirstDestinationCards(AssignFirstDestinationCardsRequest req) {
+        AssignFirstDestinationCardsResult res = new AssignFirstDestinationCardsResult();
+        String playerUsername = req.getPlayer();
+        Game game = getAssociatedGame(playerUsername);
+        if (game.getGamePlayers().size() == 0) {
+            res.setErrorMessage("No Game was found with that player");
+            res.setSuccess(false);
+            return res;
+        }
+        Player player = getAssociatedPlayer(playerUsername);
+        if (!player.getUsername().equals(playerUsername)) {
+            res.setErrorMessage("No game was found with that player");
+            res.setSuccess(false);
+            return res;
+        }
+        List<DestinationCard> cardsAdded = new ArrayList<>();
+        DestinationCard cardToAdd;
+        for (Integer cardId : req.getChosen()) {
+            cardToAdd = destinationDeck.getCardById(cardId);
+            player.getDestinationCardHand().addCard(cardToAdd);
+            cardsAdded.add(cardToAdd);
+        }
+        for (Integer cardId: req.getNotChosen()) {
+            cardToAdd = destinationDeck.getCardById(cardId);
+            game.getBoard().getDestinationDeck().addCard(cardToAdd);
+        }
+        res.setSuccess(true);
+        DestinationCardHand hand = new DestinationCardHand();
+        hand.setCards(cardsAdded);
+        res.setHand(hand);
         int numReceivedSoFar = game.getNumDestinationCardChoicesReceived() + 1;
         game.setNumDestinationCardChoicesReceived(numReceivedSoFar);
         if (numReceivedSoFar == game.getNumPlayers()) {
