@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -298,6 +299,41 @@ public class Model {
                 commandData.setData(new Gson().toJson(addGameCommand));
                 users.get(userName).addCommand(commandData);
             }
+        }
+    }
+
+    public EndTurnResult sendAdvanceTurnCommands(String endTurnPlayer){
+        EndTurnResult result = new EndTurnResult();
+        Game game = getAssociatedGame(endTurnPlayer);
+        String nextPlayer = game.getNextTurn(endTurnPlayer);
+        boolean isLastTurn = game.isLastTurn(endTurnPlayer);
+
+        AdvanceTurnCommand advanceTurn = new AdvanceTurnCommand();
+        advanceTurn.setLastTurn(isLastTurn);
+        advanceTurn.setUsername(nextPlayer);
+
+        CommandData commandData = new CommandData();
+        commandData.setType(ClientCommandType.C_ADVANCE_TURN);
+        commandData.setData(new Gson().toJson(advanceTurn));
+
+        try{
+            addCommandToAllPlayers(game, commandData);
+            result.setSuccess(true);
+            return result;
+        }catch (Exception e){
+            result.setErrorMessage(e.getMessage());
+            result.setSuccess(false);
+            return result;
+        }
+
+    }
+
+    public void addCommandToAllPlayers(Game game, CommandData command){
+        Map<String, Player> playersMap = game.getGamePlayers();
+        ArrayList<Player> players = new ArrayList<Player>(playersMap.values());
+        for(Player p: players){
+            User user = users.get(p);
+            user.addCommand(command);
         }
     }
 

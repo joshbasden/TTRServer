@@ -58,6 +58,9 @@ public class ServerCommandHandler implements HttpHandler {
             case S_CLAIM_ROUTE:
                 ClaimRouteCommand claimRouteCommand = new ClaimRouteCommand(data);
                 return claimRouteCommand.execute();
+            case S_END_TURN:
+                EndTurnCommand endTurnCommand = new EndTurnCommand(data);
+                return endTurnCommand.execute();
             default:
                 return null;
         }
@@ -133,6 +136,8 @@ public class ServerCommandHandler implements HttpHandler {
                 return gson.fromJson(reqData, DrawDestinationCardsRequest.class);
             case S_CLAIM_ROUTE:
                 return gson.fromJson(reqData, ClaimRouteRequest.class);
+            case S_END_TURN:
+                return gson.fromJson(reqData, EndTurnRequest.class);
             default:
                 return null;
         }

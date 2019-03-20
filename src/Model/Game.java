@@ -83,6 +83,20 @@ public class Game {
         return true;
     }
 
+    public String getNextTurn(String curPlayer){
+        int size = turnOrder.size();
+        int nextInd = turnOrder.indexOf(curPlayer) + 1;
+        int nextPlayer = nextInd % size;
+        return turnOrder.get(nextPlayer);
+    }
+
+    public boolean isLastTurn(String curPlayer){
+        Player player = gamePlayers.get(curPlayer);
+        int numTrains = player.getNumTrains();
+        return numTrains <= 2;
+    }
+
+
     /**
      * Adds an event to the game's eventHistory list
      *
