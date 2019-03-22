@@ -50,7 +50,6 @@ public class Game {
     private boolean started;
     private List<Event> eventHistory = new ArrayList<>();
     private List<String> turnOrder = new ArrayList<>();
-    // TODO add trainCarCardDeck
     private List<PlayerColor> playerColors = new ArrayList<PlayerColor>(Arrays.asList(PlayerColor.BLUE,
             PlayerColor.GREEN, PlayerColor.RED, PlayerColor.YELLOW, PlayerColor.BLACK));
     private int numDestinationCardChoicesReceived = 0;
@@ -114,8 +113,7 @@ public class Game {
 
         //first index is the chosen face up card
         //second index is drawpile card that replaces it
-        // TODO
-        ArrayList<iCard> cards = trainCarCardDeck.drawFaceUp(ind);
+        ArrayList<iCard> cards = gameTrainDeck.drawFaceUp(ind);
 
         player.addTrainCard(cards.get(0));
         playerInfo.incrementNumTrainCards(1);
@@ -130,8 +128,7 @@ public class Game {
         PlayerInfo pInfo = findPlayerInfo(user);
 
         try{
-            //Todo need to add trainCarCardDeck
-            iCard card = trainCarCardDeck.drawTopCard();
+            iCard card = gameTrainDeck.drawTopCard();
             player.addTrainCard(card);
             pInfo.incrementNumTrainCards(1);
 
@@ -358,9 +355,8 @@ public class Game {
      * Getters and setters defined below
      * I assume these are self-explanatory enough, and do not need to be commented.
      */
-    //TODO put train card deck in Game
     public int getTrainDeckSize(){
-        return trainCarCardDeck.size();
+        return gameTrainDeck.getDrawPile().size();
     }
 
 

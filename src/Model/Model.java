@@ -269,15 +269,52 @@ public class Model {
     }
 
     public DrawFaceUpResult drawFaceUp(String player, int index){
+        DrawFaceUpResult result = new DrawFaceUpResult();
         Game game = getAssociatedGame(player);
         ArrayList<iCard> cards = game.drawFaceUp(index, player);
 
-        //TODO make ReplaceOneFaceUp, AccountForTrainCarCard, UpdatePlayerStats
+        //make Client Commands
+        UpdatePlayerStatsCommand updateStatsCommand = new UpdatePlayerStatsCommand();
+        ArrayList<StatsChange> statsChangeArray = new ArrayList<>();
+        StatsChange statsChange = new StatsChange();
+        statsChange.setAmmount(1);
+        statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
+        statsChangeArray.add(statsChange);
+
+        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        accountForDraws.setDeckSize(game.getTrainDeckSize());
+
+        ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
+        replaceCommand.setCard(cards.get(1));
+        replaceCommand.setIndex(index);
+
+        updateStatsCommand.setUsername(player);
+        updateStatsCommand.setChanges(statsChangeArray);
+
+        CommandData commandData = new CommandData();
+        CommandData commandDataAccount = new CommandData();
+        CommandData commandDataReplace = new CommandData();
+        commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
+        commandDataAccount.setData(new Gson().toJson(accountForDraws));
+        commandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+        commandData.setData(new Gson().toJson(updateStatsCommand));
+        commandDataReplace.setType(ClientCommandType.C_REPLACE_ONE_FACE_UP);
+        commandDataReplace.setData(new Gson().toJson(replaceCommand));
+
+        try{
+            addCommandToAllPlayers(game, commandData);
+            addCommandToAllPlayers(game, commandDataAccount);
+            addCommandToAllPlayers(game, commandDataReplace);
+            result.setSuccess(true);
+            return result;
+        }catch (Exception e){
+            result.setErrorMessage("Could not send Update Player Stats Command to everyone");
+            result.setSuccess(false);
+            return result;
+        }
     }
 
     public DrawTrainCarCardResult takeTopTrainCarCard(String player){
-        // TODO: Need to find out where TrainCarCardDeck is stored
-        // TODO: Im assuming its in the game
         Game game = getAssociatedGame(player);
         DrawTrainCarCardResult result = game.drawTopCard(player);
 

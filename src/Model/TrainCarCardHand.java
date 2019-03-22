@@ -22,6 +22,6 @@ public class TrainCarCardHand implements iHand {
         this.cards = cards;
     }
     public void addCard(iCard card){
-        cards.add(card);
+        cards.add((TrainCarCard)card);
     }
 }
