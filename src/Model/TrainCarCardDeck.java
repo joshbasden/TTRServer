@@ -18,6 +18,10 @@ public class TrainCarCardDeck implements iDeck {
         return card;
     }
 
+    public void addToDiscardPile(RouteColor color, int numTracks) {
+        //TODO: Implement
+    }
+
     public List<iCard> getDiscardPile() {
         return discardPile;
     }

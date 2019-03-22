@@ -38,66 +38,6 @@ public class Model {
     }
 
     private void initializeInfo() {
-        readInCardLists();
-        createFakeInfo();
-    }
-
-    private void readInCardLists() {
-        try {
-            Gson gson = new Gson();
-            String jsonString = new String(Files.readAllBytes(Paths.get("json/DestinationCards.json")));
-            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
-            JsonArray cards = (JsonArray)obj.get("cards");
-            List<iCard> destinationCards = new ArrayList<>();
-            for (int i = 0; i < cards.size(); ++i) {
-                DestinationCard card = new DestinationCard();
-                JsonObject jsonCard = (JsonObject)cards.get(i);
-                card.setId(i);
-                card.setCity1(Integer.parseInt(jsonCard.get("city1").toString()));
-                card.setCity2(Integer.parseInt(jsonCard.get("city2").toString()));
-                card.setPoints(Integer.parseInt(jsonCard.get("points").toString()));
-                destinationCards.add(card);
-            }
-            destinationDeck.setCards(destinationCards);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            Gson gson = new Gson();
-            String jsonString = new String(Files.readAllBytes(Paths.get("json/TrainCarCards.json")));
-            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
-            JsonArray cards = (JsonArray)obj.get("cards");
-            List<iCard> trainCarCards = new ArrayList<>();
-            for (int i = 0; i < cards.size(); ++i) {
-                TrainCarCard card = new TrainCarCard();
-                JsonObject jsonCard = (JsonObject)cards.get(i);
-                String type = jsonCard.get("type").toString();
-                type = type.substring(1,type.length() - 1);
-                TrainCarCardType enumType = TrainCarCardType.valueOf(type);
-                card.setType(enumType);
-                trainCarCards.add(card);
-            }
-            trainCarCardDeck.setDrawPile(trainCarCards);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public DestinationCardDeck getDestinationDeckCopy() {
-        DestinationCardDeck newDeck = new DestinationCardDeck();
-        newDeck.setCards(destinationDeck.getCards());
-        return newDeck;
-    }
-
-    public TrainCarCardDeck getTrainCarCardDeckCopy() {
-        TrainCarCardDeck newDeck = new TrainCarCardDeck();
-        newDeck.setDrawPile(trainCarCardDeck.getDrawPile());
-        return newDeck;
-    }
-
-    private void createFakeInfo() {
         createUser("d", "d");
         createUser("d2", "d");
         createUser("d3", "d");
@@ -201,7 +141,7 @@ public class Model {
         List<DestinationCard> destinationCardsToChooseFrom = new ArrayList<>();
         List<DestinationCard> groupOfDestinationCardsSentOut = new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
-            DestinationCard card = (DestinationCard)game.getBoard().getDestinationDeck().draw();
+            DestinationCard card = (DestinationCard)game.getGameDestinationDeck().draw();
             groupOfDestinationCardsSentOut.add(card);
             destinationCardsToChooseFrom.add(card);
         }
@@ -213,7 +153,7 @@ public class Model {
 
     public void beginGame(String gameName) {
         Game game = games.get(gameName);
-        game.initializeCardLists();
+        game.readInCardLists();
         game.determineOrder();
         game.computePlayerStats();
         List<String> userNamesOfPlayers = new ArrayList<>();
@@ -302,14 +242,13 @@ public class Model {
     }
 
     private void sendDealTrainCardsCommands(Game game) {
-        Board board = game.getBoard();
         for (String username: game.getGamePlayers().keySet()) {
             CommandData commandData = new CommandData();
             DealTrainCarCardsCommand dealTrainCarCardsCommand = new DealTrainCarCardsCommand();
             List<TrainCarCard> cards = new ArrayList<>();
             TrainCarCard card;
             for (int i = 0; i < 4; ++i) {
-                card = (TrainCarCard)board.getTrainDeck().draw();
+                card = (TrainCarCard)game.getGameTrainDeck().draw();
                 cards.add(card);
             }
             TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
@@ -367,7 +306,7 @@ public class Model {
         }
         for (Integer cardId: req.getNotChosen()) {
             cardToAdd = destinationDeck.getCardById(cardId);
-            game.getBoard().getDestinationDeck().addCard(cardToAdd);
+            game.getGameDestinationDeck().addCard(cardToAdd);
         }
         res.setSuccess(true);
         res.setCards(cardsAdded);
@@ -398,7 +337,7 @@ public class Model {
         }
         for (Integer cardId: req.getNotChosen()) {
             cardToAdd = destinationDeck.getCardById(cardId);
-            game.getBoard().getDestinationDeck().addCard(cardToAdd);
+            game.getGameDestinationDeck().addCard(cardToAdd);
         }
         res.setSuccess(true);
         DestinationCardHand hand = new DestinationCardHand();
@@ -440,6 +379,10 @@ public class Model {
         Game game = getAssociatedGame(username);
         if (game.claimRoute(username, req.getId())) {
             res.setSuccess(true);
+            //TODO: Add event for each player
+            //TODO: Advance turn commands
+            //TODO: Claim Route commands
+            //TODO: Update Player Stats commands
             return res;
         }
         res.setSuccess(false);
