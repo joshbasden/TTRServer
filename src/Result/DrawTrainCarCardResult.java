@@ -1,11 +1,13 @@
 package Result;
 
+
 import Model.TrainCarCard;
+import Model.iCard;
 
 public class DrawTrainCarCardResult implements iResult {
     String errorMessage;
     Boolean success;
-    TrainCarCard card;
+    iCard card;
 
     public String getErrorMessage() {
         return errorMessage;
@@ -23,11 +25,11 @@ public class DrawTrainCarCardResult implements iResult {
         this.success = success;
     }
 
-    public TrainCarCard getCard() {
+    public iCard getCard() {
         return card;
     }
 
-    public void setCard(TrainCarCard card) {
+    public void setCard(iCard card) {
         this.card = card;
     }
 }

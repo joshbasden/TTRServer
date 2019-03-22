@@ -1,8 +1,11 @@
 package Command.ClientCommand;
 
+import Model.TrainCarCard;
+import Model.iCard;
+
 public class ReplaceOneFaceUpCommand implements iClientCommand {
     int index;
-    TrainCarCard card;
+    iCard card;
 
     public int getIndex() {
         return index;
@@ -12,11 +15,11 @@ public class ReplaceOneFaceUpCommand implements iClientCommand {
         this.index = index;
     }
 
-    public TrainCarCard getCard() {
+    public iCard getCard() {
         return card;
     }
 
-    public void setCard(TrainCarCard card) {
+    public void setCard(iCard card) {
         this.card = card;
     }
 }

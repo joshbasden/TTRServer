@@ -43,7 +43,6 @@ import java.util.*;
  */
 
 public class Game {
-    Model model = Model.getInstance();
     private Map<String, Player> gamePlayers = new HashMap<>();
     private List<PlayerInfo> playerStats = new ArrayList<>();
     private GameInfo gameInfo = new GameInfo();
