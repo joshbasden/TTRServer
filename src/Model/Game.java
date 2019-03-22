@@ -14,7 +14,6 @@
  *      playerStats: List<PlayerInfo>, statistics for each player
  *      gameInfo: GameInfo, class defining the name of the game as well as number of expected players
  *      started: Boolean, used to determine if the game has enough players or is still in the waiting lobby
- *      board: Board, the game board and all of its components
  *      eventHistory: List<Event>, the list of chats that have been sent, and turns that have been taken
  *      turnOrder: List<String> the usernames of the players defining how the game should progress
  *      playerColors: List<PlayerColor> Predefined constants for the colors of the (up to) 5 players
@@ -28,6 +27,13 @@
 
 package Model;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -40,12 +46,17 @@ public class Game {
     private List<PlayerInfo> playerStats = new ArrayList<>();
     private GameInfo gameInfo = new GameInfo();
     private boolean started;
-    private Board board = new Board();
     private List<Event> eventHistory = new ArrayList<>();
     private List<String> turnOrder = new ArrayList<>();
     private List<PlayerColor> playerColors = new ArrayList<PlayerColor>(Arrays.asList(PlayerColor.BLUE,
             PlayerColor.GREEN, PlayerColor.RED, PlayerColor.YELLOW, PlayerColor.BLACK));
     private int numDestinationCardChoicesReceived = 0;
+    private DestinationCardDeck gameDestinationDeck = new DestinationCardDeck();
+    private TrainCarCardDeck gameTrainDeck = new TrainCarCardDeck();
+    private Map<Integer, Route> routes = new HashMap<>();
+    private Map<Integer, City> cities = new HashMap<>();
+    private List<TrainCarCard> faceUpTrainCarCards = new ArrayList<>(); //Initial
+    private int destinationDeckSize = 30;
 
     /**
      * Adds a player to the gamePlayers map (for this phase, only the username was needed)
@@ -107,9 +118,94 @@ public class Game {
         eventHistory.add(event);
     }
 
-    public void initializeCardLists() {
-        board.setDestinationDeck(model.getDestinationDeckCopy());
-        board.setTrainDeck(model.getTrainCarCardDeckCopy());
+    public void readInCardLists() {
+        Gson gson;
+        //Destination Cards
+        try {
+            gson = new Gson();
+            String jsonString = new String(Files.readAllBytes(Paths.get("json/DestinationCards.json")));
+            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
+            JsonArray cards = (JsonArray)obj.get("cards");
+            List<iCard> destinationCards = new ArrayList<>();
+            for (int i = 0; i < cards.size(); ++i) {
+                DestinationCard card = new DestinationCard();
+                JsonObject jsonCard = (JsonObject)cards.get(i);
+                card.setId(i);
+                card.setCity1(Integer.parseInt(jsonCard.get("city1").toString()));
+                card.setCity2(Integer.parseInt(jsonCard.get("city2").toString()));
+                card.setPoints(Integer.parseInt(jsonCard.get("points").toString()));
+                destinationCards.add(card);
+            }
+            //destinationDeck.setCards(destinationCards); TODO: FIX
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        //TrainCards
+        try {
+            gson = new Gson();
+            String jsonString = new String(Files.readAllBytes(Paths.get("json/TrainCarCards.json")));
+            JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
+            JsonArray cards = (JsonArray)obj.get("cards");
+            List<iCard> trainCarCards = new ArrayList<>();
+            for (int i = 0; i < cards.size(); ++i) {
+                TrainCarCard card = new TrainCarCard();
+                JsonObject jsonCard = (JsonObject)cards.get(i);
+                String type = jsonCard.get("type").toString();
+                type = type.substring(1,type.length() - 1);
+                TrainCarCardType enumType = TrainCarCardType.valueOf(type);
+                card.setType(enumType);
+                trainCarCards.add(card);
+            }
+            //trainCarCardDeck.setDrawPile(trainCarCards); TODO: FIX
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        //Cities
+        try {
+            gson = new Gson();
+            String jsonString = new String(Files.readAllBytes(Paths.get("json/Cities.json")));
+            JsonObject citiesJson = gson.fromJson(jsonString, JsonObject.class);
+            JsonObject cityJson;
+            City city;
+            for (int i = 0; i < citiesJson.size(); ++i) {
+                city = new City();
+                cityJson = (JsonObject)citiesJson.get(Integer.toString(i));
+                city.setId(i);
+                city.setLatitude(cityJson.get("latitude").getAsDouble());
+                city.setLongitude(cityJson.get("longitude").getAsDouble());
+                String nameLong = cityJson.get("name").toString();
+                city.setName(nameLong.substring(1,nameLong.length() - 1));
+                cities.put(i,city);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            gson = new Gson();
+            String jsonString = new String(Files.readAllBytes(Paths.get("json/Routes.json")));
+            JsonObject routesJson = gson.fromJson(jsonString, JsonObject.class);
+            JsonObject routeJson;
+            Route route;
+            for (int i = 0; i < routesJson.size(); ++i) {
+                routeJson = (JsonObject) routesJson.get(Integer.toString(i));
+                route = new Route();
+                int city1 = routeJson.get("city1").getAsInt();
+                int city2 = routeJson.get("city2").getAsInt();
+                String color = routeJson.get("color").toString();
+                route.setId(i);
+                route.setCity1(cities.get(city1));
+                route.setCity2(cities.get(city2));
+                route.setNumTracks(routeJson.get("numTracks").getAsInt());
+                route.setColor(RouteColor.valueOf(color.substring(1, color.length() - 1)));
+                routes.put(i, route);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -169,8 +265,26 @@ public class Game {
     }
 
     public boolean claimRoute(String username, int id) {
+        Player player = gamePlayers.get(username);
+        Route route = routes.get(id);
+        if (player == null) {
+            return false;
+        }
+        if (!route.getOwner().equals("")) {
+            return false;
+        }
+        int numTracks = route.getNumTracks();
+        RouteColor color = route.getColor();
+        if (player.getTrainCarCardHand().getCount(color) < numTracks) {
+            return false;
+        }
+        if (player.getNumTrains() < numTracks) {
+            return false;
+        }
+        player.getTrainCarCardHand().removeCards(color, numTracks);
+        gameTrainDeck.addToDiscardPile(color, numTracks);
+        player.setNumTrains(player.getNumTrains() - numTracks);
         return true;
-        //TODO: Implement
     }
 
     /**
@@ -210,14 +324,6 @@ public class Game {
         this.started = started;
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
     public void setEventHistory(List<Event> eventHistory) {
         this.eventHistory = eventHistory;
     }
@@ -244,6 +350,26 @@ public class Game {
 
     public void setNumDestinationCardChoicesReceived(int numDestinationCardChoicesReceived) {
         this.numDestinationCardChoicesReceived = numDestinationCardChoicesReceived;
+    }
+
+    public DestinationCardDeck getGameDestinationDeck() {
+        return gameDestinationDeck;
+    }
+
+    public void setGameDestinationDeck(DestinationCardDeck gameDestinationDeck) {
+        this.gameDestinationDeck = gameDestinationDeck;
+    }
+
+    public TrainCarCardDeck getGameTrainDeck() {
+        return gameTrainDeck;
+    }
+
+    public void setGameTrainDeck(TrainCarCardDeck gameTrainDeck) {
+        this.gameTrainDeck = gameTrainDeck;
+    }
+
+    public static void main(String[] args) {
+        new Game().readInCardLists();
     }
 
 }
