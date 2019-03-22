@@ -24,7 +24,7 @@ public class TrainCarCardDeck implements iDeck {
         return card;
     }
 
-    public ArrayList<iCard> drawFaceUp(int ind){
+    public ArrayList<iCard> drawFaceUp(int ind) {
         //make arraylist of icard to send back
         ArrayList<iCard> cards = new ArrayList<iCard>();
 
@@ -38,6 +38,9 @@ public class TrainCarCardDeck implements iDeck {
         cards.add(faceUpCard);
 
         return cards;
+    }
+    public void addToDiscardPile(RouteColor color, int numTracks) {
+        //TODO: Implement
     }
 
     public List<iCard> getDiscardPile() {
