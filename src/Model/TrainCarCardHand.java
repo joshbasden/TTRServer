@@ -13,4 +13,7 @@ public class TrainCarCardHand implements iHand {
     public void setCards(List<TrainCarCard> cards) {
         this.cards = cards;
     }
+    public void addCard(iCard card){
+        cards.add(card);
+    }
 }

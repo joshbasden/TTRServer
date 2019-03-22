@@ -18,6 +18,28 @@ public class TrainCarCardDeck implements iDeck {
         return card;
     }
 
+    public iCard drawTopCard(){
+        iCard card = drawPile.get(0);
+        drawPile.remove(0);
+        return card;
+    }
+
+    public ArrayList<iCard> drawFaceUp(int ind){
+        //make arraylist of icard to send back
+        ArrayList<iCard> cards = new ArrayList<iCard>();
+
+        iCard faceUpCard = faceUpCards.get(ind);
+        iCard drawCard = drawTopCard();
+        faceUpCards.set(ind, drawCard);
+
+        //first index is the chosen face up card
+        //second index is drawpile card that replaces it
+        cards.add(drawCard);
+        cards.add(faceUpCard);
+
+        return cards;
+    }
+
     public List<iCard> getDiscardPile() {
         return discardPile;
     }

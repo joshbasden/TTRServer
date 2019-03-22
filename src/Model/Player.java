@@ -55,7 +55,9 @@ public class Player {
     public void setDestinationCardHand(DestinationCardHand destinationCardHand) {
         this.destinationCardHand = destinationCardHand;
     }
-
+    public void addTrainCard(iCard card){
+        this.trainCarCardHand.addCard(card);
+    }
     public TrainCarCardHand getTrainCarCardHand() {
         return trainCarCardHand;
     }

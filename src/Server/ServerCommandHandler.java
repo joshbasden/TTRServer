@@ -61,6 +61,12 @@ public class ServerCommandHandler implements HttpHandler {
             case S_END_TURN:
                 EndTurnCommand endTurnCommand = new EndTurnCommand(data);
                 return endTurnCommand.execute();
+            case S_DRAW_FROM_TRAIN_PILE:
+                DrawTrainCarCardCommand drawTrainCommand = new DrawTrainCarCardCommand(data);
+                return drawTrainCommand.execute();
+            case S_DRAW_FACE_UP_TRAIN_CAR_CARD:
+                DrawFaceUpCommand drawFaceUpCommand = new DrawFaceUpCommand((DrawFaceUpRequest)data);
+                return drawFaceUpCommand.execute();
             default:
                 return null;
         }
@@ -138,6 +144,10 @@ public class ServerCommandHandler implements HttpHandler {
                 return gson.fromJson(reqData, ClaimRouteRequest.class);
             case S_END_TURN:
                 return gson.fromJson(reqData, EndTurnRequest.class);
+            case S_DRAW_FROM_TRAIN_PILE:
+                return gson.fromJson(reqData, DrawTrainCarCardRequest.class);
+            case S_DRAW_FACE_UP_TRAIN_CAR_CARD:
+                return gson.fromJson(reqData, DrawFaceUpRequest.class);
             default:
                 return null;
         }

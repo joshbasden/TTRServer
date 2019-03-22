@@ -28,6 +28,9 @@
 
 package Model;
 
+import Result.DrawFaceUpResult;
+import Result.DrawTrainCarCardResult;
+
 import java.util.*;
 
 /**
@@ -43,6 +46,7 @@ public class Game {
     private Board board = new Board();
     private List<Event> eventHistory = new ArrayList<>();
     private List<String> turnOrder = new ArrayList<>();
+    // TODO add trainCarCardDeck
     private List<PlayerColor> playerColors = new ArrayList<PlayerColor>(Arrays.asList(PlayerColor.BLUE,
             PlayerColor.GREEN, PlayerColor.RED, PlayerColor.YELLOW, PlayerColor.BLACK));
     private int numDestinationCardChoicesReceived = 0;
@@ -81,6 +85,56 @@ public class Game {
         newPlayer.setColor(playerColors.get(numPlayersSoFar));
         gamePlayers.put(username, newPlayer);
         return true;
+    }
+
+    private PlayerInfo findPlayerInfo(String user){
+        PlayerInfo playerInfo = null;
+        for (PlayerInfo p: playerStats){
+            if (p.getUsername().equals(user)){
+                playerInfo = p;
+                break;
+            }
+        }
+        return playerInfo;
+    }
+
+    public ArrayList<iCard> drawFaceUp(int ind, String user){
+        Player player = gamePlayers.get(user);
+        PlayerInfo playerInfo = findPlayerInfo(user);
+
+        //first index is the chosen face up card
+        //second index is drawpile card that replaces it
+        // TODO
+        ArrayList<iCard> cards = trainCarCardDeck.drawFaceUp(ind);
+
+        player.addTrainCard(cards.get(0));
+        playerInfo.incrementNumTrainCards(1);
+
+        return cards;
+
+    }
+
+    public DrawTrainCarCardResult drawTopCard(String user){
+        DrawTrainCarCardResult result = new DrawTrainCarCardResult();
+        Player player = gamePlayers.get(user);
+        PlayerInfo pInfo = findPlayerInfo(user);
+
+        try{
+            //Todo need to add trainCarCardDeck
+            iCard card = trainCarCardDeck.drawTopCard();
+            player.addTrainCard(card);
+            pInfo.incrementNumTrainCards(1);
+
+            result.setCard(card);
+            result.setSuccess(true);
+
+            return result;
+        }catch (Exception e){
+            result.setErrorMessage("Could not draw Train Car Card");
+            result.setSuccess(false);
+            return result;
+        }
+
     }
 
     public String getNextTurn(String curPlayer){
@@ -191,6 +245,11 @@ public class Game {
      * Getters and setters defined below
      * I assume these are self-explanatory enough, and do not need to be commented.
      */
+    //TODO put train card deck in Game
+    public int getTrainDeckSize(){
+        return trainCarCardDeck.size();
+    }
+
 
     public String getGameName() {
         return gameInfo.getGameName();
@@ -211,6 +270,9 @@ public class Game {
     public Map<String, Player> getGamePlayers() {
         return gamePlayers;
     }
+//    public Player getPlayer(String player){
+//        return gamePlayers.get(player);
+//    }
 
     public void setGamePlayers(HashMap<String, Player> gamePlayers) {
         this.gamePlayers = gamePlayers;

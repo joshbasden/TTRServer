@@ -139,11 +139,11 @@ public class Model {
         createUser("j8", "j");
         createUser("j9", "j");
         createUser("j10", "j");
-        createGame("game with two players", 2);
-        createGame("game with three players", 3);
-        createGame("game with four players", 4);
-        createGame("game with five players", 5);
-        createGame("Another game with two players, just in case it's needed", 2);
+        //createGame("game with two players", 2);
+        //createGame("game with three players", 3);
+        //createGame("game with four players", 4);
+        //createGame("game with five players", 5);
+        //createGame("Another game with two players, just in case it's needed", 2);
     }
 
     public boolean createGame(String gameName, int numPlayers) {
@@ -322,6 +322,53 @@ public class Model {
             return result;
         }catch (Exception e){
             result.setErrorMessage(e.getMessage());
+            result.setSuccess(false);
+            return result;
+        }
+
+    }
+
+    public DrawFaceUpResult drawFaceUp(String player, int index){
+        Game game = getAssociatedGame(player);
+        ArrayList<iCard> cards = game.drawFaceUp(index, player);
+
+        //TODO make ReplaceOneFaceUp, AccountForTrainCarCard, UpdatePlayerStats
+    }
+
+    public DrawTrainCarCardResult takeTopTrainCarCard(String player){
+        // TODO: Need to find out where TrainCarCardDeck is stored
+        // TODO: Im assuming its in the game
+        Game game = getAssociatedGame(player);
+        DrawTrainCarCardResult result = game.drawTopCard(player);
+
+        //make Client Commands
+        UpdatePlayerStatsCommand updateStatsCommand = new UpdatePlayerStatsCommand();
+        ArrayList<StatsChange> statsChangeArray = new ArrayList<>();
+        StatsChange statsChange = new StatsChange();
+        statsChange.setAmmount(1);
+        statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
+        statsChangeArray.add(statsChange);
+
+        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        accountForDraws.setDeckSize(game.getTrainDeckSize());
+
+        updateStatsCommand.setUsername(player);
+        updateStatsCommand.setChanges(statsChangeArray);
+
+        CommandData commandData = new CommandData();
+        CommandData commandDataAccount = new CommandData();
+        commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
+        commandDataAccount.setData(new Gson().toJson(accountForDraws));
+        commandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+        commandData.setData(new Gson().toJson(updateStatsCommand));
+
+        try{
+            addCommandToAllPlayers(game, commandData);
+            addCommandToAllPlayers(game, commandDataAccount);
+            result.setSuccess(true);
+            return result;
+        }catch (Exception e){
+            result.setErrorMessage("Could not send Update Player Stats Command to everyone");
             result.setSuccess(false);
             return result;
         }
