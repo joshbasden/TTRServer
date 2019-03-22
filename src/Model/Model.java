@@ -6,15 +6,11 @@ import Request.AssignFirstDestinationCardsRequest;
 import Request.ClaimRouteRequest;
 import Result.*;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -78,11 +74,11 @@ public class Model {
         createUser("j8", "j");
         createUser("j9", "j");
         createUser("j10", "j");
-        createGame("game with two players", 2);
-        createGame("game with three players", 3);
-        createGame("game with four players", 4);
-        createGame("game with five players", 5);
-        createGame("Another game with two players, just in case it's needed", 2);
+        //createGame("game with two players", 2);
+        //createGame("game with three players", 3);
+        //createGame("game with four players", 4);
+        //createGame("game with five players", 5);
+        //createGame("Another game with two players, just in case it's needed", 2);
     }
 
     public boolean createGame(String gameName, int numPlayers) {
@@ -238,6 +234,128 @@ public class Model {
                 commandData.setData(new Gson().toJson(addGameCommand));
                 users.get(userName).addCommand(commandData);
             }
+        }
+    }
+
+    public EndTurnResult endTurn(String endTurnPlayer){
+        EndTurnResult result = new EndTurnResult();
+        Game game = getAssociatedGame(endTurnPlayer);
+        String nextPlayer = game.getNextTurn(endTurnPlayer);
+        boolean isLastTurn = game.isLastTurn(endTurnPlayer);
+
+        try {
+            sendAdvanceTurnCommands(nextPlayer, isLastTurn, game);
+            result.setSuccess(true);
+            return result;
+        }catch (Exception e){
+            result.setSuccess(false);
+            result.setErrorMessage("Could not end turn");
+            return result;
+        }
+    }
+
+    public void sendAdvanceTurnCommands(String nextPlayer, boolean isLastTurn, Game game){
+
+        AdvanceTurnCommand advanceTurn = new AdvanceTurnCommand();
+        advanceTurn.setLastTurn(isLastTurn);
+        advanceTurn.setUsername(nextPlayer);
+
+        CommandData commandData = new CommandData();
+        commandData.setType(ClientCommandType.C_ADVANCE_TURN);
+        commandData.setData(new Gson().toJson(advanceTurn));
+
+        addCommandToAllPlayers(game, commandData);
+
+    }
+
+    public DrawFaceUpResult drawFaceUp(String player, int index){
+        DrawFaceUpResult result = new DrawFaceUpResult();
+        Game game = getAssociatedGame(player);
+        ArrayList<iCard> cards = game.drawFaceUp(index, player);
+
+        //make Client Commands
+        UpdatePlayerStatsCommand updateStatsCommand = new UpdatePlayerStatsCommand();
+        ArrayList<StatsChange> statsChangeArray = new ArrayList<>();
+        StatsChange statsChange = new StatsChange();
+        statsChange.setAmmount(1);
+        statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
+        statsChangeArray.add(statsChange);
+
+        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        accountForDraws.setDeckSize(game.getTrainDeckSize());
+
+        ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
+        replaceCommand.setCard(cards.get(1));
+        replaceCommand.setIndex(index);
+
+        updateStatsCommand.setUsername(player);
+        updateStatsCommand.setChanges(statsChangeArray);
+
+        CommandData commandDataUpdate = new CommandData();
+        CommandData commandDataAccount = new CommandData();
+        CommandData commandDataReplace = new CommandData();
+        commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
+        commandDataAccount.setData(new Gson().toJson(accountForDraws));
+        commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+        commandDataUpdate.setData(new Gson().toJson(updateStatsCommand));
+        commandDataReplace.setType(ClientCommandType.C_REPLACE_ONE_FACE_UP);
+        commandDataReplace.setData(new Gson().toJson(replaceCommand));
+
+        try{
+            addCommandToAllPlayers(game, commandDataUpdate);
+            addCommandToAllPlayers(game, commandDataAccount);
+            addCommandToAllPlayers(game, commandDataReplace);
+            result.setSuccess(true);
+            return result;
+        }catch (Exception e){
+            result.setErrorMessage("Could not send Update Player Stats Command to everyone");
+            result.setSuccess(false);
+            return result;
+        }
+    }
+
+    public DrawTrainCarCardResult takeTopTrainCarCard(String player){
+        Game game = getAssociatedGame(player);
+        DrawTrainCarCardResult result = game.drawTopCard(player);
+
+        //make Client Commands
+        UpdatePlayerStatsCommand updateStatsCommand = new UpdatePlayerStatsCommand();
+        ArrayList<StatsChange> statsChangeArray = new ArrayList<>();
+        StatsChange statsChange = new StatsChange();
+        statsChange.setAmmount(1);
+        statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
+        statsChangeArray.add(statsChange);
+
+        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        accountForDraws.setDeckSize(game.getTrainDeckSize());
+
+        updateStatsCommand.setUsername(player);
+        updateStatsCommand.setChanges(statsChangeArray);
+
+        CommandData commandDataUpdate = new CommandData();
+        CommandData commandDataAccount = new CommandData();
+        commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
+        commandDataAccount.setData(new Gson().toJson(accountForDraws));
+        commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+        commandDataUpdate.setData(new Gson().toJson(updateStatsCommand));
+
+        try{
+            addCommandToAllPlayers(game, commandDataUpdate);
+            addCommandToAllPlayers(game, commandDataAccount);
+            result.setSuccess(true);
+            return result;
+        }catch (Exception e){
+            result.setErrorMessage("Could not send Update Player Stats Command to everyone");
+            result.setSuccess(false);
+            return result;
+        }
+
+    }
+
+    public void addCommandToAllPlayers(Game game, CommandData command){
+        for(Player p: game.getGamePlayers().values()){
+            User user = users.get(p);
+            user.addCommand(command);
         }
     }
 

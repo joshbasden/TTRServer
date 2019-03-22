@@ -20,6 +20,10 @@ public class PlayerInfo {
         return color;
     }
 
+    public void incrementNumTrainCards(int ammount){
+        numTrainCards += ammount;
+    }
+
     public void setColor(PlayerColor color) {
         this.color = color;
     }
