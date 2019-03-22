@@ -58,28 +58,8 @@ public class Game {
     private Map<Integer, City> cities = new HashMap<>();
     private List<TrainCarCard> faceUpTrainCarCards = new ArrayList<>(); //Initial
     private int destinationDeckSize = 30;
+    private int trainCarCardDeckSize = 105; //initial - 5 faceUps
 
-    /**
-     * Adds a player to the gamePlayers map (for this phase, only the username was needed)
-     *
-     * @param username The username of the player being added
-     * @return true if the player was added successfully, false otherwise (game was full, or username was already taken)
-     *
-     * @pre username != ""
-     * @pre gamePlayers.size < gameInfo.getSize()
-     * @pre gamePlayers.containsKey(username) == false
-     * @pre started == false
-     *
-     * @post gamePlayers.size() == old(gamePlayers.size()) + 1
-     * @post gamePlayers[gamePlayers.size() - 1].getUsername() == username
-     * @post gameInfo == old(gameInfo)
-     * @post started == false
-     * @post board == old(board)
-     * @post eventHistory == old(eventHistory)
-     * @post turnOrder == old(turnOrder)
-     * @post numDestinationCardChoicesReceived = 0
-     *
-     */
     public boolean addPlayer(String username) {
         if (gamePlayers.containsKey(username)) {
             return false;
@@ -156,40 +136,16 @@ public class Game {
         return numTrains <= 2;
     }
 
-
-    /**
-     * Adds an event to the game's eventHistory list
-     *
-     * @param event The event to add to the list
-     *
-     * @pre event.getType() == (TURN || MESSAGE)
-     * @pre event.getContent() != ""
-     * @pre gamePlayers.containsKey(event.getUsername()) == true
-     *
-     * @post gamePlayers == old(gamePlayers)
-     * @post playerStats == old(playerStats)
-     * @post gameInfo == old(gameInfo)
-     * @post started == old(started)
-     * @post board == old(board)
-     * @post eventHistory.size() == old(eventHistory.size()) + 1
-     * @post eventHistory[eventHistory.size - 1] == event
-     * @post turnOrder == old(turnOrder)
-     * @post numDestinationCardChoicesReceived == old(numDestinationCardChoicesReceieved)
-     *
-     */
     public void addEvent(Event event) {
         eventHistory.add(event);
     }
 
-    public void readInCardLists() {
-        Gson gson;
-        //Destination Cards
+    public void readInDestinationCards() {
         try {
-            gson = new Gson();
+            Gson gson = new Gson();
             String jsonString = new String(Files.readAllBytes(Paths.get("json/DestinationCards.json")));
             JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
             JsonArray cards = (JsonArray)obj.get("cards");
-            List<iCard> destinationCards = new ArrayList<>();
             for (int i = 0; i < cards.size(); ++i) {
                 DestinationCard card = new DestinationCard();
                 JsonObject jsonCard = (JsonObject)cards.get(i);
@@ -197,20 +153,20 @@ public class Game {
                 card.setCity1(Integer.parseInt(jsonCard.get("city1").toString()));
                 card.setCity2(Integer.parseInt(jsonCard.get("city2").toString()));
                 card.setPoints(Integer.parseInt(jsonCard.get("points").toString()));
-                destinationCards.add(card);
+                gameDestinationDeck.addCard(card);
             }
-            //destinationDeck.setCards(destinationCards); TODO: FIX
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        //TrainCards
+    }
+
+    public void readInTrainCarCards() {
         try {
-            gson = new Gson();
+            Gson gson = new Gson();
             String jsonString = new String(Files.readAllBytes(Paths.get("json/TrainCarCards.json")));
             JsonObject obj = gson.fromJson(jsonString, JsonObject.class);
             JsonArray cards = (JsonArray)obj.get("cards");
-            List<iCard> trainCarCards = new ArrayList<>();
             for (int i = 0; i < cards.size(); ++i) {
                 TrainCarCard card = new TrainCarCard();
                 JsonObject jsonCard = (JsonObject)cards.get(i);
@@ -218,16 +174,17 @@ public class Game {
                 type = type.substring(1,type.length() - 1);
                 TrainCarCardType enumType = TrainCarCardType.valueOf(type);
                 card.setType(enumType);
-                trainCarCards.add(card);
+                gameTrainDeck.addCard(card);
             }
-            //trainCarCardDeck.setDrawPile(trainCarCards); TODO: FIX
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        //Cities
+    }
+
+    public void readInCities() {
         try {
-            gson = new Gson();
+            Gson gson = new Gson();
             String jsonString = new String(Files.readAllBytes(Paths.get("json/Cities.json")));
             JsonObject citiesJson = gson.fromJson(jsonString, JsonObject.class);
             JsonObject cityJson;
@@ -246,8 +203,11 @@ public class Game {
         catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void readInRoutes() {
         try {
-            gson = new Gson();
+            Gson gson = new Gson();
             String jsonString = new String(Files.readAllBytes(Paths.get("json/Routes.json")));
             JsonObject routesJson = gson.fromJson(jsonString, JsonObject.class);
             JsonObject routeJson;
@@ -271,24 +231,19 @@ public class Game {
         }
     }
 
-    /**
-     * Determines an order of play for the players involved in the game
-     *
-     * @pre gamePlayers != null
-     * @pre 2 <= gamePlayers.size() <= 5
-     * @pre started == true
-     *
-     * @post gamePlayers == old(gamePlayers)
-     * @post playerStats == old(playerStats)
-     * @post gameInfo == old(gameInfo)
-     * @post started == old(started)
-     * @post board == old(board)
-     * @post eventHistory == old(eventHistory)
-     * @post turnOrder.size() == gamePlayers.size()
-     * @post turnOrder.size() == gameInfo.getNumGamePlayers()
-     * @post (set)turnOrder == (set)gamePlayers.keySet()
-     * @post numDestinationCardChoicesReceived == old(numDestinationCardChoicesReceieved)
-     */
+    public void readInJsonFiles() {
+        readInDestinationCards();
+        readInTrainCarCards();
+        readInCities();
+        readInRoutes();
+    }
+
+    public void chooseInitialFaceUps() {
+        for (int i = 0; i < 5; ++i) {
+            faceUpTrainCarCards.add((TrainCarCard) gameTrainDeck.draw());
+        }
+    }
+
     public void determineOrder() {
         List<String> order = new ArrayList<>();
         for (Player player: gamePlayers.values()) {
@@ -297,20 +252,6 @@ public class Game {
         setTurnOrder(order);
     }
 
-    /**
-     * Computes the statistics for each player in the game and stores this data
-     *
-     * @pre gamePlayers != null
-     *
-     * @post gamePlayers == old(gamePlayers)
-     * @post playerStats.size() == gamePlayers.size()
-     * @post gameInfo == old(gameInfo)
-     * @post started == old(started)
-     * @post board == old(board)
-     * @post eventHistory == old(eventHistory)
-     * @post turnOrder == old(turnOrder)
-     * @post numDestinationCardChoicesReceived == old(numDestinationCardChoicesReceieved)
-     */
     public void computePlayerStats() {
         List<PlayerInfo> playerInfos = new ArrayList<>();
         PlayerInfo playerInfo;
@@ -350,15 +291,10 @@ public class Game {
         return true;
     }
 
-    /**
-     * Getters and setters defined below
-     * I assume these are self-explanatory enough, and do not need to be commented.
-     */
     public int getTrainDeckSize(){
         return gameTrainDeck.getDrawPile().size();
     }
-
-
+    
     public String getGameName() {
         return gameInfo.getGameName();
     }
@@ -439,7 +375,7 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        new Game().readInCardLists();
+        new Game().readInJsonFiles();
     }
 
 }
