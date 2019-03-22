@@ -27,6 +27,8 @@
 
 package Model;
 
+import Result.DrawFaceUpResult;
+import Result.DrawTrainCarCardResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -41,7 +43,6 @@ import java.util.*;
  */
 
 public class Game {
-    Model model = Model.getInstance();
     private Map<String, Player> gamePlayers = new HashMap<>();
     private List<PlayerInfo> playerStats = new ArrayList<>();
     private GameInfo gameInfo = new GameInfo();
@@ -72,6 +73,67 @@ public class Game {
         newPlayer.setColor(playerColors.get(numPlayersSoFar));
         gamePlayers.put(username, newPlayer);
         return true;
+    }
+
+    private PlayerInfo findPlayerInfo(String user){
+        PlayerInfo playerInfo = null;
+        for (PlayerInfo p: playerStats){
+            if (p.getUsername().equals(user)){
+                playerInfo = p;
+                break;
+            }
+        }
+        return playerInfo;
+    }
+
+    public ArrayList<iCard> drawFaceUp(int ind, String user){
+        Player player = gamePlayers.get(user);
+        PlayerInfo playerInfo = findPlayerInfo(user);
+
+        //first index is the chosen face up card
+        //second index is drawpile card that replaces it
+        ArrayList<iCard> cards = gameTrainDeck.drawFaceUp(ind);
+
+        player.addTrainCard(cards.get(0));
+        playerInfo.incrementNumTrainCards(1);
+
+        return cards;
+
+    }
+
+    public DrawTrainCarCardResult drawTopCard(String user){
+        DrawTrainCarCardResult result = new DrawTrainCarCardResult();
+        Player player = gamePlayers.get(user);
+        PlayerInfo pInfo = findPlayerInfo(user);
+
+        try{
+            iCard card = gameTrainDeck.draw();
+            player.addTrainCard(card);
+            pInfo.incrementNumTrainCards(1);
+
+            result.setCard(card);
+            result.setSuccess(true);
+
+            return result;
+        }catch (Exception e){
+            result.setErrorMessage("Could not draw Train Car Card");
+            result.setSuccess(false);
+            return result;
+        }
+
+    }
+
+    public String getNextTurn(String curPlayer){
+        int size = turnOrder.size();
+        int nextInd = turnOrder.indexOf(curPlayer) + 1;
+        int nextPlayer = nextInd % size;
+        return turnOrder.get(nextPlayer);
+    }
+
+    public boolean isLastTurn(String curPlayer){
+        Player player = gamePlayers.get(curPlayer);
+        int numTrains = player.getNumTrains();
+        return numTrains <= 2;
     }
 
     public void addEvent(Event event) {
@@ -229,6 +291,10 @@ public class Game {
         return true;
     }
 
+    public int getTrainDeckSize(){
+        return gameTrainDeck.getDrawPile().size();
+    }
+    
     public String getGameName() {
         return gameInfo.getGameName();
     }
@@ -248,6 +314,9 @@ public class Game {
     public Map<String, Player> getGamePlayers() {
         return gamePlayers;
     }
+//    public Player getPlayer(String player){
+//        return gamePlayers.get(player);
+//    }
 
     public void setGamePlayers(HashMap<String, Player> gamePlayers) {
         this.gamePlayers = gamePlayers;
