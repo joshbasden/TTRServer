@@ -18,6 +18,10 @@ public class TrainCarCardDeck implements iDeck {
         return card;
     }
 
+    public void addCard(TrainCarCard card) {
+        drawPile.add(card);
+    }
+
     public void addToDiscardPile(RouteColor color, int numTracks) {
         //TODO: Implement
     }

@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -153,7 +154,8 @@ public class Model {
 
     public void beginGame(String gameName) {
         Game game = games.get(gameName);
-        game.readInCardLists();
+        game.readInJsonFiles();
+        game.chooseInitialFaceUps();
         game.determineOrder();
         game.computePlayerStats();
         List<String> userNamesOfPlayers = new ArrayList<>();
@@ -379,10 +381,41 @@ public class Model {
         Game game = getAssociatedGame(username);
         if (game.claimRoute(username, req.getId())) {
             res.setSuccess(true);
-            //TODO: Add event for each player
+            res.setId(req.getId());
+
+            AddEventCommand addEventCommand = new AddEventCommand();
+            Event event = new Event();
+            event.setUsername(req.getUsername());
+            event.setType(EventType.TURN);
+            event.setContent(req.getUsername() + " claimed the route with id " + req.getId() + ".");
+            addEventCommand.setEvent(event);
+            CommandData eventCommandData = new CommandData();
+            eventCommandData.setType(ClientCommandType.C_EVENT);
+            eventCommandData.setData(new Gson().toJson(addEventCommand));
+
+
+            //CommandData advanceTurnCommandData = new CommandData();
+            //advanceTurnCommandData.setType(ClientCommandType.C_ADVANCE_TURN);
+            //advanceTurnCommandData.setData();
             //TODO: Advance turn commands
-            //TODO: Claim Route commands
+
+            CommandData claimCommandData = new CommandData();
+            claimCommandData.setType(ClientCommandType.C_CLAIM_ROUTE);
+            ClaimRouteCommand claimRouteCommand = new ClaimRouteCommand();
+            claimRouteCommand.setId(req.getId());
+            claimRouteCommand.setUsername(username);
+            claimCommandData.setData(new Gson().toJson(claimRouteCommand));
+
+            //CommandData statsCommandData = new CommandData();
             //TODO: Update Player Stats commands
+            
+            Set<String> usernamesOfPlayers = game.getGamePlayers().keySet();
+            for (String oneUsername: usernamesOfPlayers) {
+                User user = users.get(oneUsername);
+                user.addCommand(eventCommandData);
+                user.addCommand(claimCommandData);
+                //TODO: add other commands
+            }
             return res;
         }
         res.setSuccess(false);
