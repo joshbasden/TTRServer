@@ -127,7 +127,7 @@ public class Game {
         PlayerInfo pInfo = findPlayerInfo(user);
 
         try{
-            iCard card = gameTrainDeck.drawTopCard();
+            iCard card = gameTrainDeck.draw();
             player.addTrainCard(card);
             pInfo.incrementNumTrainCards(1);
 

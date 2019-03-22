@@ -1,6 +1,6 @@
 package Command.ClientCommand;
 
-public class AdvanceTurnCommand {
+public class AdvanceTurnCommand implements iClientCommand {
     String username;
     Boolean lastTurn;
 

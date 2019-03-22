@@ -8,6 +8,6 @@ import Result.EndTurnResult;
 public class EndTurnService {
     Model model = Model.getInstance();
     public EndTurnResult endTurn(EndTurnRequest request){
-        return model.sendAdvanceTurnCommands(request.getUsername());
+        return model.endTurn(request.getUsername());
     }
 }

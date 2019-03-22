@@ -7,16 +7,16 @@ import Result.iResult;
 import Service.DrawFaceUpService;
 
 public class DrawFaceUpCommand implements iServerCommand {
-    DrawFaceUpRequest request;
+    DrawFaceUpRequest data;
 
-    public DrawFaceUpCommand(DrawFaceUpRequest data){
-        request = data;
+    public DrawFaceUpCommand(DrawFaceUpRequest req){
+        data = req;
     }
 
     @Override
     public DrawFaceUpResult execute() {
         DrawFaceUpService service = new DrawFaceUpService();
 
-        return service.drawFaceUp(request);
+        return service.drawFaceUp(data);
     }
 }

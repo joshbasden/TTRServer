@@ -1,4 +1,6 @@
-package Command.ClientCommand;
+package Model;
+
+import Command.ClientCommand.iClientCommand;
 
 public class StatsChange implements iClientCommand {
     StatsChangeType type;

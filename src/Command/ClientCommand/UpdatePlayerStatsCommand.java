@@ -1,5 +1,7 @@
 package Command.ClientCommand;
 
+import Model.StatsChange;
+
 import java.util.List;
 
 public class UpdatePlayerStatsCommand implements iClientCommand {
