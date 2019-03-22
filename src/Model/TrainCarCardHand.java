@@ -6,6 +6,14 @@ import java.util.List;
 public class TrainCarCardHand implements iHand {
     private List<TrainCarCard> cards = new ArrayList<>();
 
+    public int getCount(RouteColor color) {
+        return 10; //TODO: IMPLEMENT!!!
+    }
+
+    public void removeCards(RouteColor color, int numTracks) {
+        //TODO: Implement!!!
+    }
+
     public List<TrainCarCard> getCards() {
         return cards;
     }
