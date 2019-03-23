@@ -24,6 +24,13 @@ public class PlayerInfo {
         numTrainCards += ammount;
     }
 
+    public void incrementNumDestCards(int ammount){
+        numDestCards += ammount;
+    }
+    public void decrementNumDestCards(int ammount){
+        numDestCards -= ammount;
+    }
+
     public void setColor(PlayerColor color) {
         this.color = color;
     }

@@ -20,6 +20,29 @@ public class Player {
         return username;
     }
 
+    public void addDestCard(iCard card){
+        destinationCardHand.addCard((DestinationCard)card);
+    }
+
+    public DestinationCard findDestCardInHand(int id){
+        ArrayList<DestinationCard> cards = (ArrayList<DestinationCard>)destinationCardHand.getCards();
+        for (int i = 0; i < destinationCardHand.getCards().size(); i++){
+            if (cards.get(i).getId() == id){
+                return cards.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void removeDestCard(int id){
+        ArrayList<DestinationCard> cards = (ArrayList<DestinationCard>)destinationCardHand.getCards();
+        for (int i = 0; i < destinationCardHand.getCards().size(); i++){
+            if (cards.get(i).getId() == id){
+                cards.remove(i);
+            }
+        }
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

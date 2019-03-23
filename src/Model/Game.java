@@ -75,7 +75,7 @@ public class Game {
         return true;
     }
 
-    private PlayerInfo findPlayerInfo(String user){
+    public PlayerInfo findPlayerInfo(String user){
         PlayerInfo playerInfo = null;
         for (PlayerInfo p: playerStats){
             if (p.getUsername().equals(user)){
@@ -92,7 +92,19 @@ public class Game {
 
         //first index is the chosen face up card
         //second index is drawpile card that replaces it
-        ArrayList<iCard> cards = gameTrainDeck.drawFaceUp(ind);
+//        ArrayList<iCard> cards = gameTrainDeck.drawFaceUp(ind);
+
+        //make arraylist of icard to send back
+        ArrayList<iCard> cards = new ArrayList<iCard>();
+
+        iCard faceUpCard = faceUpTrainCarCards.get(ind);
+        iCard drawCard = gameTrainDeck.draw();
+        faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
+
+        //first index is the chosen face up card
+        //second index is drawpile card that replaces it
+        cards.add(drawCard);
+        cards.add(faceUpCard);
 
         player.addTrainCard(cards.get(0));
         playerInfo.incrementNumTrainCards(1);
