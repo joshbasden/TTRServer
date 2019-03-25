@@ -274,7 +274,7 @@ public class Model {
         UpdatePlayerStatsCommand updateStatsCommand = new UpdatePlayerStatsCommand();
         ArrayList<StatsChange> statsChangeArray = new ArrayList<>();
         StatsChange statsChange = new StatsChange();
-        statsChange.setAmmount(1);
+        statsChange.setAmount(1);
         statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
         statsChangeArray.add(statsChange);
 
@@ -321,7 +321,7 @@ public class Model {
         UpdatePlayerStatsCommand updateStatsCommand = new UpdatePlayerStatsCommand();
         ArrayList<StatsChange> statsChangeArray = new ArrayList<>();
         StatsChange statsChange = new StatsChange();
-        statsChange.setAmmount(1);
+        statsChange.setAmount(1);
         statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
         statsChangeArray.add(statsChange);
 
@@ -530,11 +530,11 @@ public class Model {
             StatsChange change2 = new StatsChange();
             StatsChange change3 = new StatsChange();
             change1.setType(StatsChangeType.DECREASE_TRAIN_CARS);
-            change1.setAmmount(route.getNumTracks());
+            change1.setAmount(route.getNumTracks());
             change2.setType(StatsChangeType.ADD_POINTS);
-            change2.setAmmount(route.getPoints());
+            change2.setAmount(route.getPoints());
             change3.setType(StatsChangeType.DECREASE_TRAIN_CAR_CARDS);
-            change3.setAmmount(route.getNumTracks());
+            change3.setAmount(route.getNumTracks());
             List<StatsChange> changes = new ArrayList<>();
             changes.add(change1);
             changes.add(change2);

@@ -4,7 +4,7 @@ import Command.ClientCommand.iClientCommand;
 
 public class StatsChange implements iClientCommand {
     StatsChangeType type;
-    int ammount;
+    int amount;
 
     public StatsChangeType getType() {
         return type;
@@ -14,11 +14,11 @@ public class StatsChange implements iClientCommand {
         this.type = type;
     }
 
-    public int getAmmount() {
-        return ammount;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setAmmount(int ammount) {
-        this.ammount = ammount;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 }
