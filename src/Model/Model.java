@@ -295,7 +295,7 @@ public class Model {
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
         ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
-        replaceCommand.setCard(cards.get(1));
+        replaceCommand.setCard(cards.get(0));
         replaceCommand.setIndex(index);
 
         updateStatsCommand.setUsername(player);
@@ -316,6 +316,7 @@ public class Model {
             addCommandToAllPlayers(game, commandDataAccount);
             addCommandToAllPlayers(game, commandDataReplace);
             result.setSuccess(true);
+            result.setCard(cards.get(1));
             return result;
         }catch (Exception e){
             result.setErrorMessage("Could not send Update Player Stats Command to everyone");

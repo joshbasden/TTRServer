@@ -101,12 +101,12 @@ public class Game {
         iCard drawCard = gameTrainDeck.draw();
         faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
 
-        //first index is the chosen face up card
-        //second index is drawpile card that replaces it
+        //first index is the draw card to replace it
+        //second index is face up card
         cards.add(drawCard);
         cards.add(faceUpCard);
 
-        player.addTrainCard(cards.get(0));
+        player.addTrainCard(cards.get(1));
         playerInfo.incrementNumTrainCards(1);
 
         return cards;
