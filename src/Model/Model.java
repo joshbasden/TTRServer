@@ -426,6 +426,18 @@ public class Model {
             cardToAdd = game.getGameDestinationDeck().getCardById(cardId);
             game.getGameDestinationDeck().addCard(cardToAdd);
         }
+        UpdatePlayerStatsCommand updatePlayerStatsCommand = new UpdatePlayerStatsCommand();
+        updatePlayerStatsCommand.setUsername(playerUsername);
+        StatsChange change = new StatsChange();
+        change.setType(StatsChangeType.ADD_DESTINATION_CARDS);
+        change.setAmount(req.getChosen().size());
+        List<StatsChange> changes = new ArrayList<>();
+        changes.add(change);
+        updatePlayerStatsCommand.setChanges(changes);
+        CommandData updateStatsCommandData = new CommandData();
+        updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+        updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+        addCommandToAllPlayers(game, updateStatsCommandData);
         res.setSuccess(true);
         res.setCards(cardsAdded);
         return res;
@@ -467,6 +479,18 @@ public class Model {
         if (numReceivedSoFar == game.getNumPlayers()) {
             sendDealTrainCardsCommands(game);
         }
+        UpdatePlayerStatsCommand updatePlayerStatsCommand = new UpdatePlayerStatsCommand();
+        updatePlayerStatsCommand.setUsername(playerUsername);
+        StatsChange change = new StatsChange();
+        change.setType(StatsChangeType.ADD_DESTINATION_CARDS);
+        change.setAmount(req.getChosen().size());
+        List<StatsChange> changes = new ArrayList<>();
+        changes.add(change);
+        updatePlayerStatsCommand.setChanges(changes);
+        CommandData updateStatsCommandData = new CommandData();
+        updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+        updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+        addCommandToAllPlayers(game, updateStatsCommandData);
         return res;
     }
 
