@@ -1,6 +1,5 @@
 package Model;
 
-import Result.DrawFaceUpResult;
 import Result.DrawTrainCarCardResult;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
