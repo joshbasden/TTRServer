@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.Map;
 
 
 /**
@@ -21,8 +20,6 @@ import java.util.Map;
 public class Model {
     private HashMap<String, Game> games = new HashMap<>();
     private HashMap<String, User> users = new HashMap<>();
-    private DestinationCardDeck destinationDeck = new DestinationCardDeck();
-    private TrainCarCardDeck trainCarCardDeck = new TrainCarCardDeck();
 
     private static final Model instance = new Model();
 
@@ -135,19 +132,9 @@ public class Model {
 
     public DrawDestinationCardsResult drawDestinationCards(String username) {
         Game game = getAssociatedGame(username);
-        //TODO added
-        Player player = getAssociatedPlayer(username);
-        PlayerInfo pInfo = game.findPlayerInfo(username);
-
         List<DestinationCard> destinationCardsToChooseFrom = new ArrayList<>();
-        List<DestinationCard> groupOfDestinationCardsSentOut = new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
             DestinationCard card = (DestinationCard)game.getGameDestinationDeck().draw();
-            //TODO added
-            player.addDestCard(card);
-            pInfo.incrementNumDestCards(1);
-
-            groupOfDestinationCardsSentOut.add(card);
             destinationCardsToChooseFrom.add(card);
         }
         DrawDestinationCardsResult drawDestinationCardsResult = new DrawDestinationCardsResult();
@@ -247,7 +234,7 @@ public class Model {
         }
     }
 
-    public EndTurnResult endTurn(String endTurnPlayer){
+    public EndTurnResult endTurn(String endTurnPlayer) {
         EndTurnResult result = new EndTurnResult();
         Game game = getAssociatedGame(endTurnPlayer);
         String nextPlayer = game.getNextTurn(endTurnPlayer);
@@ -431,12 +418,12 @@ public class Model {
         List<DestinationCard> cardsAdded = new ArrayList<>();
         DestinationCard cardToAdd;
         for (Integer cardId : req.getChosen()) {
-            cardToAdd = destinationDeck.getCardById(cardId);
+            cardToAdd = game.getGameDestinationDeck().getCardById(cardId);
             player.getDestinationCardHand().addCard(cardToAdd);
             cardsAdded.add(cardToAdd);
         }
         for (Integer cardId: req.getNotChosen()) {
-            cardToAdd = destinationDeck.getCardById(cardId);
+            cardToAdd = game.getGameDestinationDeck().getCardById(cardId);
             game.getGameDestinationDeck().addCard(cardToAdd);
         }
         res.setSuccess(true);
@@ -459,31 +446,22 @@ public class Model {
             res.setSuccess(false);
             return res;
         }
-        //TODO added
-        //get rid of unwanted dest cards in players hand
-        ArrayList<Integer> unwantedCards = (ArrayList<Integer>)req.getNotChosen();
-        PlayerInfo pInfo = game.findPlayerInfo(playerUsername);
-        for (int i: unwantedCards){
-            player.removeDestCard(i);
-            pInfo.decrementNumDestCards(1);
-        }
 
         List<DestinationCard> cardsAdded = new ArrayList<>();
         DestinationCard cardToAdd;
         for (Integer cardId : req.getChosen()) {
-//            cardToAdd = destinationDeck.getCardById(cardId);
-//            player.getDestinationCardHand().addCard(cardToAdd);
-            cardToAdd = player.findDestCardInHand(cardId);
+            cardToAdd = game.getGameDestinationDeck().getCardById(cardId);
             cardsAdded.add(cardToAdd);
         }
         for (Integer cardId: req.getNotChosen()) {
-            cardToAdd = destinationDeck.getCardById(cardId);
+            cardToAdd = game.getGameDestinationDeck().getCardById(cardId);
             game.getGameDestinationDeck().addCard(cardToAdd);
         }
         res.setSuccess(true);
         DestinationCardHand hand = new DestinationCardHand();
         hand.setCards(cardsAdded);
         res.setHand(hand);
+        player.setDestinationCardHand(hand);
         int numReceivedSoFar = game.getNumDestinationCardChoicesReceived() + 1;
         game.setNumDestinationCardChoicesReceived(numReceivedSoFar);
         if (numReceivedSoFar == game.getNumPlayers()) {
@@ -526,7 +504,8 @@ public class Model {
             Event event = new Event();
             event.setUsername(username);
             event.setType(EventType.TURN);
-            event.setContent(req.getUsername() + " claimed the route with id " + req.getId() + ".");
+            Route route = game.getRoute(req.getId());
+            event.setContent(req.getUsername() + " claimed the route from " + route.getCity1().getName() + "to" + route.getCity2().getName() + ".");
             addEventCommand.setEvent(event);
             CommandData eventCommandData = new CommandData();
             eventCommandData.setType(ClientCommandType.C_EVENT);
@@ -547,7 +526,6 @@ public class Model {
             claimCommandData.setData(new Gson().toJson(claimRouteCommand));
 
             CommandData statsCommandData = new CommandData();
-            Route route = game.getRoute(req.getId());
             StatsChange change1 = new StatsChange();
             StatsChange change2 = new StatsChange();
             StatsChange change3 = new StatsChange();
