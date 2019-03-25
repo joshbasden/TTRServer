@@ -360,8 +360,21 @@ public class Model {
     }
 
     private void sendDealTrainCardsCommands(Game game) {
+
         for (String username: game.getGamePlayers().keySet()) {
-            CommandData commandData = new CommandData();
+            UpdatePlayerStatsCommand updatePlayerStatsCommand = new UpdatePlayerStatsCommand();
+            updatePlayerStatsCommand.setUsername(username);
+            List<StatsChange> changes = new ArrayList<>();
+            StatsChange change = new StatsChange();
+            change.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
+            change.setAmount(4);
+            changes.add(change);
+            updatePlayerStatsCommand.setChanges(changes);
+            CommandData updateStatsCommandData = new CommandData();
+            updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+            updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+            addCommandToAllPlayers(game, updateStatsCommandData);
+            CommandData dealTrainCarCardsCommandData = new CommandData();
             DealTrainCarCardsCommand dealTrainCarCardsCommand = new DealTrainCarCardsCommand();
             List<TrainCarCard> cards = new ArrayList<>();
             TrainCarCard card;
@@ -372,9 +385,9 @@ public class Model {
             TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
             trainCarCardHand.setCards(cards);
             dealTrainCarCardsCommand.setHand(trainCarCardHand);
-            commandData.setType(ClientCommandType.C_FIRST_HAND);
-            commandData.setData(new Gson().toJson(dealTrainCarCardsCommand));
-            users.get(username).addCommand(commandData);
+            dealTrainCarCardsCommandData.setType(ClientCommandType.C_FIRST_HAND);
+            dealTrainCarCardsCommandData.setData(new Gson().toJson(dealTrainCarCardsCommand));
+            users.get(username).addCommand(dealTrainCarCardsCommandData);
         }
     }
 

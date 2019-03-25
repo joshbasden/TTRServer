@@ -5,7 +5,7 @@ public class PlayerInfo {
     private PlayerColor color;
     private int score = 0;
     private int numTrains = 45;
-    private int numTrainCards = 4;
+    private int numTrainCards;
     private int numDestCards;
 
     public String getUsername() {
