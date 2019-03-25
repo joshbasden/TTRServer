@@ -1,30 +1,3 @@
-/**
- * The Game class is used to store and modify
- * the attributes of a single Ticket To Ride game.
- *
- * Operations are provided for adding a new player,
- * adding an event to the event history (chat or turn),
- * parsing json files for the cards that will be used in the game,
- * determining an order of play for the game players,
- * computing the statistics for each player in the game,
- * as well as getters and setters for the class attributes.
- *
- * Domain:
- *      gamePlayers: Map<String, Player>, the players in the game (username to Player object)
- *      playerStats: List<PlayerInfo>, statistics for each player
- *      gameInfo: GameInfo, class defining the name of the game as well as number of expected players
- *      started: Boolean, used to determine if the game has enough players or is still in the waiting lobby
- *      eventHistory: List<Event>, the list of chats that have been sent, and turns that have been taken
- *      turnOrder: List<String> the usernames of the players defining how the game should progress
- *      playerColors: List<PlayerColor> Predefined constants for the colors of the (up to) 5 players
- *      numDestinationChoicesReceived: int number of players who have selected their initial destination tickets
- *
- * @invariant eventHistory.size() >= 0
- * @invariant playerColors = ["BLUE", "GREEN", "RED", "YELLOW", "BLACK"] (using an enumeration)
- * @invariant 0 <= numDestinationCardChoicesReceived <= gamePlayers.size()
- *
- */
-
 package Model;
 
 import Result.DrawFaceUpResult;
@@ -115,7 +88,8 @@ public class Game {
             result.setSuccess(true);
 
             return result;
-        }catch (Exception e){
+        }
+        catch (Exception e){
             result.setErrorMessage("Could not draw Train Car Card");
             result.setSuccess(false);
             return result;
@@ -294,7 +268,7 @@ public class Game {
     public int getTrainDeckSize(){
         return gameTrainDeck.getDrawPile().size();
     }
-    
+
     public String getGameName() {
         return gameInfo.getGameName();
     }
@@ -314,9 +288,6 @@ public class Game {
     public Map<String, Player> getGamePlayers() {
         return gamePlayers;
     }
-//    public Player getPlayer(String player){
-//        return gamePlayers.get(player);
-//    }
 
     public void setGamePlayers(HashMap<String, Player> gamePlayers) {
         this.gamePlayers = gamePlayers;
@@ -374,8 +345,7 @@ public class Game {
         this.gameTrainDeck = gameTrainDeck;
     }
 
-    public static void main(String[] args) {
-        new Game().readInJsonFiles();
+    public Route getRoute(int id) {
+        return routes.get(id);
     }
-
 }
