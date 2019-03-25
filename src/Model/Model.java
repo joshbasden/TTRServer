@@ -135,10 +135,18 @@ public class Model {
 
     public DrawDestinationCardsResult drawDestinationCards(String username) {
         Game game = getAssociatedGame(username);
+        //TODO added
+        Player player = getAssociatedPlayer(username);
+        PlayerInfo pInfo = game.findPlayerInfo(username);
+
         List<DestinationCard> destinationCardsToChooseFrom = new ArrayList<>();
         List<DestinationCard> groupOfDestinationCardsSentOut = new ArrayList<>();
         for (int i = 0; i < 3; ++i) {
             DestinationCard card = (DestinationCard)game.getGameDestinationDeck().draw();
+            //TODO added
+            player.addDestCard(card);
+            pInfo.incrementNumDestCards(1);
+
             groupOfDestinationCardsSentOut.add(card);
             destinationCardsToChooseFrom.add(card);
         }
@@ -287,7 +295,7 @@ public class Model {
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
         ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
-        replaceCommand.setCard(cards.get(1));
+        replaceCommand.setCard(cards.get(0));
         replaceCommand.setIndex(index);
 
         updateStatsCommand.setUsername(player);
@@ -308,6 +316,7 @@ public class Model {
             addCommandToAllPlayers(game, commandDataAccount);
             addCommandToAllPlayers(game, commandDataReplace);
             result.setSuccess(true);
+            result.setCard(cards.get(1));
             return result;
         }
         catch (Exception e){
@@ -358,7 +367,7 @@ public class Model {
 
     public void addCommandToAllPlayers(Game game, CommandData command){
         for(Player p: game.getGamePlayers().values()){
-            User user = users.get(p);
+            User user = users.get(p.getUsername());
             user.addCommand(command);
         }
     }
@@ -450,11 +459,21 @@ public class Model {
             res.setSuccess(false);
             return res;
         }
+        //TODO added
+        //get rid of unwanted dest cards in players hand
+        ArrayList<Integer> unwantedCards = (ArrayList<Integer>)req.getNotChosen();
+        PlayerInfo pInfo = game.findPlayerInfo(playerUsername);
+        for (int i: unwantedCards){
+            player.removeDestCard(i);
+            pInfo.decrementNumDestCards(1);
+        }
+
         List<DestinationCard> cardsAdded = new ArrayList<>();
         DestinationCard cardToAdd;
         for (Integer cardId : req.getChosen()) {
-            cardToAdd = destinationDeck.getCardById(cardId);
-            player.getDestinationCardHand().addCard(cardToAdd);
+//            cardToAdd = destinationDeck.getCardById(cardId);
+//            player.getDestinationCardHand().addCard(cardToAdd);
+            cardToAdd = player.findDestCardInHand(cardId);
             cardsAdded.add(cardToAdd);
         }
         for (Integer cardId: req.getNotChosen()) {
