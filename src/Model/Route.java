@@ -7,7 +7,7 @@ public class Route {
     private int numTracks;
     private int points;
     private RouteColor color;
-    private String owner;
+    private String owner = "";
 
     public int getId() {
         return id;
