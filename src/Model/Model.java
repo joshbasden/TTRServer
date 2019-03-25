@@ -309,7 +309,8 @@ public class Model {
             addCommandToAllPlayers(game, commandDataReplace);
             result.setSuccess(true);
             return result;
-        }catch (Exception e){
+        }
+        catch (Exception e){
             result.setErrorMessage("Could not send Update Player Stats Command to everyone");
             result.setSuccess(false);
             return result;
@@ -341,12 +342,13 @@ public class Model {
         commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         commandDataUpdate.setData(new Gson().toJson(updateStatsCommand));
 
-        try{
+        try {
             addCommandToAllPlayers(game, commandDataUpdate);
             addCommandToAllPlayers(game, commandDataAccount);
             result.setSuccess(true);
             return result;
-        }catch (Exception e){
+        }
+        catch (Exception e){
             result.setErrorMessage("Could not send Update Player Stats Command to everyone");
             result.setSuccess(false);
             return result;
@@ -503,7 +505,7 @@ public class Model {
 
             AddEventCommand addEventCommand = new AddEventCommand();
             Event event = new Event();
-            event.setUsername(req.getUsername());
+            event.setUsername(username);
             event.setType(EventType.TURN);
             event.setContent(req.getUsername() + " claimed the route with id " + req.getId() + ".");
             addEventCommand.setEvent(event);
@@ -511,11 +513,12 @@ public class Model {
             eventCommandData.setType(ClientCommandType.C_EVENT);
             eventCommandData.setData(new Gson().toJson(addEventCommand));
 
-
-            //CommandData advanceTurnCommandData = new CommandData();
-            //advanceTurnCommandData.setType(ClientCommandType.C_ADVANCE_TURN);
-            //advanceTurnCommandData.setData();
-            //TODO: Advance turn commands
+            CommandData advanceTurnCommandData = new CommandData();
+            AdvanceTurnCommand advanceTurnCommand = new AdvanceTurnCommand();
+            advanceTurnCommand.setUsername(username);
+            advanceTurnCommand.setLastTurn(false); //TODO: Fix
+            advanceTurnCommandData.setType(ClientCommandType.C_ADVANCE_TURN);
+            advanceTurnCommandData.setData(new Gson().toJson(advanceTurnCommand));
 
             CommandData claimCommandData = new CommandData();
             claimCommandData.setType(ClientCommandType.C_CLAIM_ROUTE);
@@ -524,15 +527,34 @@ public class Model {
             claimRouteCommand.setUsername(username);
             claimCommandData.setData(new Gson().toJson(claimRouteCommand));
 
-            //CommandData statsCommandData = new CommandData();
-            //TODO: Update Player Stats commands
+            CommandData statsCommandData = new CommandData();
+            Route route = game.getRoute(req.getId());
+            StatsChange change1 = new StatsChange();
+            StatsChange change2 = new StatsChange();
+            StatsChange change3 = new StatsChange();
+            change1.setType(StatsChangeType.DECREASE_TRAIN_CARS);
+            change1.setAmmount(route.getNumTracks());
+            change2.setType(StatsChangeType.ADD_POINTS);
+            change2.setAmmount(route.getPoints());
+            change3.setType(StatsChangeType.DECREASE_TRAIN_CAR_CARDS);
+            change3.setAmmount(route.getNumTracks());
+            List<StatsChange> changes = new ArrayList<>();
+            changes.add(change1);
+            changes.add(change2);
+            changes.add(change3);
+            UpdatePlayerStatsCommand updatePlayerStatsCommand = new UpdatePlayerStatsCommand();
+            updatePlayerStatsCommand.setUsername(username);
+            updatePlayerStatsCommand.setChanges(changes);
+            statsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+            statsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
             
             Set<String> usernamesOfPlayers = game.getGamePlayers().keySet();
             for (String oneUsername: usernamesOfPlayers) {
                 User user = users.get(oneUsername);
                 user.addCommand(eventCommandData);
+                user.addCommand(advanceTurnCommandData);
                 user.addCommand(claimCommandData);
-                //TODO: add other commands
+                user.addCommand(statsCommandData);
             }
             return res;
         }
