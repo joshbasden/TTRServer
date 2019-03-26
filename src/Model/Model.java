@@ -234,35 +234,40 @@ public class Model {
         }
     }
 
-    public EndTurnResult endTurn(String endTurnPlayer) {
-        EndTurnResult result = new EndTurnResult();
-        Game game = getAssociatedGame(endTurnPlayer);
-        String nextPlayer = game.getNextTurn(endTurnPlayer);
-        boolean isLastTurn = game.isLastTurn(endTurnPlayer);
-
-        try {
-            sendAdvanceTurnCommands(nextPlayer, isLastTurn, game);
-            result.setSuccess(true);
-            return result;
-        }catch (Exception e){
-            result.setSuccess(false);
-            result.setErrorMessage("Could not end turn");
-            return result;
-        }
+    public void endGame(Game game) {
+        //TODO: Implement
     }
 
-    public void sendAdvanceTurnCommands(String nextPlayer, boolean isLastTurn, Game game){
-
-        AdvanceTurnCommand advanceTurn = new AdvanceTurnCommand();
-        advanceTurn.setLastTurn(isLastTurn);
-        advanceTurn.setUsername(nextPlayer);
-
-        CommandData commandData = new CommandData();
-        commandData.setType(ClientCommandType.C_ADVANCE_TURN);
-        commandData.setData(new Gson().toJson(advanceTurn));
-
-        addCommandToAllPlayers(game, commandData);
-
+    public EndTurnResult endTurn(String endTurnPlayer) {
+        EndTurnResult endTurnResult = new EndTurnResult();
+        Game game = getAssociatedGame(endTurnPlayer);
+        String nextPlayer = game.getNextTurn(endTurnPlayer);
+        AdvanceTurnCommand advanceTurnCommand = new AdvanceTurnCommand();
+        advanceTurnCommand.setUsername(nextPlayer);
+        CommandData advanceCommandData = new CommandData();
+        advanceCommandData.setType(ClientCommandType.C_ADVANCE_TURN);
+        if (!game.isStarted()) {
+            endTurnResult.setSuccess(false);
+            endTurnResult.setErrorMessage("Player was not found.");
+            return endTurnResult;
+        }
+        if (game.isLastRound()) {
+            if (game.getLastPlayerToTakeTurn().equals(endTurnPlayer)) {
+                endTurnResult.setSuccess(true);
+                endGame(game);
+                return endTurnResult;
+            }
+            advanceTurnCommand.setLastTurn(true);
+            advanceCommandData.setData(new Gson().toJson(advanceTurnCommand));
+            addCommandToAllPlayers(game, advanceCommandData);
+            endTurnResult.setSuccess(true);
+            return endTurnResult;
+        }
+        advanceTurnCommand.setLastTurn(false);
+        advanceCommandData.setData(new Gson().toJson(advanceTurnCommand));
+        addCommandToAllPlayers(game, advanceCommandData);
+        endTurnResult.setSuccess(true);
+        return endTurnResult;
     }
 
     public DrawFaceUpResult drawFaceUp(String player, int index){
@@ -295,6 +300,7 @@ public class Model {
         commandDataAccount.setData(new Gson().toJson(accountForDraws));
         commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         commandDataUpdate.setData(new Gson().toJson(updateStatsCommand));
+        //TODO: Check here for possibly replacing all faceups
         commandDataReplace.setType(ClientCommandType.C_REPLACE_ONE_FACE_UP);
         commandDataReplace.setData(new Gson().toJson(replaceCommand));
 
