@@ -31,6 +31,8 @@ public class Game {
     private List<TrainCarCard> faceUpTrainCarCards = new ArrayList<>(); //Initial
     private int destinationDeckSize = 30;
     private int trainCarCardDeckSize = 105; //initial - 5 faceUps
+    private String lastPlayerToTakeTurn = "";
+    private boolean lastRound;
 
     public boolean addPlayer(String username) {
         if (gamePlayers.containsKey(username)) {
@@ -62,6 +64,7 @@ public class Game {
         Player player = gamePlayers.get(user);
         PlayerInfo playerInfo = findPlayerInfo(user);
 
+        //TODO: Check for >= 3 LOCOMOTIVES and send replaceAllFaceUp instead
         //first index is the chosen face up card
         //second index is drawpile card that replaces it
 //        ArrayList<iCard> cards = gameTrainDeck.drawFaceUp(ind);
@@ -112,13 +115,13 @@ public class Game {
         int size = turnOrder.size();
         int nextInd = turnOrder.indexOf(curPlayer) + 1;
         int nextPlayer = nextInd % size;
-        return turnOrder.get(nextPlayer);
-    }
-
-    public boolean isLastTurn(String curPlayer){
         Player player = gamePlayers.get(curPlayer);
         int numTrains = player.getNumTrains();
-        return numTrains <= 2;
+        if (!isLastRound() && numTrains <= 2) {
+            setLastRound(true);
+            setLastPlayerToTakeTurn(curPlayer);
+        }
+        return turnOrder.get(nextPlayer);
     }
 
     public void addEvent(Event event) {
@@ -209,6 +212,7 @@ public class Game {
                 route.setNumTracks(routeJson.get("numTracks").getAsInt());
                 route.setPoints(routeJson.get("points").getAsInt());
                 route.setOwner("");
+                //TODO: Read in if double route or not
                 route.setColor(RouteColor.valueOf(color.substring(1, color.length() - 1)));
                 routes.put(i, route);
             }
@@ -400,5 +404,21 @@ public class Game {
 
     public Route getRoute(int id) {
         return routes.get(id);
+    }
+
+    public String getLastPlayerToTakeTurn() {
+        return lastPlayerToTakeTurn;
+    }
+
+    public void setLastPlayerToTakeTurn(String lastPlayerToTakeTurn) {
+        this.lastPlayerToTakeTurn = lastPlayerToTakeTurn;
+    }
+
+    public boolean isLastRound() {
+        return lastRound;
+    }
+
+    public void setLastRound(boolean lastRound) {
+        this.lastRound = lastRound;
     }
 }
