@@ -8,8 +8,8 @@ public class Route {
     private int points;
     private RouteColor color;
     private TrainCarCardType claimedType;
-    private String owner;
-
+    private String owner = "";
+  
     public int getId() {
         return id;
     }
