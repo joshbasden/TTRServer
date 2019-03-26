@@ -534,26 +534,21 @@ public class Model {
         String username = req.getUsername();
         Game game = getAssociatedGame(username);
         if (game.claimRoute(username, req.getId())) {
+            Route route = game.getRoute(req.getId());
             res.setSuccess(true);
             res.setId(req.getId());
-
+            if (route.getClaimedType() != null) {
+                res.setColorIfGray(route.getClaimedType());
+            }
             AddEventCommand addEventCommand = new AddEventCommand();
             Event event = new Event();
             event.setUsername(username);
             event.setType(EventType.TURN);
-            Route route = game.getRoute(req.getId());
-            event.setContent(req.getUsername() + " claimed the route from " + route.getCity1().getName() + "to" + route.getCity2().getName() + ".");
+            event.setContent(req.getUsername() + " claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
             addEventCommand.setEvent(event);
             CommandData eventCommandData = new CommandData();
             eventCommandData.setType(ClientCommandType.C_EVENT);
             eventCommandData.setData(new Gson().toJson(addEventCommand));
-
-            CommandData advanceTurnCommandData = new CommandData();
-            AdvanceTurnCommand advanceTurnCommand = new AdvanceTurnCommand();
-            advanceTurnCommand.setUsername(username);
-            advanceTurnCommand.setLastTurn(false); //TODO: Fix
-            advanceTurnCommandData.setType(ClientCommandType.C_ADVANCE_TURN);
-            advanceTurnCommandData.setData(new Gson().toJson(advanceTurnCommand));
 
             CommandData claimCommandData = new CommandData();
             claimCommandData.setType(ClientCommandType.C_CLAIM_ROUTE);
@@ -586,7 +581,6 @@ public class Model {
             for (String oneUsername: usernamesOfPlayers) {
                 User user = users.get(oneUsername);
                 user.addCommand(eventCommandData);
-                user.addCommand(advanceTurnCommandData);
                 user.addCommand(claimCommandData);
                 user.addCommand(statsCommandData);
             }

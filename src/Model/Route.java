@@ -7,8 +7,9 @@ public class Route {
     private int numTracks;
     private int points;
     private RouteColor color;
+    private TrainCarCardType claimedType;
     private String owner = "";
-
+  
     public int getId() {
         return id;
     }
@@ -63,5 +64,13 @@ public class Route {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public TrainCarCardType getClaimedType() {
+        return claimedType;
+    }
+
+    public void setClaimedType(TrainCarCardType claimedType) {
+        this.claimedType = claimedType;
     }
 }

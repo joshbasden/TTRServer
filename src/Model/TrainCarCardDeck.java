@@ -38,8 +38,12 @@ public class TrainCarCardDeck implements iDeck {
         return cards;
     }
 
-    public void addToDiscardPile(RouteColor color, int numTracks) {
-        //TODO: Implement
+    public void addToDiscardPile(TrainCarCardType type, int numTracks) {
+        for (int i = 0; i < numTracks; ++i) {
+            TrainCarCard card = new TrainCarCard();
+            card.setType(type);
+            discardPile.add(card);
+        }
     }
 
     public List<iCard> getDiscardPile() {

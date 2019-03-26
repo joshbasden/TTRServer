@@ -207,6 +207,8 @@ public class Game {
                 route.setCity1(cities.get(city1));
                 route.setCity2(cities.get(city2));
                 route.setNumTracks(routeJson.get("numTracks").getAsInt());
+                route.setPoints(routeJson.get("points").getAsInt());
+                route.setOwner("");
                 route.setColor(RouteColor.valueOf(color.substring(1, color.length() - 1)));
                 routes.put(i, route);
             }
@@ -253,6 +255,31 @@ public class Game {
         playerStats =  playerInfos;
     }
 
+    public boolean claimGrayRoute(Player player, Route route) {
+        int numTracks = route.getNumTracks();
+        if (player.getTrainCarCardHand().getMaxCount() >= numTracks) {
+            TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
+            route.setClaimedType(type);
+            player.getTrainCarCardHand().removeCards(type, numTracks);
+            gameTrainDeck.addToDiscardPile(type, numTracks);
+            player.setNumTrains(player.getNumTrains() - numTracks);
+            return true;
+        }
+        else if (player.getTrainCarCardHand().getMaxCount() + player.getTrainCarCardHand().getCount(TrainCarCardType.LOCOMOTIVE) >= numTracks) {
+            TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
+            route.setClaimedType(type);
+            int numOfActualColor = player.getTrainCarCardHand().getMaxCount();
+            int numOfRainbows = numTracks - numOfActualColor;
+            player.getTrainCarCardHand().removeCards(type, numOfActualColor);
+            player.getTrainCarCardHand().removeCards(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
+            gameTrainDeck.addToDiscardPile(type, numOfActualColor);
+            gameTrainDeck.addToDiscardPile(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
+            player.setNumTrains(player.getNumTrains() - numTracks);
+            return true;
+        }
+        return false;
+    }
+
     public boolean claimRoute(String username, int id) {
         Player player = gamePlayers.get(username);
         Route route = routes.get(id);
@@ -264,16 +291,31 @@ public class Game {
         }
         int numTracks = route.getNumTracks();
         RouteColor color = route.getColor();
-        if (player.getTrainCarCardHand().getCount(color) < numTracks) {
-            return false;
-        }
         if (player.getNumTrains() < numTracks) {
             return false;
         }
-        player.getTrainCarCardHand().removeCards(color, numTracks);
-        gameTrainDeck.addToDiscardPile(color, numTracks);
-        player.setNumTrains(player.getNumTrains() - numTracks);
-        return true;
+        String stringColor = color.toString();
+        if (stringColor.equals("GRAY")) {
+            return claimGrayRoute(player, route);
+        }
+        TrainCarCardType type = TrainCarCardType.valueOf(stringColor);
+        if (player.getTrainCarCardHand().getCount(type) >= numTracks) {
+            player.getTrainCarCardHand().removeCards(type, numTracks);
+            gameTrainDeck.addToDiscardPile(type, numTracks);
+            player.setNumTrains(player.getNumTrains() - numTracks);
+            return true;
+        }
+        else if (player.getTrainCarCardHand().getCount(type) + player.getTrainCarCardHand().getCount(TrainCarCardType.LOCOMOTIVE) >= numTracks) {
+            int numOfActualColor = player.getTrainCarCardHand().getCount(type);
+            int numOfRainbows = numTracks - numOfActualColor;
+            player.getTrainCarCardHand().removeCards(type, numOfActualColor);
+            player.getTrainCarCardHand().removeCards(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
+            gameTrainDeck.addToDiscardPile(type, numOfActualColor);
+            gameTrainDeck.addToDiscardPile(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
+            player.setNumTrains(player.getNumTrains() - numTracks);
+            return true;
+        }
+        return false;
     }
 
     public int getTrainDeckSize(){
