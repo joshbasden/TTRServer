@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -60,20 +61,41 @@ public class Game {
         return playerInfo;
     }
 
+    public ArrayList<iCard> replaceAllFaceUp(){
+        int locomotiveCounter = 0;
+        ArrayList<iCard> newHand = new ArrayList<>();
+        for (int i = 0; i < 5; i++){
+            iCard card = gameTrainDeck.draw();
+            newHand.add(card);
+            if (((TrainCarCard)card).getType() == TrainCarCardType.LOCOMOTIVE){
+                locomotiveCounter += 1;
+            }
+        }
+
+        if (locomotiveCounter >= 3){
+            replaceAllFaceUp();
+        }
+
+        return newHand;
+    }
+
     public ArrayList<iCard> drawFaceUp(int ind, String user){
         Player player = gamePlayers.get(user);
         PlayerInfo playerInfo = findPlayerInfo(user);
-
-        //TODO: Check for >= 3 LOCOMOTIVES and send replaceAllFaceUp instead
-        //first index is the chosen face up card
-        //second index is drawpile card that replaces it
-//        ArrayList<iCard> cards = gameTrainDeck.drawFaceUp(ind);
 
         //make arraylist of icard to send back
         ArrayList<iCard> cards = new ArrayList<iCard>();
 
         iCard faceUpCard = faceUpTrainCarCards.get(ind);
         iCard drawCard = gameTrainDeck.draw();
+
+        // check if we need to replace all of the face up cards
+        if (needToReplaceAll((TrainCarCard) drawCard)){
+            cards = replaceAllFaceUp();
+
+            return cards;
+        }
+
         faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
 
         //first index is the draw card to replace it
@@ -319,6 +341,23 @@ public class Game {
             player.setNumTrains(player.getNumTrains() - numTracks);
             return true;
         }
+        return false;
+    }
+
+    private boolean needToReplaceAll(TrainCarCard card){
+        if (card.getType() == TrainCarCardType.LOCOMOTIVE){
+            int counter = 0;
+            for (TrainCarCard c: faceUpTrainCarCards){
+                if (c.getType() == TrainCarCardType.LOCOMOTIVE){
+                    counter += 1;
+                }
+            }
+
+            if (counter >= 2){
+                return true;
+            }
+        }
+
         return false;
     }
 
