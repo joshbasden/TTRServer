@@ -1,12 +1,9 @@
 package Result;
 
-import Model.TrainCarCardType;
-
 public class ClaimRouteResult implements iResult {
     private String errorMessage;
     private Boolean success;
     private int id;
-    private TrainCarCardType colorIfGray;
 
     public String getErrorMessage() {
         return errorMessage;
@@ -32,11 +29,4 @@ public class ClaimRouteResult implements iResult {
         this.id = id;
     }
 
-    public TrainCarCardType getColorIfGray() {
-        return colorIfGray;
-    }
-
-    public void setColorIfGray(TrainCarCardType colorIfGray) {
-        this.colorIfGray = colorIfGray;
-    }
 }

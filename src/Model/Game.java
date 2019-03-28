@@ -280,34 +280,7 @@ public class Game {
         playerStats =  playerInfos;
     }
 
-    public boolean claimGrayRoute(Player player, Route route, TrainCarCardType color) {
-        //TODO: Add to score and routesOwned when player claims route
-        int numTracks = route.getNumTracks();
-        if (player.getTrainCarCardHand().getMaxCount() >= numTracks) {
-            TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
-            route.setClaimedType(type);
-            player.getTrainCarCardHand().removeCards(type, numTracks);
-            gameTrainDeck.addToDiscardPile(type, numTracks);
-            player.setNumTrains(player.getNumTrains() - numTracks);
-            return true;
-        }
-        else if (player.getTrainCarCardHand().getMaxCount() + player.getTrainCarCardHand().getCount(TrainCarCardType.LOCOMOTIVE) >= numTracks) {
-            TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
-            route.setClaimedType(type);
-            int numOfActualColor = player.getTrainCarCardHand().getMaxCount();
-            int numOfRainbows = numTracks - numOfActualColor;
-            player.getTrainCarCardHand().removeCards(type, numOfActualColor);
-            player.getTrainCarCardHand().removeCards(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
-            gameTrainDeck.addToDiscardPile(type, numOfActualColor);
-            gameTrainDeck.addToDiscardPile(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
-            player.setNumTrains(player.getNumTrains() - numTracks);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean claimRoute(String username, int id) {
-        //TODO: Add to score and routesOwned when player claims route
+    public boolean claimRoute(String username, int id, TrainCarCardType colorIfGray) {
         Player player = gamePlayers.get(username);
         Route route = routes.get(id);
         if (player == null) {
@@ -317,20 +290,23 @@ public class Game {
             return false;
         }
         int numTracks = route.getNumTracks();
-        RouteColor color = route.getColor();
         if (player.getNumTrains() < numTracks) {
             return false;
         }
+        RouteColor color = route.getColor();
         String stringColor = color.toString();
         if (stringColor.equals("GRAY")) {
-            return claimGrayRoute(player, route);
+            if (colorIfGray == null) {
+                System.out.println("ERROR!! User did not specify a color");
+                return false;
+            }
+            stringColor = colorIfGray.toString();
         }
         TrainCarCardType type = TrainCarCardType.valueOf(stringColor);
         if (player.getTrainCarCardHand().getCount(type) >= numTracks) {
             player.getTrainCarCardHand().removeCards(type, numTracks);
             gameTrainDeck.addToDiscardPile(type, numTracks);
             player.setNumTrains(player.getNumTrains() - numTracks);
-            return true;
         }
         else if (player.getTrainCarCardHand().getCount(type) + player.getTrainCarCardHand().getCount(TrainCarCardType.LOCOMOTIVE) >= numTracks) {
             int numOfActualColor = player.getTrainCarCardHand().getCount(type);
@@ -340,16 +316,19 @@ public class Game {
             gameTrainDeck.addToDiscardPile(type, numOfActualColor);
             gameTrainDeck.addToDiscardPile(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
             player.setNumTrains(player.getNumTrains() - numTracks);
-            return true;
         }
-        return false;
+        else {
+            return false;
+        }
+        player.addRouteOwned(route);
+        return true;
     }
 
     private boolean needToReplaceAll(TrainCarCard card) {
-        if (card.getType() == TrainCarCardType.LOCOMOTIVE){
+        if (card.getType() == TrainCarCardType.LOCOMOTIVE) {
             int counter = 0;
-            for (TrainCarCard c: faceUpTrainCarCards) 
-                if (c.getType() == TrainCarCardType.LOCOMOTIVE) 
+            for (TrainCarCard c : faceUpTrainCarCards) {
+                if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
                     counter += 1;
                 }
             }
@@ -359,6 +338,7 @@ public class Game {
         }
         return false;
     }
+
     public List<String> getBonusPlayers() {
         //TODO: Possibly make this longest path instead of most claimed routes
         List<String> bonusPlayers = new ArrayList<>();
