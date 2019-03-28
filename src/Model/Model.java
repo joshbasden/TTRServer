@@ -235,7 +235,33 @@ public class Model {
     }
 
     public void endGame(Game game) {
-        //TODO: Implement
+        GameSummary gameSummary = new GameSummary();
+        List<String> usernamesOfBonusPlayer = game.getBonusPlayers();
+        for (Player player: game.getGamePlayers().values()) {
+            PlayerSummary playerSummary = new PlayerSummary();
+            playerSummary.setUsername(player.getUsername());
+            playerSummary.setPtsFromClaimedRoutes(player.getScore());
+            List<Integer> destinationPoints = player.getDestinationPoints();
+            playerSummary.setPtsFromDestinations(destinationPoints.get(0));
+            playerSummary.setPtsReducedFromDestinations(destinationPoints.get(1));
+            if (usernamesOfBonusPlayer.contains(player.getUsername())) {
+                playerSummary.setPtsFromMostClaimedRoutes(10); //TODO: Maybe get longest path instead
+            }
+            else {
+                playerSummary.setPtsFromMostClaimedRoutes(0);
+            }
+            playerSummary.setTotalPoints(player.getScore());
+            gameSummary.addPlayerSummary(playerSummary);
+        }
+        gameSummary.sort();
+        EndGameCommand endGameCommand = new EndGameCommand();
+        endGameCommand.setSummary(gameSummary);
+        endGameCommand.setWinner(gameSummary.getPlayers().get(0).getUsername());
+        endGameCommand.setWinnerPoints(gameSummary.getPlayers().get(0).getTotalPoints());
+        CommandData endGameCommandData = new CommandData();
+        endGameCommandData.setType(ClientCommandType.C_END_GAME);
+        endGameCommandData.setData(new Gson().toJson(endGameCommand));
+        addCommandToAllPlayers(game, endGameCommandData);
     }
 
     public EndTurnResult endTurn(String endTurnPlayer) {
@@ -535,7 +561,27 @@ public class Model {
         return true;
     }
 
+    public int convertTracksToPoints(int numTracks) {
+        switch (numTracks) {
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+            case 3:
+                return 4;
+            case 4:
+                return 7;
+            case 5:
+                return 10;
+            case 6:
+                return 15;
+            default:
+                return 0;
+        }
+    }
+
     public ClaimRouteResult claimRoute(ClaimRouteRequest req) {
+        //TODO: Add to score and routesOwned when player claims route either here or in the game
         ClaimRouteResult res = new ClaimRouteResult();
         String username = req.getUsername();
         Game game = getAssociatedGame(username);
@@ -570,7 +616,7 @@ public class Model {
             change1.setType(StatsChangeType.DECREASE_TRAIN_CARS);
             change1.setAmount(route.getNumTracks());
             change2.setType(StatsChangeType.ADD_POINTS);
-            change2.setAmount(route.getPoints());
+            change2.setAmount(convertTracksToPoints(route.getNumTracks()));
             change3.setType(StatsChangeType.DECREASE_TRAIN_CAR_CARDS);
             change3.setAmount(route.getNumTracks());
             List<StatsChange> changes = new ArrayList<>();
