@@ -5,7 +5,6 @@ public class Route {
     private City city1;
     private City city2;
     private int numTracks;
-    private int points;
     private RouteColor color;
     private TrainCarCardType claimedType;
     private String owner = "";
@@ -45,14 +44,6 @@ public class Route {
 
     public void setNumTracks(int numTracks) {
         this.numTracks = numTracks;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public RouteColor getColor() {
