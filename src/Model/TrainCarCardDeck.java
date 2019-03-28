@@ -38,6 +38,14 @@ public class TrainCarCardDeck implements iDeck {
         return cards;
     }
 
+    public void addCardToDiscardPile(TrainCarCard card){
+        discardPile.add(card);
+    }
+
+    public void clearAllFaceUp(){
+        faceUpCards.clear();
+    }
+
     public void addToDiscardPile(TrainCarCardType type, int numTracks) {
         for (int i = 0; i < numTracks; ++i) {
             TrainCarCard card = new TrainCarCard();

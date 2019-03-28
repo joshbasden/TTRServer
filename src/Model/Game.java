@@ -64,6 +64,16 @@ public class Game {
     public ArrayList<iCard> replaceAllFaceUp(){
         int locomotiveCounter = 0;
         ArrayList<iCard> newHand = new ArrayList<>();
+        ArrayList<iCard> discardPile = (ArrayList) gameTrainDeck.getDiscardPile();
+
+        //add old face up cards to discard
+        for (iCard c: faceUpTrainCarCards){
+            gameTrainDeck.addCardToDiscardPile((TrainCarCard) c);
+        }
+        //clear old face ups
+        gameTrainDeck.clearAllFaceUp();
+
+        //get new face up cards
         for (int i = 0; i < 5; i++){
             iCard card = gameTrainDeck.draw();
             newHand.add(card);
@@ -76,6 +86,10 @@ public class Game {
             return replaceAllFaceUp();
         }
 
+        //add new cards to face up cards
+        for (iCard c: newHand){
+            gameTrainDeck.addCard((TrainCarCard) c);
+        }
         return newHand;
     }
 

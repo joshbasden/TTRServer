@@ -70,6 +70,12 @@ public class Route {
         this.claimedType = claimedType;
     }
 
+
+    //TODO need to fix this
+    public int getPoints(){
+        return 10;
+    }
+
     public Double getLat1() {
         return lat1;
     }
