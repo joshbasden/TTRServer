@@ -233,6 +233,7 @@ public class Game {
                 route.setCity2(cities.get(city2));
                 route.setNumTracks(routeJson.get("numTracks").getAsInt());
 //                route.setPoints(routeJson.get("points").getAsInt());
+
                 route.setOwner("");
                 //TODO: Read in if double route or not
                 route.setColor(RouteColor.valueOf(color.substring(1, color.length() - 1)));
@@ -282,6 +283,7 @@ public class Game {
     }
 
     public boolean claimGrayRoute(Player player, Route route) {
+        //TODO: Add to score and routesOwned when player claims route
         int numTracks = route.getNumTracks();
         if (player.getTrainCarCardHand().getMaxCount() >= numTracks) {
             TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
@@ -307,6 +309,7 @@ public class Game {
     }
 
     public boolean claimRoute(String username, int id) {
+        //TODO: Add to score and routesOwned when player claims route
         Player player = gamePlayers.get(username);
         Route route = routes.get(id);
         if (player == null) {
@@ -344,21 +347,39 @@ public class Game {
         return false;
     }
 
-    private boolean needToReplaceAll(TrainCarCard card){
-        if (card.getType() == TrainCarCardType.LOCOMOTIVE){
+    private boolean needToReplaceAll(TrainCarCard card) {
+        if (card.getType() == TrainCarCardType.LOCOMOTIVE) {
             int counter = 0;
-            for (TrainCarCard c: faceUpTrainCarCards){
-                if (c.getType() == TrainCarCardType.LOCOMOTIVE){
+            for (TrainCarCard c : faceUpTrainCarCards) {
+                if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
                     counter += 1;
                 }
             }
 
-            if (counter >= 2){
+            if (counter >= 2) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    public List<String> getBonusPlayers() {
+        //TODO: Possibly make this longest path instead of most claimed routes
+        List<String> bonusPlayers = new ArrayList<>();
+        int biggestSoFar = 0;
+        for (Player player: getGamePlayers().values()) {
+            if (player.getRoutesOwned().size() > biggestSoFar) {
+                biggestSoFar = player.getRoutesOwned().size();
+            }
+        }
+        for (Player player: getGamePlayers().values()) {
+            if (player.getRoutesOwned().size() == biggestSoFar) {
+                bonusPlayers.add(player.getUsername());
+                player.setScore(player.getScore() + 10);
+            }
+        }
+        return bonusPlayers;
     }
 
     public int getTrainDeckSize(){
