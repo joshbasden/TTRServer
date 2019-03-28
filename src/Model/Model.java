@@ -593,13 +593,10 @@ public class Model {
             statsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
             statsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
 
-            Set<String> usernamesOfPlayers = game.getGamePlayers().keySet();
-            for (String oneUsername: usernamesOfPlayers) {
-                User user = users.get(oneUsername);
-                user.addCommand(eventCommandData);
-                user.addCommand(claimCommandData);
-                user.addCommand(statsCommandData);
-            }
+            addCommandToAllPlayers(game, eventCommandData);
+            addCommandToAllPlayers(game, claimCommandData);
+            addCommandToAllPlayers(game, statsCommandData);
+
             return res;
         }
         res.setSuccess(false);

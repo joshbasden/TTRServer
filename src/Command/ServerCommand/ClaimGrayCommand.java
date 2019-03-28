@@ -7,7 +7,7 @@ import Result.iResult;
 import Service.ClaimGrayService;
 
 public class ClaimGrayCommand implements iServerCommand {
-    iRequest data;
+    private iRequest data;
 
     public ClaimGrayCommand(iRequest req){
         data = req;

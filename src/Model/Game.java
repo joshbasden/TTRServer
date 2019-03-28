@@ -73,7 +73,7 @@ public class Game {
         }
 
         if (locomotiveCounter >= 3){
-            replaceAllFaceUp();
+            return replaceAllFaceUp();
         }
 
         return newHand;
@@ -281,7 +281,7 @@ public class Game {
         playerStats =  playerInfos;
     }
 
-    public boolean claimGrayRoute(Player player, Route route) {
+    public boolean claimGrayRoute(Player player, Route route, TrainCarCardType color) {
         int numTracks = route.getNumTracks();
         if (player.getTrainCarCardHand().getMaxCount() >= numTracks) {
             TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
