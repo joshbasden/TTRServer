@@ -530,7 +530,7 @@ public class Model {
         }
         AddEventCommand addEventCommand = new AddEventCommand();
         if (data.getType().toString().equals("MESSAGE")) {
-            data.setContent(" " + data.getUsername() + ": " + data.getContent());
+            data.setContent(" " + data.getContent());
         }
         addEventCommand.setEvent(data);
         CommandData commandData = new CommandData();

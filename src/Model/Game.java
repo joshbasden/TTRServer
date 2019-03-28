@@ -281,7 +281,7 @@ public class Game {
         playerStats =  playerInfos;
     }
 
-    public boolean claimGrayRoute(Player player, Route route, TrainCarCardType color) {
+    public boolean claimGrayRoute(Player player, Route route) {
         int numTracks = route.getNumTracks();
         if (player.getTrainCarCardHand().getMaxCount() >= numTracks) {
             TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
