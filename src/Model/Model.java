@@ -3,6 +3,7 @@ package Model;
 import Command.ClientCommand.*;
 import Request.AssignDestinationCardsRequest;
 import Request.AssignFirstDestinationCardsRequest;
+import Request.ClaimGrayRequest;
 import Request.ClaimRouteRequest;
 import Result.*;
 import com.google.gson.Gson;
@@ -312,23 +313,32 @@ public class Model {
         AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
-        ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
-        replaceCommand.setCard(cards.get(0));
-        replaceCommand.setIndex(index);
+        //check if I need to replace all train cards
+        CommandData commandDataReplace = new CommandData();
+        if (cards.size() == 5){
+            ReplaceAllFaceUpCommand replaceAllCommand = new ReplaceAllFaceUpCommand();
+            replaceAllCommand.setFaceUpCards(cards);
+            commandDataReplace.setType(ClientCommandType.C_REPLACE_ALL_FACE_UP);
+            commandDataReplace.setData(new Gson().toJson(replaceAllCommand));
+        }
+        else{
+            ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
+            replaceCommand.setCard(cards.get(0));
+            replaceCommand.setIndex(index);
+
+            commandDataReplace.setType(ClientCommandType.C_REPLACE_ONE_FACE_UP);
+            commandDataReplace.setData(new Gson().toJson(replaceCommand));
+        }
 
         updateStatsCommand.setUsername(player);
         updateStatsCommand.setChanges(statsChangeArray);
 
         CommandData commandDataUpdate = new CommandData();
         CommandData commandDataAccount = new CommandData();
-        CommandData commandDataReplace = new CommandData();
         commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
         commandDataAccount.setData(new Gson().toJson(accountForDraws));
         commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         commandDataUpdate.setData(new Gson().toJson(updateStatsCommand));
-        //TODO: Check here for possibly replacing all faceups
-        commandDataReplace.setType(ClientCommandType.C_REPLACE_ONE_FACE_UP);
-        commandDataReplace.setData(new Gson().toJson(replaceCommand));
 
         try{
             addCommandToAllPlayers(game, commandDataUpdate);
@@ -561,6 +571,64 @@ public class Model {
         return true;
     }
 
+    public ClaimGrayResult claimGray(ClaimGrayRequest req) {
+        ClaimGrayResult res = new ClaimGrayResult();
+        String username = req.getUsername();
+        Game game = getAssociatedGame(username);
+        if (game.claimRoute(username, req.getId())) {
+            Route route = game.getRoute(req.getId());
+            res.setSuccess(true);
+            res.setId(req.getId());
+            if (route.getClaimedType() != null) {
+                res.setColor(route.getClaimedType());
+            }
+            AddEventCommand addEventCommand = new AddEventCommand();
+            Event event = new Event();
+            event.setUsername(username);
+            event.setType(EventType.TURN);
+            event.setContent(req.getUsername() + " claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
+            addEventCommand.setEvent(event);
+            CommandData eventCommandData = new CommandData();
+            eventCommandData.setType(ClientCommandType.C_EVENT);
+            eventCommandData.setData(new Gson().toJson(addEventCommand));
+
+            CommandData claimCommandData = new CommandData();
+            claimCommandData.setType(ClientCommandType.C_CLAIM_ROUTE);
+            ClaimRouteCommand claimRouteCommand = new ClaimRouteCommand();
+            claimRouteCommand.setId(req.getId());
+            claimRouteCommand.setUsername(username);
+            claimCommandData.setData(new Gson().toJson(claimRouteCommand));
+
+            CommandData statsCommandData = new CommandData();
+            StatsChange change1 = new StatsChange();
+            StatsChange change2 = new StatsChange();
+            StatsChange change3 = new StatsChange();
+            change1.setType(StatsChangeType.DECREASE_TRAIN_CARS);
+            change1.setAmount(route.getNumTracks());
+            change2.setType(StatsChangeType.ADD_POINTS);
+            change2.setAmount(route.getPoints());
+            change3.setType(StatsChangeType.DECREASE_TRAIN_CAR_CARDS);
+            change3.setAmount(route.getNumTracks());
+            List<StatsChange> changes = new ArrayList<>();
+            changes.add(change1);
+            changes.add(change2);
+            changes.add(change3);
+            UpdatePlayerStatsCommand updatePlayerStatsCommand = new UpdatePlayerStatsCommand();
+            updatePlayerStatsCommand.setUsername(username);
+            updatePlayerStatsCommand.setChanges(changes);
+            statsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
+            statsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+
+            addCommandToAllPlayers(game, eventCommandData);
+            addCommandToAllPlayers(game, claimCommandData);
+            addCommandToAllPlayers(game, statsCommandData);
+
+            return res;
+        }
+        res.setSuccess(false);
+        res.setErrorMessage("Route was not able to be claimed");
+        return res;
+    }
     public int convertTracksToPoints(int numTracks) {
         switch (numTracks) {
             case 1:
