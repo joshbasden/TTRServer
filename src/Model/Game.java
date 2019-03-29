@@ -104,6 +104,10 @@ public class Game {
         iCard faceUpCard = faceUpTrainCarCards.get(ind);
         iCard drawCard = gameTrainDeck.draw();
 
+        if (gameTrainDeck.getTrainDeckSize() <= 5){
+            switchDiscardPileWithDrawPile();
+        }
+
         faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
 
         // check if we need to replace all of the face up cards
@@ -132,6 +136,11 @@ public class Game {
 
         try{
             iCard card = gameTrainDeck.draw();
+
+            if (gameTrainDeck.getTrainDeckSize() <= 5){
+                switchDiscardPileWithDrawPile();
+            }
+
             player.addTrainCard(card);
             pInfo.incrementNumTrainCards(1);
 
@@ -281,6 +290,10 @@ public class Game {
         setTurnOrder(order);
     }
 
+    public void switchDiscardPileWithDrawPile(){
+        gameTrainDeck.switchPiles();
+    }
+
     public void computePlayerStats() {
         List<PlayerInfo> playerInfos = new ArrayList<>();
         PlayerInfo playerInfo;
@@ -341,21 +354,6 @@ public class Game {
         return true;
     }
 
-    private boolean needToReplaceAll(TrainCarCard card) {
-        if (card.getType() == TrainCarCardType.LOCOMOTIVE) {
-            int counter = 0;
-            for (TrainCarCard c : faceUpTrainCarCards) {
-                if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
-                    counter += 1;
-                }
-            }
-            if (counter >= 2) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean needToReplaceAll() {
         int counter = 0;
         for (TrainCarCard c : faceUpTrainCarCards) {
@@ -389,6 +387,7 @@ public class Game {
         }
         return bonusPlayers;
     }
+
 
     public int getTrainDeckSize(){
         return gameTrainDeck.getDrawPile().size();
