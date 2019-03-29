@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -16,6 +17,16 @@ public class TrainCarCardDeck implements iDeck {
         TrainCarCard card = (TrainCarCard) drawPile.get(randomCardIndex);
         drawPile.remove(randomCardIndex);
         return card;
+    }
+
+    public void switchPiles(){
+        for (iCard c: discardPile){
+            addCard((TrainCarCard) c);
+        }
+        Collections.shuffle(drawPile);
+
+        //clear discardPile
+        discardPile.clear();
     }
 
     public void addCard(TrainCarCard card) {
@@ -52,6 +63,10 @@ public class TrainCarCardDeck implements iDeck {
             card.setType(type);
             discardPile.add(card);
         }
+    }
+
+    public int getTrainDeckSize(){
+        return drawPile.size();
     }
 
     public List<iCard> getDiscardPile() {
