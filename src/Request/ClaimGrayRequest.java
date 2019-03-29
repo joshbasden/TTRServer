@@ -1,6 +1,5 @@
 package Request;
 
-import Model.TrainCarCard;
 import Model.TrainCarCardType;
 
 public class ClaimGrayRequest implements iRequest {
