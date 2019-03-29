@@ -64,6 +64,16 @@ public class Game {
     public ArrayList<iCard> replaceAllFaceUp(){
         int locomotiveCounter = 0;
         ArrayList<iCard> newHand = new ArrayList<>();
+        ArrayList<iCard> discardPile = (ArrayList) gameTrainDeck.getDiscardPile();
+
+        //add old face up cards to discard
+        for (iCard c: faceUpTrainCarCards){
+            gameTrainDeck.addCardToDiscardPile((TrainCarCard) c);
+        }
+        //clear old face ups
+        gameTrainDeck.clearAllFaceUp();
+
+        //get new face up cards
         for (int i = 0; i < 5; i++){
             iCard card = gameTrainDeck.draw();
             newHand.add(card);
@@ -74,6 +84,11 @@ public class Game {
 
         if (locomotiveCounter >= 3){
             return replaceAllFaceUp();
+        }
+
+        //add new cards to face up cards
+        for (iCard c: newHand){
+            gameTrainDeck.addCard((TrainCarCard) c);
         }
 
         return newHand;
@@ -89,14 +104,14 @@ public class Game {
         iCard faceUpCard = faceUpTrainCarCards.get(ind);
         iCard drawCard = gameTrainDeck.draw();
 
+        faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
+
         // check if we need to replace all of the face up cards
-        if (needToReplaceAll((TrainCarCard) drawCard)){
+        if (needToReplaceAll()){
             cards = replaceAllFaceUp();
 
             return cards;
         }
-
-        faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
 
         //first index is the draw card to replace it
         //second index is face up card
@@ -232,6 +247,8 @@ public class Game {
                 route.setCity1(cities.get(city1));
                 route.setCity2(cities.get(city2));
                 route.setNumTracks(routeJson.get("numTracks").getAsInt());
+//                route.setPoints(routeJson.get("points").getAsInt());
+
                 route.setOwner("");
                 //TODO: Read in if double route or not
                 route.setColor(RouteColor.valueOf(color.substring(1, color.length() - 1)));
@@ -336,6 +353,22 @@ public class Game {
                 return true;
             }
         }
+        return false;
+    }
+
+    public boolean needToReplaceAll() {
+        int counter = 0;
+        for (TrainCarCard c : faceUpTrainCarCards) {
+            if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
+                counter += 1;
+            }
+        }
+
+        if (counter > 2) {
+            return true;
+        }
+
+
         return false;
     }
 

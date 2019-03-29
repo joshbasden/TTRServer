@@ -1,5 +1,6 @@
 package Result;
 
+import Model.TrainCarCard;
 import Model.TrainCarCardType;
 
 public class ClaimGrayResult implements iResult {
