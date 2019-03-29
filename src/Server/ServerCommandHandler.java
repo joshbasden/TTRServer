@@ -97,7 +97,7 @@ public class ServerCommandHandler implements HttpHandler {
                     System.out.println("");
                 }
                 else {
-                    System.out.print("P"); //TODO:Figure out who
+                    //System.out.print("P"); //TODO:Figure out who
                 }
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream respBody = exchange.getResponseBody();

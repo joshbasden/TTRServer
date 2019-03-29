@@ -3,12 +3,9 @@ package Model;
 import Command.ClientCommand.*;
 import Request.AssignDestinationCardsRequest;
 import Request.AssignFirstDestinationCardsRequest;
-import Request.ClaimGrayRequest;
 import Request.ClaimRouteRequest;
-import Request.*;
 import Result.*;
 import com.google.gson.Gson;
-import javafx.scene.web.HTMLEditorSkin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -285,6 +282,9 @@ public class Model {
                 endTurnResult.setSuccess(true);
                 endGame(game);
                 return endTurnResult;
+            }
+            if (game.getLastPlayerToTakeTurn().equals("")) {
+                game.setLastPlayerToTakeTurn(endTurnPlayer);
             }
             advanceTurnCommand.setLastTurn(true);
             advanceCommandData.setData(new Gson().toJson(advanceTurnCommand));

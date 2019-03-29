@@ -156,7 +156,6 @@ public class Game {
         int numTrains = player.getNumTrains();
         if (!isLastRound() && numTrains <= 2) {
             setLastRound(true);
-            setLastPlayerToTakeTurn(curPlayer);
         }
         return turnOrder.get(nextPlayer);
     }
@@ -339,21 +338,6 @@ public class Game {
         }
         player.addRouteOwned(route);
         return true;
-    }
-
-    private boolean needToReplaceAll(TrainCarCard card) {
-        if (card.getType() == TrainCarCardType.LOCOMOTIVE) {
-            int counter = 0;
-            for (TrainCarCard c : faceUpTrainCarCards) {
-                if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
-                    counter += 1;
-                }
-            }
-            if (counter >= 2) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean needToReplaceAll() {
