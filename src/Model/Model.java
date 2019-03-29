@@ -446,10 +446,17 @@ public class Model {
             DealTrainCarCardsCommand dealTrainCarCardsCommand = new DealTrainCarCardsCommand();
             List<TrainCarCard> cards = new ArrayList<>();
             TrainCarCard card;
+
+            Player player = getAssociatedPlayer(username);
+
             for (int i = 0; i < 4; ++i) {
                 card = (TrainCarCard)game.getGameTrainDeck().draw();
                 cards.add(card);
+
+                //add card to players hand
+                player.addTrainCard(card);
             }
+
             TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
             trainCarCardHand.setCards(cards);
             dealTrainCarCardsCommand.setHand(trainCarCardHand);
@@ -612,7 +619,7 @@ public class Model {
             Event event = new Event();
             event.setUsername(username);
             event.setType(EventType.TURN);
-            event.setContent(req.getUsername() + " claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
+            event.setContent("claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
             addEventCommand.setEvent(event);
             CommandData eventCommandData = new CommandData();
             eventCommandData.setType(ClientCommandType.C_EVENT);
@@ -632,7 +639,7 @@ public class Model {
             change1.setType(StatsChangeType.DECREASE_TRAIN_CARS);
             change1.setAmount(route.getNumTracks());
             change2.setType(StatsChangeType.ADD_POINTS);
-            change2.setAmount(route.getPoints());
+//            change2.setAmount(route.getPoints());
             change3.setType(StatsChangeType.DECREASE_TRAIN_CAR_CARDS);
             change3.setAmount(route.getNumTracks());
             List<StatsChange> changes = new ArrayList<>();

@@ -103,14 +103,14 @@ public class Game {
         iCard faceUpCard = faceUpTrainCarCards.get(ind);
         iCard drawCard = gameTrainDeck.draw();
 
+        faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
+
         // check if we need to replace all of the face up cards
-        if (needToReplaceAll((TrainCarCard) drawCard)){
+        if (needToReplaceAll()){
             cards = replaceAllFaceUp();
 
             return cards;
         }
-
-        faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
 
         //first index is the draw card to replace it
         //second index is face up card
@@ -361,19 +361,18 @@ public class Game {
         return false;
     }
 
-    private boolean needToReplaceAll(TrainCarCard card) {
-        if (card.getType() == TrainCarCardType.LOCOMOTIVE) {
-            int counter = 0;
-            for (TrainCarCard c : faceUpTrainCarCards) {
-                if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
-                    counter += 1;
-                }
-            }
-
-            if (counter >= 2) {
-                return true;
+    public boolean needToReplaceAll() {
+        int counter = 0;
+        for (TrainCarCard c : faceUpTrainCarCards) {
+            if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
+                counter += 1;
             }
         }
+
+        if (counter > 2) {
+            return true;
+        }
+
 
         return false;
     }
