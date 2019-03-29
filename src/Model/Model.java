@@ -605,25 +605,6 @@ public class Model {
         return true;
     }
 
-    public int convertTracksToPoints(int numTracks) {
-        switch (numTracks) {
-            case 1:
-                return 1;
-            case 2:
-                return 2;
-            case 3:
-                return 4;
-            case 4:
-                return 7;
-            case 5:
-                return 10;
-            case 6:
-                return 15;
-            default:
-                return 0;
-        }
-    }
-
     public ClaimRouteResult claimRoute(ClaimRouteRequest req, TrainCarCardType colorIfGray) {
         ClaimRouteResult res = new ClaimRouteResult();
         String username = req.getUsername();
