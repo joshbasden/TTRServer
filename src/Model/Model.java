@@ -69,6 +69,7 @@ public class Model {
         createUser("j8", "j");
         createUser("j9", "j");
         createUser("j10", "j");
+        createUser("j11", "j");
         //createGame("game with two players", 2);
         //createGame("game with three players", 3);
         //createGame("game with four players", 4);
