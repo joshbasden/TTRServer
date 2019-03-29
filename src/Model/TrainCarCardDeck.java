@@ -16,10 +16,15 @@ public class TrainCarCardDeck implements iDeck {
         int randomCardIndex = rand.nextInt(numRemaining);
         TrainCarCard card = (TrainCarCard) drawPile.get(randomCardIndex);
         drawPile.remove(randomCardIndex);
+
+        if (drawPile.size() <= 5){
+            addDiscardToTrainDeck();
+        }
+
         return card;
     }
 
-    public void switchPiles(){
+    public void addDiscardToTrainDeck(){
         for (iCard c: discardPile){
             addCard((TrainCarCard) c);
         }
