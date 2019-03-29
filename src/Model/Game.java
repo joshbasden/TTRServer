@@ -165,7 +165,6 @@ public class Game {
         int numTrains = player.getNumTrains();
         if (!isLastRound() && numTrains <= 2) {
             setLastRound(true);
-            setLastPlayerToTakeTurn(curPlayer);
         }
         return turnOrder.get(nextPlayer);
     }
