@@ -5,6 +5,7 @@ import Request.AssignDestinationCardsRequest;
 import Request.AssignFirstDestinationCardsRequest;
 import Request.ClaimGrayRequest;
 import Request.ClaimRouteRequest;
+import Request.*;
 import Result.*;
 import com.google.gson.Gson;
 import javafx.scene.web.HTMLEditorSkin;
@@ -12,7 +13,6 @@ import javafx.scene.web.HTMLEditorSkin;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -74,6 +74,7 @@ public class Model {
         createUser("j8", "j");
         createUser("j9", "j");
         createUser("j10", "j");
+        createUser("j11", "j");
         //createGame("game with two players", 2);
         //createGame("game with three players", 3);
         //createGame("game with four players", 4);
@@ -604,64 +605,6 @@ public class Model {
         return true;
     }
 
-    public ClaimGrayResult claimGray(ClaimGrayRequest req) {
-        ClaimGrayResult res = new ClaimGrayResult();
-        String username = req.getUsername();
-        Game game = getAssociatedGame(username);
-        if (game.claimRoute(username, req.getId())) {
-            Route route = game.getRoute(req.getId());
-            res.setSuccess(true);
-            res.setId(req.getId());
-            if (route.getClaimedType() != null) {
-                res.setColor(route.getClaimedType());
-            }
-            AddEventCommand addEventCommand = new AddEventCommand();
-            Event event = new Event();
-            event.setUsername(username);
-            event.setType(EventType.TURN);
-            event.setContent("claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
-            addEventCommand.setEvent(event);
-            CommandData eventCommandData = new CommandData();
-            eventCommandData.setType(ClientCommandType.C_EVENT);
-            eventCommandData.setData(new Gson().toJson(addEventCommand));
-
-            CommandData claimCommandData = new CommandData();
-            claimCommandData.setType(ClientCommandType.C_CLAIM_ROUTE);
-            ClaimRouteCommand claimRouteCommand = new ClaimRouteCommand();
-            claimRouteCommand.setId(req.getId());
-            claimRouteCommand.setUsername(username);
-            claimCommandData.setData(new Gson().toJson(claimRouteCommand));
-
-            CommandData statsCommandData = new CommandData();
-            StatsChange change1 = new StatsChange();
-            StatsChange change2 = new StatsChange();
-            StatsChange change3 = new StatsChange();
-            change1.setType(StatsChangeType.DECREASE_TRAIN_CARS);
-            change1.setAmount(route.getNumTracks());
-            change2.setType(StatsChangeType.ADD_POINTS);
-//            change2.setAmount(route.getPoints());
-            change3.setType(StatsChangeType.DECREASE_TRAIN_CAR_CARDS);
-            change3.setAmount(route.getNumTracks());
-            List<StatsChange> changes = new ArrayList<>();
-            changes.add(change1);
-            changes.add(change2);
-            changes.add(change3);
-            UpdatePlayerStatsCommand updatePlayerStatsCommand = new UpdatePlayerStatsCommand();
-            updatePlayerStatsCommand.setUsername(username);
-            updatePlayerStatsCommand.setChanges(changes);
-            statsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
-            statsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
-
-            addCommandToAllPlayers(game, eventCommandData);
-            addCommandToAllPlayers(game, claimCommandData);
-            addCommandToAllPlayers(game, statsCommandData);
-
-            return res;
-        }
-        res.setSuccess(false);
-        res.setErrorMessage("Route was not able to be claimed");
-        return res;
-    }
     public int convertTracksToPoints(int numTracks) {
         switch (numTracks) {
             case 1:
@@ -681,23 +624,22 @@ public class Model {
         }
     }
 
-    public ClaimRouteResult claimRoute(ClaimRouteRequest req) {
-        //TODO: Add to score and routesOwned when player claims route either here or in the game
+    public ClaimRouteResult claimRoute(ClaimRouteRequest req, TrainCarCardType colorIfGray) {
         ClaimRouteResult res = new ClaimRouteResult();
         String username = req.getUsername();
         Game game = getAssociatedGame(username);
-        if (game.claimRoute(username, req.getId())) {
+        if (game.claimRoute(username, req.getId(), colorIfGray)) {
             Route route = game.getRoute(req.getId());
+            Player player = getAssociatedPlayer(username);
+            player.setScore(player.getScore() + convertTracksToPoints(route.getNumTracks()));
             res.setSuccess(true);
             res.setId(req.getId());
-            if (route.getClaimedType() != null) {
-                res.setColorIfGray(route.getClaimedType());
-            }
+
             AddEventCommand addEventCommand = new AddEventCommand();
             Event event = new Event();
             event.setUsername(username);
             event.setType(EventType.TURN);
-            event.setContent("claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
+            event.setContent(req.getUsername() + " claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
             addEventCommand.setEvent(event);
             CommandData eventCommandData = new CommandData();
             eventCommandData.setType(ClientCommandType.C_EVENT);
@@ -729,19 +671,34 @@ public class Model {
             updatePlayerStatsCommand.setChanges(changes);
             statsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
             statsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
-            
-            Set<String> usernamesOfPlayers = game.getGamePlayers().keySet();
-            for (String oneUsername: usernamesOfPlayers) {
-                User user = users.get(oneUsername);
-                user.addCommand(eventCommandData);
-                user.addCommand(claimCommandData);
-                user.addCommand(statsCommandData);
-            }
+
+            addCommandToAllPlayers(game, eventCommandData);
+            addCommandToAllPlayers(game, claimCommandData);
+            addCommandToAllPlayers(game, statsCommandData);
             return res;
         }
         res.setSuccess(false);
         res.setErrorMessage("Route was not able to be claimed");
         return res;
+    }
+
+    public int convertTracksToPoints(int numTracks) {
+        switch (numTracks) {
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+            case 3:
+                return 4;
+            case 4:
+                return 7;
+            case 5:
+                return 10;
+            case 6:
+                return 15;
+            default:
+                return 0;
+        }
     }
 
     public HashMap<String, Game> getGames() {

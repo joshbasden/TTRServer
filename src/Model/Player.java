@@ -137,6 +137,10 @@ public class Player {
         this.trainCarCardHand = trainCarCardhand;
     }
 
+    public void addRouteOwned(Route route) {
+        routesOwned.add(route);
+    }
+
     public List<Route> getRoutesOwned() {
         return routesOwned;
     }
