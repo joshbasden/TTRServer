@@ -67,6 +67,9 @@ public class ServerCommandHandler implements HttpHandler {
             case S_DRAW_FACE_UP_TRAIN_CAR_CARD:
                 DrawFaceUpCommand drawFaceUpCommand = new DrawFaceUpCommand((DrawFaceUpRequest)data);
                 return drawFaceUpCommand.execute();
+            case S_CLAIM_GRAY:
+                ClaimGrayCommand claimGrayCommand = new ClaimGrayCommand(data);
+                return claimGrayCommand.execute();
             default:
                 return null;
         }
@@ -94,7 +97,7 @@ public class ServerCommandHandler implements HttpHandler {
                     System.out.println("");
                 }
                 else {
-                    System.out.print("P"); //TODO:Figure out who
+                    //System.out.print("P"); //TODO:Figure out who
                 }
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
                 OutputStream respBody = exchange.getResponseBody();
@@ -148,6 +151,8 @@ public class ServerCommandHandler implements HttpHandler {
                 return gson.fromJson(reqData, DrawTrainCarCardRequest.class);
             case S_DRAW_FACE_UP_TRAIN_CAR_CARD:
                 return gson.fromJson(reqData, DrawFaceUpRequest.class);
+            case S_CLAIM_GRAY:
+                return gson.fromJson(reqData, ClaimGrayRequest.class);
             default:
                 return null;
         }

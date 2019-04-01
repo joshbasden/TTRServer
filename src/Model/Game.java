@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -60,21 +61,66 @@ public class Game {
         return playerInfo;
     }
 
+    public ArrayList<iCard> replaceAllFaceUp(){
+        int locomotiveCounter = 0;
+        ArrayList<iCard> newHand = new ArrayList<>();
+        ArrayList<iCard> discardPile = (ArrayList) gameTrainDeck.getDiscardPile();
+
+        //add old face up cards to discard
+        for (iCard c: faceUpTrainCarCards){
+            gameTrainDeck.addCardToDiscardPile((TrainCarCard) c);
+        }
+        //clear old face ups
+//        gameTrainDeck.clearAllFaceUp();
+        faceUpTrainCarCards.clear();
+
+        //get new face up cards
+        for (int i = 0; i < 5; i++){
+            iCard card = gameTrainDeck.draw();
+            if (((TrainCarCard)card).getType() == TrainCarCardType.LOCOMOTIVE){
+                locomotiveCounter += 1;
+            }
+            if (((TrainCarCard)card).getType() == TrainCarCardType.LOCOMOTIVE && locomotiveCounter == 2){
+                while (((TrainCarCard)card).getType() == TrainCarCardType.LOCOMOTIVE){
+                    // add card to discard
+                    gameTrainDeck.addCardToDiscardPile((TrainCarCard) card);
+                    card = gameTrainDeck.draw();
+                }
+            }
+            newHand.add(card);
+        }
+
+//        if (locomotiveCounter >= 3){
+//            return replaceAllFaceUp();
+//        }
+
+        //add new cards to face up cards
+        for (iCard c: newHand){
+//            gameTrainDeck.addCardToFaceUp((TrainCarCard) c);
+            faceUpTrainCarCards.add((TrainCarCard) c);
+        }
+
+        return newHand;
+    }
+
     public ArrayList<iCard> drawFaceUp(int ind, String user){
         Player player = gamePlayers.get(user);
         PlayerInfo playerInfo = findPlayerInfo(user);
-
-        //TODO: Check for >= 3 LOCOMOTIVES and send replaceAllFaceUp instead
-        //first index is the chosen face up card
-        //second index is drawpile card that replaces it
-//        ArrayList<iCard> cards = gameTrainDeck.drawFaceUp(ind);
 
         //make arraylist of icard to send back
         ArrayList<iCard> cards = new ArrayList<iCard>();
 
         iCard faceUpCard = faceUpTrainCarCards.get(ind);
         iCard drawCard = gameTrainDeck.draw();
+
         faceUpTrainCarCards.set(ind, (TrainCarCard)drawCard);
+
+        // check if we need to replace all of the face up cards
+        if (needToReplaceAll()){
+            cards = replaceAllFaceUp();
+
+            return cards;
+        }
 
         //first index is the draw card to replace it
         //second index is face up card
@@ -95,6 +141,7 @@ public class Game {
 
         try{
             iCard card = gameTrainDeck.draw();
+
             player.addTrainCard(card);
             pInfo.incrementNumTrainCards(1);
 
@@ -119,7 +166,6 @@ public class Game {
         int numTrains = player.getNumTrains();
         if (!isLastRound() && numTrains <= 2) {
             setLastRound(true);
-            setLastPlayerToTakeTurn(curPlayer);
         }
         return turnOrder.get(nextPlayer);
     }
@@ -210,7 +256,6 @@ public class Game {
                 route.setCity1(cities.get(city1));
                 route.setCity2(cities.get(city2));
                 route.setNumTracks(routeJson.get("numTracks").getAsInt());
-                //route.setPoints(routeJson.get("points").getAsInt());
                 route.setOwner("");
                 //TODO: Read in if double route or not
                 route.setColor(RouteColor.valueOf(color.substring(1, color.length() - 1)));
@@ -259,32 +304,7 @@ public class Game {
         playerStats =  playerInfos;
     }
 
-    public boolean claimGrayRoute(Player player, Route route) {
-        int numTracks = route.getNumTracks();
-        if (player.getTrainCarCardHand().getMaxCount() >= numTracks) {
-            TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
-            route.setClaimedType(type);
-            player.getTrainCarCardHand().removeCards(type, numTracks);
-            gameTrainDeck.addToDiscardPile(type, numTracks);
-            player.setNumTrains(player.getNumTrains() - numTracks);
-            return true;
-        }
-        else if (player.getTrainCarCardHand().getMaxCount() + player.getTrainCarCardHand().getCount(TrainCarCardType.LOCOMOTIVE) >= numTracks) {
-            TrainCarCardType type = player.getTrainCarCardHand().getTypeOfMaxCount();
-            route.setClaimedType(type);
-            int numOfActualColor = player.getTrainCarCardHand().getMaxCount();
-            int numOfRainbows = numTracks - numOfActualColor;
-            player.getTrainCarCardHand().removeCards(type, numOfActualColor);
-            player.getTrainCarCardHand().removeCards(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
-            gameTrainDeck.addToDiscardPile(type, numOfActualColor);
-            gameTrainDeck.addToDiscardPile(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
-            player.setNumTrains(player.getNumTrains() - numTracks);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean claimRoute(String username, int id) {
+    public boolean claimRoute(String username, int id, TrainCarCardType colorIfGray) {
         Player player = gamePlayers.get(username);
         Route route = routes.get(id);
         if (player == null) {
@@ -294,20 +314,23 @@ public class Game {
             return false;
         }
         int numTracks = route.getNumTracks();
-        RouteColor color = route.getColor();
         if (player.getNumTrains() < numTracks) {
             return false;
         }
+        RouteColor color = route.getColor();
         String stringColor = color.toString();
         if (stringColor.equals("GRAY")) {
-            return claimGrayRoute(player, route);
+            if (colorIfGray == null) {
+                System.out.println("ERROR!! User did not specify a color");
+                return false;
+            }
+            stringColor = colorIfGray.toString();
         }
         TrainCarCardType type = TrainCarCardType.valueOf(stringColor);
         if (player.getTrainCarCardHand().getCount(type) >= numTracks) {
             player.getTrainCarCardHand().removeCards(type, numTracks);
             gameTrainDeck.addToDiscardPile(type, numTracks);
             player.setNumTrains(player.getNumTrains() - numTracks);
-            return true;
         }
         else if (player.getTrainCarCardHand().getCount(type) + player.getTrainCarCardHand().getCount(TrainCarCardType.LOCOMOTIVE) >= numTracks) {
             int numOfActualColor = player.getTrainCarCardHand().getCount(type);
@@ -317,10 +340,48 @@ public class Game {
             gameTrainDeck.addToDiscardPile(type, numOfActualColor);
             gameTrainDeck.addToDiscardPile(TrainCarCardType.LOCOMOTIVE, numOfRainbows);
             player.setNumTrains(player.getNumTrains() - numTracks);
+        }
+        else {
+            return false;
+        }
+        player.addRouteOwned(route);
+        return true;
+    }
+
+    public boolean needToReplaceAll() {
+        int counter = 0;
+        for (TrainCarCard c : faceUpTrainCarCards) {
+            if (c.getType() == TrainCarCardType.LOCOMOTIVE) {
+                counter += 1;
+            }
+        }
+
+        if (counter > 2) {
             return true;
         }
+
+
         return false;
     }
+
+    public List<String> getBonusPlayers() {
+        //TODO: Possibly make this longest path instead of most claimed routes
+        List<String> bonusPlayers = new ArrayList<>();
+        int biggestSoFar = 0;
+        for (Player player: getGamePlayers().values()) {
+            if (player.getRoutesOwned().size() > biggestSoFar) {
+                biggestSoFar = player.getRoutesOwned().size();
+            }
+        }
+        for (Player player: getGamePlayers().values()) {
+            if (player.getRoutesOwned().size() == biggestSoFar) {
+                bonusPlayers.add(player.getUsername());
+                player.setScore(player.getScore() + 10);
+            }
+        }
+        return bonusPlayers;
+    }
+
 
     public int getTrainDeckSize(){
         return gameTrainDeck.getDrawPile().size();

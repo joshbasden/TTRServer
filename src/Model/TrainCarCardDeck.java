@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -10,12 +11,34 @@ public class TrainCarCardDeck implements iDeck {
     private List<iCard> faceUpCards = new ArrayList<>();
 
     public iCard draw() {
+        if (drawPile.size() <= 5){
+            addDiscardToTrainDeck();
+        }
         int numRemaining = drawPile.size();
         Random rand = new Random();
         int randomCardIndex = rand.nextInt(numRemaining);
         TrainCarCard card = (TrainCarCard) drawPile.get(randomCardIndex);
         drawPile.remove(randomCardIndex);
+
+//        if (drawPile.size() <= 5){
+//            addDiscardToTrainDeck();
+//        }
+
         return card;
+    }
+
+    public void addDiscardToTrainDeck(){
+        for (iCard c: discardPile){
+            addCard((TrainCarCard) c);
+        }
+        Collections.shuffle(drawPile);
+
+        //clear discardPile
+        discardPile.clear();
+    }
+
+    public void addCardToFaceUp(TrainCarCard card){
+        faceUpCards.add(card);
     }
 
     public void addCard(TrainCarCard card) {
@@ -38,12 +61,24 @@ public class TrainCarCardDeck implements iDeck {
         return cards;
     }
 
+    public void addCardToDiscardPile(TrainCarCard card){
+        discardPile.add(card);
+    }
+
+    public void clearAllFaceUp(){
+        faceUpCards.clear();
+    }
+
     public void addToDiscardPile(TrainCarCardType type, int numTracks) {
         for (int i = 0; i < numTracks; ++i) {
             TrainCarCard card = new TrainCarCard();
             card.setType(type);
             discardPile.add(card);
         }
+    }
+
+    public int getTrainDeckSize(){
+        return drawPile.size();
     }
 
     public List<iCard> getDiscardPile() {

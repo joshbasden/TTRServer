@@ -1,7 +1,9 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by jbasden on 1/29/19.
@@ -43,6 +45,50 @@ public class Player {
         }
     }
 
+    public Boolean achievedDestination(DestinationCard card) {
+        int startCity = card.getCity1();
+        int endCity = card.getCity2();
+        Set<Integer> reachablesCities = new HashSet<>();
+        reachablesCities.add(startCity);
+        int addedNum = 1;
+        while (addedNum != 0) {
+            addedNum = reachablesCities.size();
+            for (Route route: routesOwned) {
+                int city1 = route.getCity1().getId();
+                int city2 = route.getCity2().getId();
+                if (reachablesCities.contains(city1)) {
+                    reachablesCities.add(city2);
+                }
+                if (reachablesCities.contains(city2)) {
+                    reachablesCities.add(city1);
+                }
+            }
+            addedNum = reachablesCities.size() - addedNum;
+        }
+        return reachablesCities.contains(endCity);
+    }
+
+    public List<Integer> getDestinationPoints() {
+        int positivePoints = 0;
+        int negativePoints = 0;
+        List<DestinationCard> destinationCards = getDestinationCardHand().getCards();
+        for (DestinationCard destinationCard: destinationCards) {
+            if (achievedDestination(destinationCard)) {
+                positivePoints += destinationCard.getPoints();
+                score += destinationCard.getPoints();
+            }
+            else {
+                negativePoints += destinationCard.getPoints();
+                score -= destinationCard.getPoints();
+            }
+
+        }
+        List<Integer> points = new ArrayList<>();
+        points.add(positivePoints);
+        points.add(negativePoints);
+        return points;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -78,15 +124,21 @@ public class Player {
     public void setDestinationCardHand(DestinationCardHand destinationCardHand) {
         this.destinationCardHand = destinationCardHand;
     }
+
     public void addTrainCard(iCard card){
         this.trainCarCardHand.addCard(card);
     }
+
     public TrainCarCardHand getTrainCarCardHand() {
         return trainCarCardHand;
     }
 
     public void setTrainCarCardhand(TrainCarCardHand trainCarCardhand) {
         this.trainCarCardHand = trainCarCardhand;
+    }
+
+    public void addRouteOwned(Route route) {
+        routesOwned.add(route);
     }
 
     public List<Route> getRoutesOwned() {

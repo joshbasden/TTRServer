@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -72,6 +71,7 @@ public class Model {
         createUser("j8", "j");
         createUser("j9", "j");
         createUser("j10", "j");
+        createUser("j11", "j");
         //createGame("game with two players", 2);
         //createGame("game with three players", 3);
         //createGame("game with four players", 4);
@@ -235,7 +235,33 @@ public class Model {
     }
 
     public void endGame(Game game) {
-        //TODO: Implement
+        GameSummary gameSummary = new GameSummary();
+        List<String> usernamesOfBonusPlayer = game.getBonusPlayers();
+        for (Player player: game.getGamePlayers().values()) {
+            PlayerSummary playerSummary = new PlayerSummary();
+            playerSummary.setUsername(player.getUsername());
+            playerSummary.setPtsFromClaimedRoutes(player.getScore());
+            List<Integer> destinationPoints = player.getDestinationPoints();
+            playerSummary.setPtsFromDestinations(destinationPoints.get(0));
+            playerSummary.setPtsReducedFromDestinations(destinationPoints.get(1));
+            if (usernamesOfBonusPlayer.contains(player.getUsername())) {
+                playerSummary.setPtsFromMostClaimedRoutes(10); //TODO: Maybe get longest path instead
+            }
+            else {
+                playerSummary.setPtsFromMostClaimedRoutes(0);
+            }
+            playerSummary.setTotalPoints(player.getScore());
+            gameSummary.addPlayerSummary(playerSummary);
+        }
+        gameSummary.sort();
+        EndGameCommand endGameCommand = new EndGameCommand();
+        endGameCommand.setSummary(gameSummary);
+        endGameCommand.setWinner(gameSummary.getPlayers().get(0).getUsername());
+        endGameCommand.setWinnerPoints(gameSummary.getPlayers().get(0).getTotalPoints());
+        CommandData endGameCommandData = new CommandData();
+        endGameCommandData.setType(ClientCommandType.C_END_GAME);
+        endGameCommandData.setData(new Gson().toJson(endGameCommand));
+        addCommandToAllPlayers(game, endGameCommandData);
     }
 
     public EndTurnResult endTurn(String endTurnPlayer) {
@@ -256,6 +282,9 @@ public class Model {
                 endTurnResult.setSuccess(true);
                 endGame(game);
                 return endTurnResult;
+            }
+            if (game.getLastPlayerToTakeTurn().equals("")) {
+                game.setLastPlayerToTakeTurn(endTurnPlayer);
             }
             advanceTurnCommand.setLastTurn(true);
             advanceCommandData.setData(new Gson().toJson(advanceTurnCommand));
@@ -286,28 +315,50 @@ public class Model {
         AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
-        ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
-        replaceCommand.setCard(cards.get(0));
-        replaceCommand.setIndex(index);
+        //add an event of drawing a face up
+        Event event = new Event();
+        event.setType(EventType.TURN);
+        event.setUsername(player);
+        event.setContent("Drew a face up card");
+        AddEventCommand eventCommand = new AddEventCommand();
+        eventCommand.setEvent(event);
+
+        //check if I need to replace all train cards
+        CommandData commandDataReplace = new CommandData();
+        if (cards.size() == 5){
+            ReplaceAllFaceUpCommand replaceAllCommand = new ReplaceAllFaceUpCommand();
+            replaceAllCommand.setFaceUpCards(cards);
+            commandDataReplace.setType(ClientCommandType.C_REPLACE_ALL_FACE_UP);
+            commandDataReplace.setData(new Gson().toJson(replaceAllCommand));
+        }
+        else{
+            ReplaceOneFaceUpCommand replaceCommand = new ReplaceOneFaceUpCommand();
+            replaceCommand.setCard(cards.get(0));
+            replaceCommand.setIndex(index);
+
+            commandDataReplace.setType(ClientCommandType.C_REPLACE_ONE_FACE_UP);
+            commandDataReplace.setData(new Gson().toJson(replaceCommand));
+        }
 
         updateStatsCommand.setUsername(player);
         updateStatsCommand.setChanges(statsChangeArray);
 
         CommandData commandDataUpdate = new CommandData();
         CommandData commandDataAccount = new CommandData();
-        CommandData commandDataReplace = new CommandData();
+        CommandData commandDataEvent = new CommandData();
         commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
         commandDataAccount.setData(new Gson().toJson(accountForDraws));
         commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         commandDataUpdate.setData(new Gson().toJson(updateStatsCommand));
-        //TODO: Check here for possibly replacing all faceups
-        commandDataReplace.setType(ClientCommandType.C_REPLACE_ONE_FACE_UP);
-        commandDataReplace.setData(new Gson().toJson(replaceCommand));
+        commandDataEvent.setType(ClientCommandType.C_EVENT);
+        commandDataEvent.setData(new Gson().toJson(eventCommand));
+
 
         try{
             addCommandToAllPlayers(game, commandDataUpdate);
             addCommandToAllPlayers(game, commandDataAccount);
             addCommandToAllPlayers(game, commandDataReplace);
+            addCommandToAllPlayers(game, commandDataEvent);
             result.setSuccess(true);
             result.setCard(cards.get(1));
             return result;
@@ -337,16 +388,28 @@ public class Model {
         updateStatsCommand.setUsername(player);
         updateStatsCommand.setChanges(statsChangeArray);
 
+        //Send event for drawing a card
+        Event event = new Event();
+        event.setUsername(player);
+        event.setType(EventType.TURN);
+        event.setContent("Drew a train card from the deck");
+        AddEventCommand eventCommand = new AddEventCommand();
+        eventCommand.setEvent(event);
+
         CommandData commandDataUpdate = new CommandData();
         CommandData commandDataAccount = new CommandData();
+        CommandData commandDataEvent = new CommandData();
         commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
         commandDataAccount.setData(new Gson().toJson(accountForDraws));
         commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         commandDataUpdate.setData(new Gson().toJson(updateStatsCommand));
+        commandDataEvent.setType(ClientCommandType.C_EVENT);
+        commandDataEvent.setData(new Gson().toJson(eventCommand));
 
         try {
             addCommandToAllPlayers(game, commandDataUpdate);
             addCommandToAllPlayers(game, commandDataAccount);
+            addCommandToAllPlayers(game, commandDataEvent);
             result.setSuccess(true);
             return result;
         }
@@ -384,10 +447,17 @@ public class Model {
             DealTrainCarCardsCommand dealTrainCarCardsCommand = new DealTrainCarCardsCommand();
             List<TrainCarCard> cards = new ArrayList<>();
             TrainCarCard card;
+
+            Player player = getAssociatedPlayer(username);
+
             for (int i = 0; i < 4; ++i) {
                 card = (TrainCarCard)game.getGameTrainDeck().draw();
                 cards.add(card);
+
+                //add card to players hand
+                player.addTrainCard(card);
             }
+
             TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
             trainCarCardHand.setCards(cards);
             dealTrainCarCardsCommand.setHand(trainCarCardHand);
@@ -520,7 +590,7 @@ public class Model {
         }
         AddEventCommand addEventCommand = new AddEventCommand();
         if (data.getType().toString().equals("MESSAGE")) {
-            data.setContent(" " + data.getUsername() + ": " + data.getContent());
+            data.setContent(" " + data.getContent());
         }
         addEventCommand.setEvent(data);
         CommandData commandData = new CommandData();
@@ -535,17 +605,17 @@ public class Model {
         return true;
     }
 
-    public ClaimRouteResult claimRoute(ClaimRouteRequest req) {
+    public ClaimRouteResult claimRoute(ClaimRouteRequest req, TrainCarCardType colorIfGray) {
         ClaimRouteResult res = new ClaimRouteResult();
         String username = req.getUsername();
         Game game = getAssociatedGame(username);
-        if (game.claimRoute(username, req.getId())) {
+        if (game.claimRoute(username, req.getId(), colorIfGray)) {
             Route route = game.getRoute(req.getId());
+            Player player = getAssociatedPlayer(username);
+            player.setScore(player.getScore() + convertTracksToPoints(route.getNumTracks()));
             res.setSuccess(true);
             res.setId(req.getId());
-            if (route.getClaimedType() != null) {
-                res.setColorIfGray(route.getClaimedType());
-            }
+
             AddEventCommand addEventCommand = new AddEventCommand();
             Event event = new Event();
             event.setUsername(username);
@@ -570,7 +640,7 @@ public class Model {
             change1.setType(StatsChangeType.DECREASE_TRAIN_CARS);
             change1.setAmount(route.getNumTracks());
             change2.setType(StatsChangeType.ADD_POINTS);
-            change2.setAmount(route.getPoints());
+            change2.setAmount(convertTracksToPoints(route.getNumTracks()));
             change3.setType(StatsChangeType.DECREASE_TRAIN_CAR_CARDS);
             change3.setAmount(route.getNumTracks());
             List<StatsChange> changes = new ArrayList<>();
@@ -582,19 +652,34 @@ public class Model {
             updatePlayerStatsCommand.setChanges(changes);
             statsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
             statsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
-            
-            Set<String> usernamesOfPlayers = game.getGamePlayers().keySet();
-            for (String oneUsername: usernamesOfPlayers) {
-                User user = users.get(oneUsername);
-                user.addCommand(eventCommandData);
-                user.addCommand(claimCommandData);
-                user.addCommand(statsCommandData);
-            }
+
+            addCommandToAllPlayers(game, eventCommandData);
+            addCommandToAllPlayers(game, claimCommandData);
+            addCommandToAllPlayers(game, statsCommandData);
             return res;
         }
         res.setSuccess(false);
         res.setErrorMessage("Route was not able to be claimed");
         return res;
+    }
+
+    public int convertTracksToPoints(int numTracks) {
+        switch (numTracks) {
+            case 1:
+                return 1;
+            case 2:
+                return 2;
+            case 3:
+                return 4;
+            case 4:
+                return 7;
+            case 5:
+                return 10;
+            case 6:
+                return 15;
+            default:
+                return 0;
+        }
     }
 
     public HashMap<String, Game> getGames() {
