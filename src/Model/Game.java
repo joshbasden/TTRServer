@@ -71,24 +71,33 @@ public class Game {
             gameTrainDeck.addCardToDiscardPile((TrainCarCard) c);
         }
         //clear old face ups
-        gameTrainDeck.clearAllFaceUp();
+//        gameTrainDeck.clearAllFaceUp();
+        faceUpTrainCarCards.clear();
 
         //get new face up cards
         for (int i = 0; i < 5; i++){
             iCard card = gameTrainDeck.draw();
-            newHand.add(card);
             if (((TrainCarCard)card).getType() == TrainCarCardType.LOCOMOTIVE){
                 locomotiveCounter += 1;
             }
+            if (((TrainCarCard)card).getType() == TrainCarCardType.LOCOMOTIVE && locomotiveCounter == 2){
+                while (((TrainCarCard)card).getType() == TrainCarCardType.LOCOMOTIVE){
+                    // add card to discard
+                    gameTrainDeck.addCardToDiscardPile((TrainCarCard) card);
+                    card = gameTrainDeck.draw();
+                }
+            }
+            newHand.add(card);
         }
 
-        if (locomotiveCounter >= 3){
-            return replaceAllFaceUp();
-        }
+//        if (locomotiveCounter >= 3){
+//            return replaceAllFaceUp();
+//        }
 
         //add new cards to face up cards
         for (iCard c: newHand){
-            gameTrainDeck.addCard((TrainCarCard) c);
+//            gameTrainDeck.addCardToFaceUp((TrainCarCard) c);
+            faceUpTrainCarCards.add((TrainCarCard) c);
         }
 
         return newHand;
