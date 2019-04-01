@@ -11,15 +11,18 @@ public class TrainCarCardDeck implements iDeck {
     private List<iCard> faceUpCards = new ArrayList<>();
 
     public iCard draw() {
+        if (drawPile.size() <= 5){
+            addDiscardToTrainDeck();
+        }
         int numRemaining = drawPile.size();
         Random rand = new Random();
         int randomCardIndex = rand.nextInt(numRemaining);
         TrainCarCard card = (TrainCarCard) drawPile.get(randomCardIndex);
         drawPile.remove(randomCardIndex);
 
-        if (drawPile.size() <= 5){
-            addDiscardToTrainDeck();
-        }
+//        if (drawPile.size() <= 5){
+//            addDiscardToTrainDeck();
+//        }
 
         return card;
     }
@@ -32,6 +35,10 @@ public class TrainCarCardDeck implements iDeck {
 
         //clear discardPile
         discardPile.clear();
+    }
+
+    public void addCardToFaceUp(TrainCarCard card){
+        faceUpCards.add(card);
     }
 
     public void addCard(TrainCarCard card) {
