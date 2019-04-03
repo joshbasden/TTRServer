@@ -1,6 +1,6 @@
 package Command.ClientCommand;
 
-public class AccountForTrainCarCardDraw implements iClientCommand {
+public class AccountForTrainCarCardDrawCommand implements iClientCommand {
     int deckSize;
 
     public int getDeckSize() {
