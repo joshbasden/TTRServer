@@ -457,7 +457,7 @@ public class Model {
                 //add card to players hand
                 player.addTrainCard(card);
             }
-
+            
             TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
             trainCarCardHand.setCards(cards);
             dealTrainCarCardsCommand.setHand(trainCarCardHand);
@@ -465,6 +465,15 @@ public class Model {
             dealTrainCarCardsCommandData.setData(new Gson().toJson(dealTrainCarCardsCommand));
             users.get(username).addCommand(dealTrainCarCardsCommandData);
         }
+
+        // add update train cards command
+        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        accountForDraws.setDeckSize(game.getTrainDeckSize());
+        CommandData updateCardNum = new CommandData();
+        updateCardNum.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
+        updateCardNum.setData(new Gson().toJson(accountForDraws));
+        addCommandToAllPlayers(game, updateCardNum);
+
     }
 
     private Game getAssociatedGame(String playerUsername) {
