@@ -13,7 +13,7 @@ public class Player {
     private String username;
     private PlayerColor color;
     private int score = 0;
-    private int numTrains = 45;
+    private int numTrains = 5;
     private DestinationCardHand destinationCardHand = new DestinationCardHand();
     private TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
     private List<Route> routesOwned = new ArrayList<>();
