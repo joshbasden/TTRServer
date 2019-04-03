@@ -389,6 +389,10 @@ public class Game {
         return gameTrainDeck.getDrawPile().size();
     }
 
+    public int getDestinationDeckSize() {
+        return gameDestinationDeck.getCards().size();
+    }
+
     public String getGameName() {
         return gameInfo.getGameName();
     }

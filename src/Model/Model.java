@@ -312,7 +312,7 @@ public class Model {
         statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
         statsChangeArray.add(statsChange);
 
-        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        AccountForTrainCarCardDrawCommand accountForDraws = new AccountForTrainCarCardDrawCommand();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
         //add an event of drawing a face up
@@ -382,7 +382,7 @@ public class Model {
         statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
         statsChangeArray.add(statsChange);
 
-        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        AccountForTrainCarCardDrawCommand accountForDraws = new AccountForTrainCarCardDrawCommand();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
         updateStatsCommand.setUsername(player);
@@ -526,7 +526,16 @@ public class Model {
         CommandData updateStatsCommandData = new CommandData();
         updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+
+        AccountForDestinationDrawCommand accountForDestinationDrawCommand = new AccountForDestinationDrawCommand();
+        accountForDestinationDrawCommand.setDeckSize(game.getDestinationDeckSize());
+        CommandData destinationCountCommandData = new CommandData();
+        destinationCountCommandData.setType(ClientCommandType.C_ACCOUNT_FOR_DESTINATION_DRAW);
+        destinationCountCommandData.setData(new Gson().toJson(accountForDestinationDrawCommand));
+
+        addCommandToAllPlayers(game, destinationCountCommandData);
         addCommandToAllPlayers(game, updateStatsCommandData);
+
         res.setSuccess(true);
         res.setCards(cardsAdded);
         return res;
@@ -579,7 +588,15 @@ public class Model {
         CommandData updateStatsCommandData = new CommandData();
         updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+
+        AccountForDestinationDrawCommand accountForDestinationDrawCommand = new AccountForDestinationDrawCommand();
+        accountForDestinationDrawCommand.setDeckSize(game.getDestinationDeckSize());
+        CommandData destinationCountCommandData = new CommandData();
+        destinationCountCommandData.setType(ClientCommandType.C_ACCOUNT_FOR_DESTINATION_DRAW);
+        destinationCountCommandData.setData(new Gson().toJson(accountForDestinationDrawCommand));
+
         addCommandToAllPlayers(game, updateStatsCommandData);
+        addCommandToAllPlayers(game, destinationCountCommandData);
         return res;
     }
 
