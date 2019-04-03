@@ -378,7 +378,6 @@ public class Game {
         for (Player player: getGamePlayers().values()) {
             if (player.getRoutesOwned().size() == biggestSoFar) {
                 bonusPlayers.add(player.getUsername());
-                player.setScore(player.getScore() + 10);
             }
         }
         return bonusPlayers;

@@ -246,6 +246,7 @@ public class Model {
             playerSummary.setPtsReducedFromDestinations(destinationPoints.get(1));
             if (usernamesOfBonusPlayer.contains(player.getUsername())) {
                 playerSummary.setPtsFromMostClaimedRoutes(10); //TODO: Maybe get longest path instead
+                player.setScore(player.getScore() + 10);
             }
             else {
                 playerSummary.setPtsFromMostClaimedRoutes(0);

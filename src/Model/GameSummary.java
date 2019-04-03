@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameSummary {
-    List<PlayerSummary> players;
+    List<PlayerSummary> players = new ArrayList<>();
 
     public void sort() {
         List<PlayerSummary> summaries = new ArrayList<>();
