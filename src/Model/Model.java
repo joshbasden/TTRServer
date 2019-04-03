@@ -467,7 +467,7 @@ public class Model {
         }
 
         // add update train cards command
-        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        AccountForTrainCarCardDrawCommand accountForDraws = new AccountForTrainCarCardDrawCommand();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
         CommandData updateCardNum = new CommandData();
         updateCardNum.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
