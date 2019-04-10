@@ -38,6 +38,14 @@ public class Server {
         }
 
         String portNumber = args[0];
-        new Server().run(portNumber);
+        String databaseName = args[1];
+        try {
+            PluginRegistry.instance.setDatabasePlugin(databaseName);
+            new Server().run(portNumber);
+        } catch (PluginRegistry.PluginNotFoundException e) {
+            System.out.println("Plugin " + databaseName + " not registered.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
