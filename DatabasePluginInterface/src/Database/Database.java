@@ -11,6 +11,7 @@ public interface Database {
     boolean verifyPassword(String username, String password);
     boolean openConnection();
     boolean closeConnection();
+    boolean initializeSchemas();
     ArrayList<String> getGames();
     ArrayList<String> getCommandsForGame(String gameName);
 }

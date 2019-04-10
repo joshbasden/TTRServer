@@ -14,6 +14,8 @@ public class PluginRegistry {
     public void registerPlugin(PluginDescriptor descriptor) {
         try {
             PrintWriter writer = new PrintWriter("Configuration.txt");
+            writer.println(
+                    descriptor.getName() + " " + descriptor.getClassPath());
         } catch (FileNotFoundException e) {
             System.out.println("Config file not found.");
         }
