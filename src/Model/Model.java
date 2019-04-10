@@ -246,6 +246,7 @@ public class Model {
             playerSummary.setPtsReducedFromDestinations(destinationPoints.get(1));
             if (usernamesOfBonusPlayer.contains(player.getUsername())) {
                 playerSummary.setPtsFromMostClaimedRoutes(10); //TODO: Maybe get longest path instead
+                player.setScore(player.getScore() + 10);
             }
             else {
                 playerSummary.setPtsFromMostClaimedRoutes(0);
@@ -312,7 +313,7 @@ public class Model {
         statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
         statsChangeArray.add(statsChange);
 
-        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        AccountForTrainCarCardDrawCommand accountForDraws = new AccountForTrainCarCardDrawCommand();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
         //add an event of drawing a face up
@@ -382,7 +383,7 @@ public class Model {
         statsChange.setType(StatsChangeType.ADD_TRAIN_CAR_CARDS);
         statsChangeArray.add(statsChange);
 
-        AccountForTrainCarCardDraw accountForDraws = new AccountForTrainCarCardDraw();
+        AccountForTrainCarCardDrawCommand accountForDraws = new AccountForTrainCarCardDrawCommand();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
 
         updateStatsCommand.setUsername(player);
@@ -457,7 +458,7 @@ public class Model {
                 //add card to players hand
                 player.addTrainCard(card);
             }
-
+            
             TrainCarCardHand trainCarCardHand = new TrainCarCardHand();
             trainCarCardHand.setCards(cards);
             dealTrainCarCardsCommand.setHand(trainCarCardHand);
@@ -465,6 +466,15 @@ public class Model {
             dealTrainCarCardsCommandData.setData(new Gson().toJson(dealTrainCarCardsCommand));
             users.get(username).addCommand(dealTrainCarCardsCommandData);
         }
+
+        // add update train cards command
+        AccountForTrainCarCardDrawCommand accountForDraws = new AccountForTrainCarCardDrawCommand();
+        accountForDraws.setDeckSize(game.getTrainDeckSize());
+        CommandData updateCardNum = new CommandData();
+        updateCardNum.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
+        updateCardNum.setData(new Gson().toJson(accountForDraws));
+        addCommandToAllPlayers(game, updateCardNum);
+
     }
 
     private Game getAssociatedGame(String playerUsername) {
@@ -526,7 +536,16 @@ public class Model {
         CommandData updateStatsCommandData = new CommandData();
         updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+
+        AccountForDestinationDrawCommand accountForDestinationDrawCommand = new AccountForDestinationDrawCommand();
+        accountForDestinationDrawCommand.setDeckSize(game.getDestinationDeckSize());
+        CommandData destinationCountCommandData = new CommandData();
+        destinationCountCommandData.setType(ClientCommandType.C_ACCOUNT_FOR_DESTINATION_DRAW);
+        destinationCountCommandData.setData(new Gson().toJson(accountForDestinationDrawCommand));
+
+        addCommandToAllPlayers(game, destinationCountCommandData);
         addCommandToAllPlayers(game, updateStatsCommandData);
+
         res.setSuccess(true);
         res.setCards(cardsAdded);
         return res;
@@ -579,7 +598,15 @@ public class Model {
         CommandData updateStatsCommandData = new CommandData();
         updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
+
+        AccountForDestinationDrawCommand accountForDestinationDrawCommand = new AccountForDestinationDrawCommand();
+        accountForDestinationDrawCommand.setDeckSize(game.getDestinationDeckSize());
+        CommandData destinationCountCommandData = new CommandData();
+        destinationCountCommandData.setType(ClientCommandType.C_ACCOUNT_FOR_DESTINATION_DRAW);
+        destinationCountCommandData.setData(new Gson().toJson(accountForDestinationDrawCommand));
+
         addCommandToAllPlayers(game, updateStatsCommandData);
+        addCommandToAllPlayers(game, destinationCountCommandData);
         return res;
     }
 

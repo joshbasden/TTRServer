@@ -23,5 +23,4 @@ public class RegisterRequest implements iRequest {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }
