@@ -16,11 +16,12 @@ public class PluginRegistry {
 
     public void registerPlugin(PluginDescriptor descriptor) {
         try {
-            PrintWriter writer = new PrintWriter("Configuration.txt");
-            writer.println(descriptor.getName() + " " + descriptor.getJarPath() + " " +
-                    descriptor.getJarName() + " " + descriptor.getClassName());
+            FileWriter writer = new FileWriter(new File("resources/Configuration.txt"), true);
+            writer.write(descriptor.getName() + " " + descriptor.getJarPath() + " " +
+                    descriptor.getJarName() + " " + descriptor.getClassName() + "\n");
             writer.close();
-        } catch (FileNotFoundException e) {
+            System.out.println("Plugin registered successfully.");
+        } catch (IOException e) {
             System.out.println("Config file not found.");
         }
     }
@@ -44,7 +45,7 @@ public class PluginRegistry {
 
     private PluginDescriptor getPluginInfo(String name) throws PluginNotFoundException {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("Configuration.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("resources/Configuration.txt"));
             String line = reader.readLine();
             while (line != null) {
                 String[] split = line.split("\\s+");
