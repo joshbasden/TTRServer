@@ -45,6 +45,7 @@ public class Server {
         } catch (PluginRegistry.PluginNotFoundException e) {
             System.out.println("Plugin " + databaseName + " not registered.");
         } catch (Exception e) {
+            System.out.println("Usage: java TTRServer.jar <port> <plugin-name>");
             e.printStackTrace();
         }
     }
