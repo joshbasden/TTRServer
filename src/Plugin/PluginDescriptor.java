@@ -3,12 +3,14 @@ package Plugin;
 public class PluginDescriptor {
     private String name;
     private String className;
-    private String classPath;
+    private String jarName;
+    private String jarPath;
 
-    public PluginDescriptor(String name, String className, String classPath) {
+    public PluginDescriptor(String name, String jarPath, String jarName, String className) {
         this.name = name;
         this.className = className;
-        this.classPath = classPath;
+        this.jarName = jarName;
+        this.jarPath = jarPath;
     }
 
     public String getName() {
@@ -27,11 +29,19 @@ public class PluginDescriptor {
         this.className = className;
     }
 
-    public String getClassPath() {
-        return classPath;
+    public String getJarName() {
+        return jarName;
     }
 
-    public void setClassPath(String classPath) {
-        this.classPath = classPath;
+    public void setJarName(String jarName) {
+        this.jarName = jarName;
+    }
+
+    public String getJarPath() {
+        return jarPath;
+    }
+
+    public void setJarPath(String jarPath) {
+        this.jarPath = jarPath;
     }
 }
