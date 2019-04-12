@@ -1,5 +1,7 @@
 package Server;
 
+import Plugin.PluginDescriptor;
+import Plugin.PluginRegistry;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -27,13 +29,23 @@ public class Server {
         server.start();
         System.out.println("Server started");
     }
+
     public static void main(String[] args) {
+        if (args[0].equals("register")) {
+            PluginDescriptor descriptor = new PluginDescriptor(args[1], args[2], args[3], args[4]);
+            PluginRegistry.instance.registerPlugin(descriptor);
+            return;
+        }
+
         String portNumber = args[0];
-	if (portNumber.equals("register") {
-		//register
-	}
-	else {
-		new Server().run(portNumber);
-	}
+        String databaseName = args[1];
+        try {
+            PluginRegistry.instance.setDatabasePlugin(databaseName);
+            new Server().run(portNumber);
+        } catch (PluginRegistry.PluginNotFoundException e) {
+            System.out.println("Plugin " + databaseName + " not registered.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

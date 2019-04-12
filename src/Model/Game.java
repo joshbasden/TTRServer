@@ -6,7 +6,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -256,8 +255,6 @@ public class Game {
                 route.setCity1(cities.get(city1));
                 route.setCity2(cities.get(city2));
                 route.setNumTracks(routeJson.get("numTracks").getAsInt());
-//                route.setPoints(routeJson.get("points").getAsInt());
-
                 route.setOwner("");
                 //TODO: Read in if double route or not
                 route.setColor(RouteColor.valueOf(color.substring(1, color.length() - 1)));
