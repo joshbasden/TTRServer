@@ -29,6 +29,11 @@ public class Server {
     }
     public static void main(String[] args) {
         String portNumber = args[0];
-        new Server().run(portNumber);
+	if (portNumber.equals("register") {
+		//register
+	}
+	else {
+		new Server().run(portNumber);
+	}
     }
 }
