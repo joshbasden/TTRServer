@@ -43,8 +43,9 @@ public class Server {
             PluginRegistry.instance.setDatabasePlugin(databaseName);
             new Server().run(portNumber);
         } catch (PluginRegistry.PluginNotFoundException e) {
-            System.out.println("Plugin " + databaseName + " not registered.");
+            System.out.println("Plugin " + databaseName + " is not registered.");
         } catch (Exception e) {
+            System.out.println("Usage: java TTRServer.jar <port> <plugin-name>");
             e.printStackTrace();
         }
     }
