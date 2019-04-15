@@ -158,7 +158,6 @@ public class ServerCommandHandler implements HttpHandler {
         }
     }
 
-
     private String getHeader(Headers h){
         try {
             List<String> values = h.get("type");
@@ -180,7 +179,6 @@ public class ServerCommandHandler implements HttpHandler {
         }
         return sb.toString();
     }
-
 
     private void writeString(String str, OutputStream os) throws IOException {
         OutputStreamWriter sw = new OutputStreamWriter(os);

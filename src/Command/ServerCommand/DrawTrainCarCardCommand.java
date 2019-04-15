@@ -15,11 +15,14 @@ public class DrawTrainCarCardCommand implements iServerCommand {
     @Override
     public iResult execute() {
         DrawTrainCarCardService drawTrainCarCardService = new DrawTrainCarCardService();
-
         return drawTrainCarCardService.getTopTrainCarCard((DrawTrainCarCardRequest)data);
     }
 
     public iRequest getData() {
         return data;
+    }
+
+    public void setData(iRequest data) {
+        this.data = data;
     }
 }

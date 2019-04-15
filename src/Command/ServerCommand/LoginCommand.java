@@ -11,9 +11,11 @@ import Service.LoginService;
 
 public class LoginCommand implements iServerCommand {
     private iRequest data;
+
     public LoginCommand(iRequest request) {
         data = request;
     }
+
     @Override
     public LoginResult execute() {
         LoginService loginService = new LoginService();
