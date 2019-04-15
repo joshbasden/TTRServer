@@ -1,8 +1,6 @@
-import DAO.CommandDAO;
-import DAO.DataBaseException;
-import DAO.GameDAO;
-import DAO.UserDAO;
+
 import Database.Database;
+import Database.DatabaseException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,14 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+
 public class SQL implements Database {
 
     UserDAO userDAO;
     CommandDAO commandDAO;
     GameDAO gameDAO;
     private Connection conn;
-    // TODO: need to figure out what to do with commit
-    boolean commit = true; // need to change back to false if add commit to closeConnection()
 
     public SQL(){
         userDAO = new UserDAO();
@@ -26,37 +23,37 @@ public class SQL implements Database {
     }
 
     @Override
-    public boolean addNewUser(String s, String s1) {
+    public boolean addNewUser(String s, String s1) throws DatabaseException {
         return userDAO.addNewUser(s, s1);
     }
 
     @Override
-    public boolean updateGame(String s, String s1) {
+    public boolean updateGame(String s, String s1) throws DatabaseException {
         return gameDAO.updateGame(s, s1);
     }
 
     @Override
-    public boolean addCommand(String s, String s1) {
+    public boolean addCommand(String s, String s1) throws DatabaseException {
         return commandDAO.addCommand(s, s1);
     }
 
     @Override
-    public boolean clearCommandsForGame(String s) {
+    public boolean clearCommandsForGame(String s) throws DatabaseException {
         return commandDAO.clearCommandsForGame(s);
     }
 
     @Override
-    public int getCommandsLength(String s) {
+    public int getCommandsLength(String s) throws DatabaseException {
         return 0;
     }
 
     @Override
-    public boolean verifyPassword(String s, String s1) {
+    public boolean verifyPassword(String s, String s1) throws DatabaseException {
         return userDAO.verifyPassword(s, s1);
     }
 
     @Override
-    public boolean openConnection() {
+    public boolean openConnection() throws DatabaseException {
         try {
             Class.forName("org.sqlite.JDBC");
             final String CONNECTION_URL = "jdbc:sqlite:SQLDB.db";
@@ -80,8 +77,7 @@ public class SQL implements Database {
     }
 
     @Override
-    public boolean closeConnection() {
-        // TODO: need to see if we can add boolean as attribute or find work around
+    public boolean closeConnection(boolean commit) throws DatabaseException {
         try {
             if (commit) {
                 conn.commit();
@@ -102,7 +98,7 @@ public class SQL implements Database {
 
 
     @Override
-    public boolean initializeSchemas() {
+    public boolean initializeSchemas() throws DatabaseException {
         String command =    "CREATE TABLE IF NOT EXISTS 'Commands' ('ID' INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "'Command' BLOB, 'GameName' TEXT)";
         String game = "CREATE TABLE IF NOT EXISTS 'Games' ('GameName' TEXT NOT NULL UNIQUE," +
@@ -132,12 +128,12 @@ public class SQL implements Database {
     }
 
     @Override
-    public ArrayList<String> getGames() {
+    public ArrayList<String> getGames() throws DatabaseException {
         return gameDAO.getGames();
     }
 
     @Override
-    public ArrayList<String> getCommandsForGame(String s) {
+    public ArrayList<String> getCommandsForGame(String s) throws DatabaseException {
         return commandDAO.getCommandsForGame(s);
     }
 
