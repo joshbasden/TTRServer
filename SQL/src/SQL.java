@@ -100,7 +100,7 @@ public class SQL implements Database {
     @Override
     public boolean initializeSchemas() throws DatabaseException {
         String command =    "CREATE TABLE IF NOT EXISTS 'Commands' ('ID' INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "'Command' BLOB, 'GameName' TEXT)";
+                "'Command' BLOB, 'GameName' TEXT, 'Type' TEXT)";
         String game = "CREATE TABLE IF NOT EXISTS 'Games' ('GameName' TEXT NOT NULL UNIQUE," +
                 "'Data' BLOB NOT NULL)";
         String user = "CREATE TABLE IF NOT EXISTS 'Users' ('Username' TEXT NOT NULL, 'Password' TEXT NOT NULL)";
