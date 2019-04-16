@@ -50,7 +50,7 @@ public class PluginRegistry {
             String line = reader.readLine();
             while (line != null) {
                 String[] split = line.split("\\s+");
-                if (split[0] == name) {
+                if (split[0].equals(name)) {
                     return new PluginDescriptor(split[0], split[1], split[2], split[3]);
                 }
                 line = reader.readLine();

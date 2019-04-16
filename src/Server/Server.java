@@ -40,6 +40,17 @@ public class Server {
 
         String portNumber = args[0];
         String databaseName = args[1];
+
+        try {
+            PluginRegistry.instance.setDatabasePlugin(databaseName);
+            new Server().run(portNumber);
+        } catch (PluginRegistry.PluginNotFoundException e) {
+            System.out.println("Plugin " + databaseName + " is not registered.");
+        } catch (Exception e) {
+            System.out.println("Usage: java TTRServer.jar <port> <plugin-name>");
+            e.printStackTrace();
+        }
+
         Model model = Model.getInstance();
         try {
             int N = Integer.parseInt(args[2]);
@@ -49,15 +60,6 @@ public class Server {
             e.printStackTrace();
             System.out.println("The third argument must be a valid integer. Defaulting to 20.");
             model.setN(20);
-        }
-        try {
-            PluginRegistry.instance.setDatabasePlugin(databaseName);
-            new Server().run(portNumber);
-        } catch (PluginRegistry.PluginNotFoundException e) {
-            System.out.println("Plugin " + databaseName + " is not registered.");
-        } catch (Exception e) {
-            System.out.println("Usage: java TTRServer.jar <port> <plugin-name>");
-            e.printStackTrace();
         }
     }
 }
