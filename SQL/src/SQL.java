@@ -15,6 +15,7 @@ public class SQL implements Database {
     CommandDAO commandDAO;
     GameDAO gameDAO;
     private Connection conn;
+    
 
     public SQL(){
         userDAO = new UserDAO();
