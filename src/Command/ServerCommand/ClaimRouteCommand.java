@@ -25,4 +25,9 @@ public class ClaimRouteCommand implements iServerCommand {
     public void setData(ClaimRouteRequest data) {
         this.data = data;
     }
+
+    @Override
+    public String getType() {
+        return type.name();
+    }
 }

@@ -30,4 +30,8 @@ public class GetCommandsCommand implements iServerCommand {
         this.data = data;
     }
 
+    @Override
+    public String getType() {
+        return type.name();
+    }
 }

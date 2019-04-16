@@ -26,6 +26,6 @@ public class AssignDestinationCardsCommand implements iServerCommand {
 
     @Override
     public String getType() {
-        return type.toString();
+        return type.name();
     }
 }

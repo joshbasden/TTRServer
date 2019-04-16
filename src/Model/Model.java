@@ -783,7 +783,7 @@ public class Model {
 
     private void addCommandToDatabase(String gameName, iServerCommand command) {
         if (!restarting) {
-            databaseService.addCommand(gameName, command., command);
+            databaseService.addCommand(gameName, command.getType(), command);
         }
         increaseCheckpointCount(gameName);
     }

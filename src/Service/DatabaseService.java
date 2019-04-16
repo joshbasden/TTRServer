@@ -1,11 +1,13 @@
 package Service;
 
-import Command.ServerCommand.iServerCommand;
+import Command.ServerCommand.*;
 import Model.Game;
 import Model.User;
 import Database.Database;
 import Plugin.PluginRegistry;
 import com.google.gson.Gson;
+import javafx.scene.web.HTMLEditorSkin;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,14 +153,16 @@ public class DatabaseService {
     }
 
     public ArrayList<iServerCommand> getCommandsForGame(String gameName) {
-        //TODO: Parse JSON
         try {
             database.openConnection();
             ArrayList<String> commands = database.getCommandsForGame(gameName);
             database.closeConnection(true);
             System.out.println("Still need to parse the json...");
-            return new ArrayList<>();
-            //return commands;
+            ArrayList<iServerCommand> serverCommands = new ArrayList<>();
+            for (int i = 0; i < commands.size(); i += 2) {
+                serverCommands.add(getCommandFromType(CommandType.valueOf(commands.get(i)), commands.get(i + 1)));
+            }
+            return serverCommands;
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -166,5 +170,40 @@ public class DatabaseService {
             } catch (Exception f) { return new ArrayList<>(); }
             return new ArrayList<>();
         }
+    }
+
+    private static iServerCommand getCommandFromType(CommandType type, String command) {
+        Gson gson = new Gson();
+        switch (type) {
+            case S_POLL:
+                return gson.fromJson(command, GetCommandsCommand.class);
+            case S_LOGIN:
+                return gson.fromJson(command, LoginCommand.class);
+            case S_END_TURN:
+                return gson.fromJson(command, EndTurnCommand.class);
+            case S_REGISTER:
+                return gson.fromJson(command, RegisterCommand.class);
+            case S_JOIN_GAME:
+                return gson.fromJson(command, JoinGameCommand.class);
+            case S_CLAIM_GRAY:
+                return gson.fromJson(command, ClaimGrayCommand.class);
+            case S_ASSIGN_DEST:
+                return gson.fromJson(command, AssignDestinationCardsCommand.class);
+            case S_ASSIGN_FIRST_DEST:
+                return gson.fromJson(command, AssignFirstDestinationCardsCommand.class);
+            case S_CLAIM_ROUTE:
+                return gson.fromJson(command, ClaimRouteCommand.class);
+            case S_CREATE_GAME:
+                return gson.fromJson(command, CreateGameCommand.class);
+            case S_SEND_MESSAGE:
+                return gson.fromJson(command, SendMessageCommand.class);
+            case S_DRAW_FROM_TRAIN_PILE:
+                return gson.fromJson(command, DrawTrainCarCardCommand.class);
+            case S_DRAW_FACE_UP_TRAIN_CAR_CARD:
+                return gson.fromJson(command, DrawFaceUpCommand.class);
+            case S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE:
+                return gson.fromJson(command, DrawDestinationCardsCommand.class);
+        }
+        return null;
     }
 }

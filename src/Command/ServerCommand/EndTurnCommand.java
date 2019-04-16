@@ -28,4 +28,9 @@ public class EndTurnCommand implements iServerCommand {
         this.data = data;
     }
 
+    @Override
+    public String getType() {
+        return type.name();
+    }
+
 }

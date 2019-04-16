@@ -29,4 +29,9 @@ public class RegisterCommand implements iServerCommand {
     public void setData(iRequest data) {
         this.data = data;
     }
+
+    @Override
+    public String getType() {
+        return type.name();
+    }
 }
