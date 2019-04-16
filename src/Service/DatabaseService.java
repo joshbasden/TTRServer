@@ -104,13 +104,18 @@ public class DatabaseService {
     }
 
     public List<User> getUsers() {
-        //TODO: Parse JSON to actually return the games
         try {
             database.openConnection();
             ArrayList<String> users = database.getUsers();
             database.closeConnection(true);
-            System.out.println("Still need to parse the JSON...");
-            return new ArrayList<>();
+            ArrayList<User> userList = new ArrayList<>();
+            for(int i = 0; i < users.size(); i += 2) {
+                User user = new User();
+                user.setUsername(users.get(i));
+                user.setPassword(users.get(i + 1));
+                userList.add(user);
+            }
+            return userList;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -125,14 +130,17 @@ public class DatabaseService {
     }
 
     public ArrayList<Game> getGames() {
-        //TODO: Parse JSON to actually return the games
         try {
             database.openConnection();
             ArrayList<String> games = database.getGames();
             database.closeConnection(true);
             System.out.println("Still need to parse the JSON...");
-            return new ArrayList<>();
-            //return games;
+            ArrayList<Game> gameList = new ArrayList<>();
+            for (String game : games) {
+                Gson gson = new Gson();
+                gameList.add(gson.fromJson(game, Game.class));
+            }
+            return gameList;
         } catch (Exception e) {
             e.printStackTrace();
             try {
