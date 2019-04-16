@@ -14,14 +14,15 @@ public class CommandDAO {
 
     public CommandDAO(){}
 
-    public boolean addCommand(String gamename, String command) throws DatabaseException {
-        String sql = "INSERT INTO Commands (GameName, Command) VALUES (?,?);";
+    public boolean addCommand(String gamename, String type, String command) throws DatabaseException {
+        String sql = "INSERT INTO Commands (GameName, Command, Type) VALUES (?,?,?);";
         try{
             PreparedStatement stmt = null;
             try {
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(1, gamename);
                 stmt.setString(2, command);
+                stmt.setString(3, type);
 
                 // update in table
                 stmt.executeUpdate();

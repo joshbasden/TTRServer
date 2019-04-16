@@ -33,8 +33,8 @@ public class SQL implements Database {
     }
 
     @Override
-    public boolean addCommand(String s, String s1) throws DatabaseException {
-        return commandDAO.addCommand(s, s1);
+    public boolean addCommand(String s, String s1, String s2) throws DatabaseException {
+        return commandDAO.addCommand(s, s1, s2);
     }
 
     @Override
