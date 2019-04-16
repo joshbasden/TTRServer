@@ -7,9 +7,12 @@ import Service.SendMessageService;
 
 public class SendMessageCommand implements iServerCommand {
     private iRequest data;
+
     public SendMessageCommand(iRequest request) {
         data = request;
     }
+
+    @Override
     public SendMessageResult execute() {
         SendMessageService sendMessageService = new SendMessageService();
         return sendMessageService.sendMessage((SendMessageRequest)data);

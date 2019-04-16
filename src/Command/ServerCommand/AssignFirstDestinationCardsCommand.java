@@ -5,8 +5,9 @@ import Request.iRequest;
 import Result.AssignFirstDestinationCardsResult;
 import Service.AssignFirstDestinationCardsService;
 
-public class AssignFirstDestinationCardsCommand {
+public class AssignFirstDestinationCardsCommand implements iServerCommand {
     private iRequest data;
+
     public AssignFirstDestinationCardsCommand(iRequest request) {
         data = request;
     }

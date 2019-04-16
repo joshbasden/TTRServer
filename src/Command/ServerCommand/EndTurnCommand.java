@@ -9,8 +9,15 @@ import Service.EndTurnService;
 
 public class EndTurnCommand implements iServerCommand {
     iRequest data;
+
     public EndTurnCommand(iRequest request){
         data = request;
+    }
+
+    @Override
+    public EndTurnResult execute() {
+        EndTurnService endTurnService = new EndTurnService();
+        return endTurnService.endTurn((EndTurnRequest)data);
     }
 
     public iRequest getData() {
@@ -21,10 +28,4 @@ public class EndTurnCommand implements iServerCommand {
         this.data = data;
     }
 
-    @Override
-    public EndTurnResult execute() {
-        EndTurnService endTurnService = new EndTurnService();
-
-        return endTurnService.endTurn((EndTurnRequest)data);
-    }
 }

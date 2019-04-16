@@ -1,4 +1,5 @@
-package DAO;
+import Database.Database;
+import Database.DatabaseException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +17,7 @@ public class UserDAO {
 
     public UserDAO(){}
 
-    public boolean verifyPassword(String username, String password) {
+    public boolean verifyPassword(String username, String password) throws DatabaseException {
         /**
          * get the specified user from the user table
          * given the username
@@ -54,12 +55,11 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Failed to get user " + username + " to verify password. " + e.getMessage());
-            return false;
+            throw new DatabaseException("Failed to get user " + username + " to verify password. ",  e);
         }
 
     }
-    public boolean addNewUser(String username, String password){
+    public boolean addNewUser(String username, String password) throws DatabaseException{
         /**
          * create the user in the database
          */
@@ -83,8 +83,7 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Failed to create user " + username + " " + password);
-            return false;
+            throw new DatabaseException("Failed to create user " + username + " " + password, e);
         }
     }
 

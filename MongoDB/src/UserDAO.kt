@@ -1,3 +1,4 @@
+import Database.DatabaseException
 import com.mongodb.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
@@ -20,7 +21,7 @@ class UserDAO(val mongoClient: MongoClient) {
         }
         catch (e: Exception) {
             println("Verifying password didn't work")
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 
@@ -45,7 +46,7 @@ class UserDAO(val mongoClient: MongoClient) {
         }
         catch (e: Exception) {
             println("Adding new user failed")
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 

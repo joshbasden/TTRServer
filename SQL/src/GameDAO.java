@@ -1,4 +1,4 @@
-package DAO;
+import Database.DatabaseException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +17,7 @@ public class GameDAO {
     public GameDAO() {
     }
 
-    public boolean updateGame(String gameName, String game) {
+    public boolean updateGame(String gameName, String game) throws DatabaseException {
         String sql1 = "Select GameName FROM Games WHERE GameName = ?";
         String sql2 = "UPDATE Games SET Data = ? WHERE GameName = ?;";
         String sql3 = "INSERT INTO Games VALUES(?,?)";
@@ -59,14 +59,13 @@ public class GameDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Failed to update " + gameName + ". " + e.getMessage());
-            return false;
+            throw new DatabaseException("Failed to update " + gameName + ". ", e);
         }
     }
 
 
 
-    public ArrayList<String> getGames() {
+    public ArrayList<String> getGames() throws DatabaseException{
         String sql = "SELECT * FROM Games";
 
         ArrayList<String> gameList = null;
@@ -93,7 +92,7 @@ public class GameDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error getting all the games. " + e.getMessage());
+            throw new DatabaseException("Error getting all the games. ",  e);
         }
 
         return gameList;

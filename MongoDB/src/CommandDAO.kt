@@ -1,6 +1,7 @@
 import com.mongodb.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
+import Database.DatabaseException
 import org.bson.Document
 import java.util.ArrayList
 
@@ -19,7 +20,7 @@ class CommandDAO(val mongoClient: MongoClient) {
         }
         catch(e: Exception) {
             println("Couldn't get these commands")
-            return -1
+            throw DatabaseException(e.message, e)
         }
     }
 
@@ -41,7 +42,7 @@ class CommandDAO(val mongoClient: MongoClient) {
         }
         catch(e: Exception) {
             println("Couldn't get these commands")
-            return null
+            throw DatabaseException(e.message, e)
         }
     }
 
@@ -59,7 +60,7 @@ class CommandDAO(val mongoClient: MongoClient) {
         }
         catch (e: Exception) {
             println("Adding command failed")
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 
@@ -75,8 +76,7 @@ class CommandDAO(val mongoClient: MongoClient) {
         }
         catch (e: Exception) {
             println("Clearing for game $gameName didn't work")
-
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 }

@@ -1,4 +1,4 @@
-package DAO;
+import Database.DatabaseException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ public class CommandDAO {
 
     public CommandDAO(){}
 
-    public boolean addCommand(String gamename, String command) {
+    public boolean addCommand(String gamename, String command) throws DatabaseException {
         String sql = "INSERT INTO Commands (GameName, Command) VALUES (?,?);";
         try{
             PreparedStatement stmt = null;
@@ -35,12 +35,11 @@ public class CommandDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Failed to add Command: " + command + " for " + gamename + ". " + e.getMessage());
-            return false;
+            throw new DatabaseException("Failed to add Command: " + command + " for " + gamename + ". ", e);
         }
     }
 
-    public boolean clearCommandsForGame(String gamename) {
+    public boolean clearCommandsForGame(String gamename) throws DatabaseException{
         String sql = "DELETE FROM Commands WHERE GameName = ?;";
 
         try{
@@ -60,13 +59,12 @@ public class CommandDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Failed to clear commands for " + gamename + ". " + e.getMessage());
-            return false;
+            throw new DatabaseException("Failed to clear commands for " + gamename + ". ", e);
         }
 
     }
 
-    public int getCommandsLength(String gameName) {
+    public int getCommandsLength(String gameName) throws DatabaseException {
         ArrayList<String> commandList = null;
 
         try{
@@ -74,13 +72,12 @@ public class CommandDAO {
             return commandList.size();
 
         } catch (Exception e) {
-            System.out.println("Error when trying to get command size for " + gameName + ". " + e.getMessage());
-            return -1;
+            throw new DatabaseException("Error when trying to get command size for " + gameName + ". ", e);
         }
 
     }
 
-    public ArrayList<String> getCommandsForGame(String gameName) {
+    public ArrayList<String> getCommandsForGame(String gameName) throws DatabaseException {
 
         String sql = "SELECT Command FROM Commands WHERE GameName = ?";
 
@@ -112,35 +109,9 @@ public class CommandDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Failed to get Commands for " + gameName);
-            e.printStackTrace();
+            throw new DatabaseException("Failed to get Commands for " + gameName, e);
         }
         return commandList;
-    }
-
-    public void clear() throws DataBaseException{
-        /**
-         * clear the person table
-         */
-
-        String sql = "DELETE FROM Persons;";
-        try{
-            Statement stmt = null;
-            try {
-                stmt = conn.createStatement();
-                stmt.executeUpdate(sql);
-
-            }
-            finally {
-                if (stmt != null) {
-                    stmt.close();
-                    stmt = null;
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new DataBaseException("Failed to clear Person table " + e.getMessage());
-        }
     }
 
     public void setConn(Connection conn) {
