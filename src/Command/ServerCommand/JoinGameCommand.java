@@ -11,9 +11,11 @@ import Service.JoinGameService;
 
 public class JoinGameCommand implements iServerCommand {
     private iRequest data;
+
     public JoinGameCommand(iRequest request) {
         data = request;
     }
+
     @Override
     public JoinGameResult execute() {
         JoinGameService joinGameService = new JoinGameService();

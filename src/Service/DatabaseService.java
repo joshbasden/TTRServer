@@ -2,10 +2,12 @@ package Service;
 
 import Command.ServerCommand.iServerCommand;
 import Model.Game;
+import Model.User;
 import Database.Database;
 import Plugin.PluginRegistry;
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseService {
 
@@ -99,6 +101,11 @@ public class DatabaseService {
             } catch (Exception f) { return false; }
             return false;
         }
+    }
+  
+      public List<User> getUsers() {
+        //TODO: Implement
+        return new ArrayList<>();
     }
 
     public ArrayList<String> getGames() {
