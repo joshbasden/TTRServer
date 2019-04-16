@@ -16,6 +16,14 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="DatabasePluginInterface" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../jars/DatabasePluginInterface.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

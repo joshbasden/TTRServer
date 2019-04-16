@@ -43,10 +43,10 @@ public class DatabaseService {
         }
     }
 
-    public boolean addCommand(String gameName, iServerCommand command) {
+    public boolean addCommand(String gameName, String type, iServerCommand command) {
         try {
             database.openConnection();
-            boolean success = database.addCommand(gameName, new Gson().toJson(command));
+            boolean success = database.addCommand(gameName, type, new Gson().toJson(command));
             database.closeConnection(success);
             return success;
         } catch (Exception e) {
