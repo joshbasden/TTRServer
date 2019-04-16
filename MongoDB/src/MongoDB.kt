@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase
 
 class MongoDB : Database {
 
-    private val host: String = "localhost"
+    private val host: String = "192.168.254.79"
     private val port: Int = 27017
 
     private var userDAO : UserDAO? = null

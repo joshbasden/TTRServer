@@ -6,7 +6,6 @@ import Model.User;
 import Database.Database;
 import Plugin.PluginRegistry;
 import com.google.gson.Gson;
-import javafx.scene.web.HTMLEditorSkin;
 
 import java.util.ArrayList;
 import java.util.List;
