@@ -1,4 +1,5 @@
 import Database.Database
+import Database.DatabaseException
 import java.util.ArrayList
 import com.mongodb.MongoClient
 import com.mongodb.client.MongoDatabase
@@ -24,18 +25,18 @@ class MongoDB : Database {
         }
         catch (e : Exception) {
             println("Couldn't open connection")
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 
-    override fun closeConnection(): Boolean {
+    override fun closeConnection(success: Boolean): Boolean {
         try {
             mongoClient!!.close()
             return true
         }
         catch (e : Exception) {
             println("Couldn't close connection")
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 
@@ -50,7 +51,7 @@ class MongoDB : Database {
         }
         catch (e : Exception) {
             println("A problem in initializing the schemas!")
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 
@@ -91,45 +92,45 @@ fun main(args: Array<String>) {
     val mongoDB = MongoDB()
     mongoDB.openConnection()
     mongoDB.initializeSchemas()
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.addCommand("weirdo", "blah")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.addCommand("Dallin", "blah")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.addCommand("Dallin", "b")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.addCommand("Dallin", "bla")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.addCommand("Dallin", "blahasdfasdfs")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     println()
     println(mongoDB.getCommandsForGame("Dallin").toString())
     println()
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.clearCommandsForGame("Dallin")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     println()
     println(mongoDB.getCommandsForGame("weirdo").toString())
     println()
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.updateGame("dallinajfdlajsd", "jlasdfjlaksfjdTED!")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.updateGame("dadlajsd", "TED!")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     println(mongoDB.getGames().toString())
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
     mongoDB.openConnection()
     mongoDB.addNewUser("dallin", "boop")
-    mongoDB.closeConnection()
+    mongoDB.closeConnection(true)
 }

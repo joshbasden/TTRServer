@@ -11,9 +11,11 @@ import Service.GetCommandsService;
 
 public class GetCommandsCommand implements iServerCommand {
     private iRequest data;
+
     public GetCommandsCommand(iRequest request) {
         data = request;
     }
+
     @Override
     public GetCommandsResult execute() {
         GetCommandsService getCommandsService = new GetCommandsService();

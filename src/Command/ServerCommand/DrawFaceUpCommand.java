@@ -1,22 +1,28 @@
 package Command.ServerCommand;
 
 import Request.DrawFaceUpRequest;
-import Request.DrawTrainCarCardRequest;
+import Request.iRequest;
 import Result.DrawFaceUpResult;
-import Result.iResult;
 import Service.DrawFaceUpService;
 
 public class DrawFaceUpCommand implements iServerCommand {
-    DrawFaceUpRequest data;
+    iRequest data;
 
-    public DrawFaceUpCommand(DrawFaceUpRequest req){
+    public DrawFaceUpCommand(iRequest req){
         data = req;
     }
 
     @Override
     public DrawFaceUpResult execute() {
         DrawFaceUpService service = new DrawFaceUpService();
+        return service.drawFaceUp((DrawFaceUpRequest)data);
+    }
 
-        return service.drawFaceUp(data);
+    public iRequest getData() {
+        return data;
+    }
+
+    public void setData(iRequest data) {
+        this.data = data;
     }
 }

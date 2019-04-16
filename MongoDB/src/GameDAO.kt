@@ -1,3 +1,4 @@
+import Database.DatabaseException
 import com.mongodb.MongoClient
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
@@ -23,7 +24,7 @@ class GameDAO(val mongoClient: MongoClient) {
             return returner
         } catch (e: Exception) {
             println("Getting games failed")
-            return null
+            throw DatabaseException(e.message, e)
         }
     }
 
@@ -46,7 +47,7 @@ class GameDAO(val mongoClient: MongoClient) {
         }
         catch (e: Exception) {
             println("Updating the game failed")
-            return false
+            throw DatabaseException(e.message, e)
         }
     }
 }

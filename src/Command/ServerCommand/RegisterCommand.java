@@ -11,9 +11,11 @@ import Service.RegisterService;
 
 public class RegisterCommand implements iServerCommand {
     private iRequest data;
+
     public RegisterCommand(iRequest request) {
         data = request;
     }
+
     @Override
     public RegisterResult execute() {
         RegisterService registerService = new RegisterService();
