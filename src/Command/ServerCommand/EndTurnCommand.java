@@ -9,7 +9,7 @@ import Service.EndTurnService;
 
 public class EndTurnCommand implements iServerCommand {
     iRequest data;
-
+    private CommandType type = CommandType.S_END_TURN;
     public EndTurnCommand(iRequest request){
         data = request;
     }
@@ -26,6 +26,11 @@ public class EndTurnCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 
 }

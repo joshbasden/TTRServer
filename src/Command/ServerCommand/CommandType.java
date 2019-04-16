@@ -18,5 +18,6 @@ public enum CommandType {
     S_CLAIM_GRAY,
     S_DRAW_FACE_UP_TRAIN_CAR_CARD,
     S_DRAW_FROM_TRAIN_PILE,
-    S_END_TURN,
+    S_END_TURN;
+
 }

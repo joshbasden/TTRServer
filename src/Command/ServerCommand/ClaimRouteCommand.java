@@ -7,7 +7,7 @@ import Service.ClaimRouteService;
 
 public class ClaimRouteCommand implements iServerCommand {
     private iRequest data;
-
+    private CommandType type = CommandType.S_CLAIM_ROUTE;
     public ClaimRouteCommand(iRequest request) {
         data = request;
     }
@@ -24,5 +24,10 @@ public class ClaimRouteCommand implements iServerCommand {
 
     public void setData(ClaimRouteRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 }

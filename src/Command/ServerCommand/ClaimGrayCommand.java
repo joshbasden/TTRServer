@@ -8,7 +8,7 @@ import Service.ClaimGrayService;
 
 public class ClaimGrayCommand implements iServerCommand {
     private iRequest data;
-
+    private CommandType type = CommandType.S_CLAIM_GRAY;
     public ClaimGrayCommand(iRequest req){
         data = req;
     }
@@ -25,5 +25,10 @@ public class ClaimGrayCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 }

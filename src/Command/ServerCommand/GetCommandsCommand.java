@@ -11,7 +11,7 @@ import Service.GetCommandsService;
 
 public class GetCommandsCommand implements iServerCommand {
     private iRequest data;
-
+    private CommandType type = CommandType.S_POLL;
     public GetCommandsCommand(iRequest request) {
         data = request;
     }
@@ -30,4 +30,8 @@ public class GetCommandsCommand implements iServerCommand {
         this.data = data;
     }
 
+    @Override
+    public String getType() {
+        return type.name();
+    }
 }

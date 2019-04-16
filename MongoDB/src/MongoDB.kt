@@ -79,8 +79,12 @@ class MongoDB : Database {
         return gameDAO!!.updateGame(gameName, game)
     }
 
-    override fun addCommand(gameName: String?, command: String?): Boolean {
-        return commandDAO!!.addCommand(gameName, command)
+    override fun getUsers(): ArrayList<String> {
+        return userDAO!!.getUsers()
+    }
+
+    override fun addCommand(gameName: String?, type: String?, command: String?): Boolean {
+        return commandDAO!!.addCommand(gameName, type, command)
     }
 
     override fun clearCommandsForGame(gameName: String?): Boolean {
@@ -94,19 +98,19 @@ fun main(args: Array<String>) {
     mongoDB.initializeSchemas()
     mongoDB.closeConnection(true)
     mongoDB.openConnection()
-    mongoDB.addCommand("weirdo", "blah")
+    mongoDB.addCommand("weirdo", "laksdjf","blah")
     mongoDB.closeConnection(true)
     mongoDB.openConnection()
-    mongoDB.addCommand("Dallin", "blah")
+    mongoDB.addCommand("Dallin", "hello","blah")
     mongoDB.closeConnection(true)
     mongoDB.openConnection()
-    mongoDB.addCommand("Dallin", "b")
+    mongoDB.addCommand("Dallin", "hello","b")
     mongoDB.closeConnection(true)
     mongoDB.openConnection()
-    mongoDB.addCommand("Dallin", "bla")
+    mongoDB.addCommand("Dallin", "hello","bla")
     mongoDB.closeConnection(true)
     mongoDB.openConnection()
-    mongoDB.addCommand("Dallin", "blahasdfasdfs")
+    mongoDB.addCommand("Dallin","hi", "blahasdfasdfs")
     mongoDB.closeConnection(true)
     mongoDB.openConnection()
     println()

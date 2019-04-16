@@ -11,7 +11,7 @@ import Service.LoginService;
 
 public class LoginCommand implements iServerCommand {
     private iRequest data;
-
+    private CommandType type = CommandType.S_LOGIN;
     public LoginCommand(iRequest request) {
         data = request;
     }
@@ -28,5 +28,10 @@ public class LoginCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 }

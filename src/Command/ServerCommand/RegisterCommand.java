@@ -11,7 +11,7 @@ import Service.RegisterService;
 
 public class RegisterCommand implements iServerCommand {
     private iRequest data;
-
+    private CommandType type = CommandType.S_REGISTER;
     public RegisterCommand(iRequest request) {
         data = request;
     }
@@ -28,5 +28,10 @@ public class RegisterCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 }
