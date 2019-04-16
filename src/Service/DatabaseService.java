@@ -102,8 +102,8 @@ public class DatabaseService {
             return false;
         }
     }
-  
-      public List<User> getUsers() {
+
+    public List<User> getUsers() {
         //TODO: Parse JSON to actually return the games
         try {
             database.openConnection();

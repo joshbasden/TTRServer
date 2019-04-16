@@ -8,13 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 public class SQL implements Database {
 
     UserDAO userDAO;
     CommandDAO commandDAO;
     GameDAO gameDAO;
     private Connection conn;
+    
 
     public SQL(){
         userDAO = new UserDAO();

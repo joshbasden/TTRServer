@@ -79,6 +79,10 @@ class MongoDB : Database {
         return gameDAO!!.updateGame(gameName, game)
     }
 
+    override fun getUsers(): ArrayList<String> {
+        return userDAO!!.getUsers()
+    }
+
     override fun addCommand(gameName: String?, command: String?): Boolean {
         return commandDAO!!.addCommand(gameName, command)
     }
