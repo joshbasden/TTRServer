@@ -104,16 +104,35 @@ public class DatabaseService {
     }
   
       public List<User> getUsers() {
-        //TODO: Implement
-        return new ArrayList<>();
+        //TODO: Parse JSON to actually return the games
+        try {
+            database.openConnection();
+            ArrayList<String> users = database.getUsers();
+            database.closeConnection(true);
+            System.out.println("Still need to parse the JSON...");
+            return new ArrayList<>();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            try {
+                database.closeConnection(false);
+            }
+            catch (Exception f) {
+                f.printStackTrace();
+            }
+            return new ArrayList<>();
+        }
     }
 
-    public ArrayList<String> getGames() {
+    public ArrayList<Game> getGames() {
+        //TODO: Parse JSON to actually return the games
         try {
             database.openConnection();
             ArrayList<String> games = database.getGames();
             database.closeConnection(true);
-            return games;
+            System.out.println("Still need to parse the JSON...");
+            return new ArrayList<>();
+            //return games;
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -123,12 +142,15 @@ public class DatabaseService {
         }
     }
 
-    public ArrayList<String> getCommandsForGame(String gameName) {
+    public ArrayList<iServerCommand> getCommandsForGame(String gameName) {
+        //TODO: Parse JSON
         try {
             database.openConnection();
             ArrayList<String> commands = database.getCommandsForGame(gameName);
             database.closeConnection(true);
-            return commands;
+            System.out.println("Still need to parse the json...");
+            return new ArrayList<>();
+            //return commands;
         } catch (Exception e) {
             e.printStackTrace();
             try {
