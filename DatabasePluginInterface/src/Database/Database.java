@@ -12,6 +12,7 @@ public interface Database {
     boolean openConnection() throws DatabaseException;
     boolean closeConnection(boolean success) throws DatabaseException;
     boolean initializeSchemas() throws DatabaseException;
+    ArrayList<String> getUsers() throws DatabaseException;
     ArrayList<String> getGames() throws DatabaseException;
     ArrayList<String> getCommandsForGame(String gameName) throws DatabaseException;
     ArrayList<String> getUsers() throws DatabaseException;
