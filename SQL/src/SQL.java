@@ -137,8 +137,25 @@ public class SQL implements Database {
         return commandDAO.getCommandsForGame(s);
     }
 
+    @Override
+    public ArrayList<String> getUsers() throws DatabaseException {
+        return userDAO.getUsers();
+    }
+
     public static void main(String[] args){
 //        SQL mongoDB = new SQL();
+//        try{
+//            mongoDB.openConnection();
+//            System.out.println(mongoDB.getUsers().toString());
+//            mongoDB.closeConnection(true);
+//        }catch (DatabaseException d){
+//            try{
+//                mongoDB.closeConnection(false);
+//                d.printStackTrace();
+//            }catch (DatabaseException e){
+//
+//            }
+//        }
 //        mongoDB.openConnection();
 //        mongoDB.initializeSchemas();
 //        mongoDB.closeConnection();
