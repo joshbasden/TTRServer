@@ -11,7 +11,7 @@ import Service.JoinGameService;
 
 public class JoinGameCommand implements iServerCommand {
     private iRequest data;
-
+    private CommandType type = CommandType.S_JOIN_GAME;
     public JoinGameCommand(iRequest request) {
         data = request;
     }

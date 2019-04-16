@@ -7,6 +7,7 @@ import Service.DrawDestinationCardsService;
 
 public class DrawDestinationCardsCommand implements iServerCommand {
     private iRequest data;
+    private CommandType type = CommandType.S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE;
     public DrawDestinationCardsCommand(iRequest request) {
         data = request;
     }

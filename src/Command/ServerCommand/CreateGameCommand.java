@@ -7,7 +7,7 @@ import Service.CreateGameService;
 
 public class CreateGameCommand implements iServerCommand {
     private iRequest data;
-
+    private CommandType type = CommandType.S_CREATE_GAME;
     public CreateGameCommand(iRequest request) {
         data = request;
     }

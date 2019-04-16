@@ -9,4 +9,5 @@ import Result.iResult;
 
 public interface iServerCommand {
     public iResult execute();
+    public String getType();
 }
