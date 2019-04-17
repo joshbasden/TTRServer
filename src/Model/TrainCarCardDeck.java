@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Random;
 
 public class TrainCarCardDeck implements iDeck {
-    private List<iCard> discardPile = new ArrayList<>();
-    private List<iCard> drawPile = new ArrayList<>();
-    private List<iCard> faceUpCards = new ArrayList<>();
+    private List<TrainCarCard> discardPile = new ArrayList<>();
+    private List<TrainCarCard> drawPile = new ArrayList<>();
+    private List<TrainCarCard> faceUpCards = new ArrayList<>();
 
-    public iCard draw() {
+    public TrainCarCard draw() {
         if (drawPile.size() <= 5){
             addDiscardToTrainDeck();
         }
@@ -28,7 +28,7 @@ public class TrainCarCardDeck implements iDeck {
     }
 
     public void addDiscardToTrainDeck(){
-        for (iCard c: discardPile){
+        for (TrainCarCard c: discardPile){
             addCard((TrainCarCard) c);
         }
         Collections.shuffle(drawPile);
@@ -45,12 +45,12 @@ public class TrainCarCardDeck implements iDeck {
         drawPile.add(card);
     }
 
-    public ArrayList<iCard> drawFaceUp(int ind) {
-        //make arraylist of icard to send back
-        ArrayList<iCard> cards = new ArrayList<iCard>();
+    public ArrayList<TrainCarCard> drawFaceUp(int ind) {
+        //make arraylist of TrainCarCard to send back
+        ArrayList<TrainCarCard> cards = new ArrayList<TrainCarCard>();
 
-        iCard faceUpCard = faceUpCards.get(ind);
-        iCard drawCard = draw();
+        TrainCarCard faceUpCard = faceUpCards.get(ind);
+        TrainCarCard drawCard = draw();
         faceUpCards.set(ind, drawCard);
 
         //first index is the chosen face up card
@@ -81,27 +81,27 @@ public class TrainCarCardDeck implements iDeck {
         return drawPile.size();
     }
 
-    public List<iCard> getDiscardPile() {
+    public List<TrainCarCard> getDiscardPile() {
         return discardPile;
     }
 
-    public void setDiscardPile(List<iCard> discardPile) {
+    public void setDiscardPile(List<TrainCarCard> discardPile) {
         this.discardPile = discardPile;
     }
 
-    public List<iCard> getDrawPile() {
+    public List<TrainCarCard> getDrawPile() {
         return drawPile;
     }
 
-    public void setDrawPile(List<iCard> drawPile) {
+    public void setDrawPile(List<TrainCarCard> drawPile) {
         this.drawPile = drawPile;
     }
 
-    public List<iCard> getFaceUpCards() {
+    public List<TrainCarCard> getFaceUpCards() {
         return faceUpCards;
     }
 
-    public void setFaceUpCards(List<iCard> faceUpCards) {
+    public void setFaceUpCards(List<TrainCarCard> faceUpCards) {
         this.faceUpCards = faceUpCards;
     }
 }

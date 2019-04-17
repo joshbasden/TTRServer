@@ -37,6 +37,15 @@ public class PluginRegistry {
         // Load the jar file's plugin class and set the instance
         Class<? extends Database> databasePlugin = (Class<Database>) loader.loadClass(descriptor.getClassName());
         currentDatabase = databasePlugin.getDeclaredConstructor().newInstance();
+        try {
+            currentDatabase.openConnection();
+            currentDatabase.initializeSchemas();
+            currentDatabase.closeConnection(true);
+        }
+        catch (Exception e) {
+            currentDatabase.closeConnection(false);
+        }
+
         System.out.println("Using plugin " + name);
     }
 
@@ -50,7 +59,7 @@ public class PluginRegistry {
             String line = reader.readLine();
             while (line != null) {
                 String[] split = line.split("\\s+");
-                if (split[0] == name) {
+                if (split[0].equals(name)) {
                     return new PluginDescriptor(split[0], split[1], split[2], split[3]);
                 }
                 line = reader.readLine();

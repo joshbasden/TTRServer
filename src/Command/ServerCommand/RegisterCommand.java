@@ -11,7 +11,7 @@ import Service.RegisterService;
 
 public class RegisterCommand implements iServerCommand {
     private iRequest data;
-    private CommandType type = CommandType.S_REGISTER;
+    private ServerCommandType type = ServerCommandType.S_REGISTER;
     public RegisterCommand(iRequest request) {
         data = request;
     }

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 public class DestinationCardDeck implements iDeck {
-    private List<iCard> cards = new ArrayList<>();
-    private List<iCard> cardsTakenOut = new ArrayList<>();
+    private List<DestinationCard> cards = new ArrayList<>();
+    private List<DestinationCard> cardsTakenOut = new ArrayList<>();
 
-    public iCard draw() {
+    public DestinationCard draw() {
         int numRemaining = cards.size();
         Random rand = new Random();
         int randomCardIndex = rand.nextInt(numRemaining);
@@ -40,19 +40,19 @@ public class DestinationCardDeck implements iDeck {
         cards.add(card);
     }
 
-    public List<iCard> getCards() {
+    public List<DestinationCard> getCards() {
         return cards;
     }
 
-    public void setCards(List<iCard> cards) {
+    public void setCards(List<DestinationCard> cards) {
         this.cards = cards;
     }
 
-    public List<iCard> getCardsTakenOut() {
+    public List<DestinationCard> getCardsTakenOut() {
         return cardsTakenOut;
     }
 
-    public void setCardsTakenOut(List<iCard> cardsTakenOut) {
+    public void setCardsTakenOut(List<DestinationCard> cardsTakenOut) {
         this.cardsTakenOut = cardsTakenOut;
     }
 }
