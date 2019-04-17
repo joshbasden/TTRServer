@@ -46,12 +46,13 @@ class CommandDAO(val mongoClient: MongoClient) {
         }
     }
 
-    fun addCommand(gameName: String?, command: String?): Boolean {
+    fun addCommand(gameName: String?, type: String?, command: String?): Boolean {
         try {
             println("Adding command: $command")
             val db: MongoDatabase = mongoClient.getDatabase("TTR")
             val collection: MongoCollection<Document> = db.getCollection("Commands")
             val doc = Document("gameName", gameName)
+            doc.append("type", type)
             doc.append("command", command)
 
             collection.insertOne(doc)

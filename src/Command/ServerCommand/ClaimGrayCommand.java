@@ -3,12 +3,11 @@ package Command.ServerCommand;
 import Request.ClaimGrayRequest;
 import Request.iRequest;
 import Result.ClaimGrayResult;
-import Result.iResult;
 import Service.ClaimGrayService;
 
 public class ClaimGrayCommand implements iServerCommand {
     private iRequest data;
-
+    private ServerCommandType type = ServerCommandType.S_CLAIM_GRAY;
     public ClaimGrayCommand(iRequest req){
         data = req;
     }
@@ -25,5 +24,10 @@ public class ClaimGrayCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 }

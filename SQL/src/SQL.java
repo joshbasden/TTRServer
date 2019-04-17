@@ -8,13 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
 public class SQL implements Database {
 
     UserDAO userDAO;
     CommandDAO commandDAO;
     GameDAO gameDAO;
     private Connection conn;
+    
 
     public SQL(){
         userDAO = new UserDAO();
@@ -33,8 +33,8 @@ public class SQL implements Database {
     }
 
     @Override
-    public boolean addCommand(String s, String s1) throws DatabaseException {
-        return commandDAO.addCommand(s, s1);
+    public boolean addCommand(String s, String s1, String s2) throws DatabaseException {
+        return commandDAO.addCommand(s, s1, s2);
     }
 
     @Override
@@ -71,8 +71,7 @@ public class SQL implements Database {
             return true;
         }
         catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Could not open a connection");
-            return false;
+            throw new DatabaseException("Could not open a connection", e);
         }
     }
 
@@ -91,8 +90,7 @@ public class SQL implements Database {
             return true;
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DatabaseException("error while closing connection", e);
         }
     }
 
@@ -100,7 +98,7 @@ public class SQL implements Database {
     @Override
     public boolean initializeSchemas() throws DatabaseException {
         String command =    "CREATE TABLE IF NOT EXISTS 'Commands' ('ID' INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "'Command' BLOB, 'GameName' TEXT)";
+                "'Command' BLOB, 'GameName' TEXT, 'Type' TEXT)";
         String game = "CREATE TABLE IF NOT EXISTS 'Games' ('GameName' TEXT NOT NULL UNIQUE," +
                 "'Data' BLOB NOT NULL)";
         String user = "CREATE TABLE IF NOT EXISTS 'Users' ('Username' TEXT NOT NULL, 'Password' TEXT NOT NULL)";
@@ -108,6 +106,7 @@ public class SQL implements Database {
             Statement stmt = null;
             try {
                 stmt = conn.createStatement();
+
                 stmt.executeUpdate(game);
                 stmt.executeUpdate(command);
                 stmt.executeUpdate(user);
@@ -122,8 +121,7 @@ public class SQL implements Database {
             }
         }
         catch (SQLException e) {
-            System.out.println("createTables failed " + e.getMessage());
-            return false;
+            throw new DatabaseException("createTables failed ", e);
         }
     }
 
@@ -137,8 +135,62 @@ public class SQL implements Database {
         return commandDAO.getCommandsForGame(s);
     }
 
+    @Override
+    public boolean clear() throws DatabaseException {
+        String dropComm = "DROP TABLE IF EXISTS Commands";
+        String dropUser = "DROP TABLE IF EXISTS Users";
+        String dropGame = "DROP TABLE IF EXISTS Games";
+
+        try {
+            Statement stmt = null;
+            try {
+                stmt = conn.createStatement();
+                stmt.executeUpdate(dropComm);
+                stmt.executeUpdate(dropUser);
+                stmt.executeUpdate(dropGame);
+
+                return true;
+            }
+            finally {
+                if (stmt != null) {
+                    stmt.close();
+                    stmt = null;
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("createTables failed ", e);
+        }
+
+    }
+
+    @Override
+    public ArrayList<String> getUsers() throws DatabaseException {
+        return userDAO.getUsers();
+    }
+
     public static void main(String[] args){
-//        SQL mongoDB = new SQL();
+        SQL mongoDB = new SQL();
+        try{
+            mongoDB.openConnection();
+            mongoDB.initializeSchemas();
+            mongoDB.closeConnection(true);
+            mongoDB.openConnection();
+            mongoDB.addCommand("Dallin", "NewUser","bla");
+            mongoDB.closeConnection(true);
+            mongoDB.openConnection();
+            System.out.println();
+            System.out.println(mongoDB.getCommandsForGame("Dallin").toString());
+            System.out.println();
+            mongoDB.closeConnection(true);
+        }catch (DatabaseException d){
+            try{
+                mongoDB.closeConnection(false);
+                d.printStackTrace();
+            }catch (DatabaseException e){
+
+            }
+        }
 //        mongoDB.openConnection();
 //        mongoDB.initializeSchemas();
 //        mongoDB.closeConnection();

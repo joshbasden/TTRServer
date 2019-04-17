@@ -4,12 +4,11 @@ package Command.ServerCommand;
 import Request.EndTurnRequest;
 import Request.iRequest;
 import Result.EndTurnResult;
-import Result.iResult;
 import Service.EndTurnService;
 
 public class EndTurnCommand implements iServerCommand {
     iRequest data;
-
+    private ServerCommandType type = ServerCommandType.S_END_TURN;
     public EndTurnCommand(iRequest request){
         data = request;
     }
@@ -26,6 +25,11 @@ public class EndTurnCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 
 }

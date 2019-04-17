@@ -2,9 +2,6 @@ package Server;
 
 import Command.ServerCommand.*;
 import Request.*;
-import Result.AssignFirstDestinationCardsResult;
-import Result.DrawDestinationCardsResult;
-import Result.SendMessageResult;
 import Result.iResult;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.Headers;
@@ -24,7 +21,7 @@ public class ServerCommandHandler implements HttpHandler {
     private iRequest data;
     private iResult response;
     private String jsonStr = null;
-    CommandType type;
+    ServerCommandType type;
 
     public iResult execute() {
         switch (type){
@@ -86,11 +83,11 @@ public class ServerCommandHandler implements HttpHandler {
                 Gson gson = new Gson();
                 // get the type from the header
                 String header = getHeader(exchange.getRequestHeaders());
-                type = CommandType.valueOf(header);
+                type = ServerCommandType.valueOf(header);
                 data = getCommandObject(type, reqData);
                 response = execute();
                 jsonStr = gson.toJson(response);
-                if (!(type == CommandType.S_POLL)) {
+                if (!(type == ServerCommandType.S_POLL)) {
                     System.out.println("");
                     System.out.println(String.format("A %s was received.", data));
                     System.out.println(jsonStr);
@@ -121,7 +118,7 @@ public class ServerCommandHandler implements HttpHandler {
         }
     }
 
-    private iRequest getCommandObject(CommandType type, String reqData){
+    private iRequest getCommandObject(ServerCommandType type, String reqData){
         Gson gson = new Gson();
 
         switch (type) {

@@ -7,6 +7,7 @@ import Service.DrawDestinationCardsService;
 
 public class DrawDestinationCardsCommand implements iServerCommand {
     private iRequest data;
+    private ServerCommandType type = ServerCommandType.S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE;
     public DrawDestinationCardsCommand(iRequest request) {
         data = request;
     }
@@ -21,5 +22,10 @@ public class DrawDestinationCardsCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 }

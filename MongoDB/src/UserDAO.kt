@@ -50,5 +50,24 @@ class UserDAO(val mongoClient: MongoClient) {
         }
     }
 
+    fun getUsers() : ArrayList<String> {
+        try {
+            println("Getting the users")
+            val db: MongoDatabase = mongoClient.getDatabase("TTR")
+            val collection: MongoCollection<Document> = db.getCollection("Users")
 
+            val collector = collection.find().into(ArrayList<Document>())
+            val returner = ArrayList<String>()
+
+            for (c in collector) {
+                returner.add(c["username"].toString())
+                returner.add(c["password"].toString())
+            }
+
+            return returner
+        } catch (e: Exception) {
+            println("Getting games failed")
+            throw DatabaseException(e.message, e)
+        }
+    }
 }

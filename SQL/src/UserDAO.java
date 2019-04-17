@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
@@ -16,6 +17,40 @@ public class UserDAO {
     Connection conn;
 
     public UserDAO(){}
+
+    public ArrayList<String> getUsers() throws DatabaseException{
+        String sql = "SELECT * FROM Users";
+
+        ArrayList<String> userList = null;
+
+        try {
+            PreparedStatement stmt = null;
+            try {
+                stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.isBeforeFirst()) {
+                    userList = new ArrayList<>();
+                    // loop through result set and add games to list
+                    while (rs.next()) {
+                        userList.add(rs.getString("Username"));
+                        userList.add(rs.getString("Password"));
+                    }
+                }
+
+            } finally {
+                if (stmt != null) {
+                    stmt.close();
+                    stmt = null;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("Error getting all the users. ",  e);
+        }
+
+        return userList;
+    }
 
     public boolean verifyPassword(String username, String password) throws DatabaseException {
         /**

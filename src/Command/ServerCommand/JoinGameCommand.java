@@ -11,7 +11,7 @@ import Service.JoinGameService;
 
 public class JoinGameCommand implements iServerCommand {
     private iRequest data;
-
+    private ServerCommandType type = ServerCommandType.S_JOIN_GAME;
     public JoinGameCommand(iRequest request) {
         data = request;
     }
@@ -28,5 +28,10 @@ public class JoinGameCommand implements iServerCommand {
 
     public void setData(iRequest data) {
         this.data = data;
+    }
+
+    @Override
+    public String getType() {
+        return type.name();
     }
 }
