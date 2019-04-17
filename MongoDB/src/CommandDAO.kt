@@ -35,7 +35,6 @@ class CommandDAO(val mongoClient: MongoClient) {
             val returner = ArrayList<String>()
 
             for (c in commands) {
-                returner.add(c["type"].toString())
                 returner.add(c["command"].toString())
             }
 

@@ -5,6 +5,7 @@ import Model.Game;
 import Model.User;
 import Database.Database;
 import Plugin.PluginRegistry;
+import Request.*;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -110,11 +111,13 @@ public class DatabaseService {
             ArrayList<String> users = database.getUsers();
             database.closeConnection(true);
             ArrayList<User> userList = new ArrayList<>();
-            for(int i = 0; i < users.size(); i += 2) {
-                User user = new User();
-                user.setUsername(users.get(i));
-                user.setPassword(users.get(i + 1));
-                userList.add(user);
+            if (users != null) {
+                for (int i = 0; i < users.size(); i += 2) {
+                    User user = new User();
+                    user.setUsername(users.get(i));
+                    user.setPassword(users.get(i + 1));
+                    userList.add(user);
+                }
             }
             return userList;
         }
@@ -135,11 +138,12 @@ public class DatabaseService {
             database.openConnection();
             ArrayList<String> games = database.getGames();
             database.closeConnection(true);
-            System.out.println("Still need to parse the JSON...");
             ArrayList<Game> gameList = new ArrayList<>();
-            for (String game : games) {
-                Gson gson = new Gson();
-                gameList.add(gson.fromJson(game, Game.class));
+            if (games != null) {
+                for (String game : games) {
+                    Gson gson = new Gson();
+                    gameList.add(gson.fromJson(game, Game.class));
+                }
             }
             return gameList;
         } catch (Exception e) {
@@ -156,10 +160,10 @@ public class DatabaseService {
             database.openConnection();
             ArrayList<String> commands = database.getCommandsForGame(gameName);
             database.closeConnection(true);
-            System.out.println("Still need to parse the json...");
             ArrayList<iServerCommand> serverCommands = new ArrayList<>();
-            for (int i = 0; i < commands.size(); i += 2) {
-                serverCommands.add(getCommandFromType(CommandType.valueOf(commands.get(i)), commands.get(i + 1)));
+            for (String command : commands) {
+                ServerCommandData data = new Gson().fromJson(command, ServerCommandData.class);
+                serverCommands.add(getCommandFromType(data.getType(), command));
             }
             return serverCommands;
         } catch (Exception e) {
@@ -171,37 +175,50 @@ public class DatabaseService {
         }
     }
 
-    private static iServerCommand getCommandFromType(CommandType type, String command) {
+    private static String getDataFromJson(String json) {
+        String reverse = new StringBuilder(json).reverse().toString();
+        int ind = 0;
+        char a = 'a';
+        while (a != ',') {
+            a = reverse.charAt(ind);
+            ind++;
+        }
+        String hi = json.substring(8, json.length() - ind);
+        return hi;
+    }
+
+    private static iServerCommand getCommandFromType(ServerCommandType type, String data) {
         Gson gson = new Gson();
+        String command = getDataFromJson(data);
         switch (type) {
             case S_POLL:
-                return gson.fromJson(command, GetCommandsCommand.class);
+                return new GetCommandsCommand(gson.fromJson(command, GetCommandsRequest.class));
             case S_LOGIN:
-                return gson.fromJson(command, LoginCommand.class);
+                return new LoginCommand(gson.fromJson(command, LoginRequest.class));
             case S_END_TURN:
-                return gson.fromJson(command, EndTurnCommand.class);
+                return new EndTurnCommand(gson.fromJson(command, EndTurnRequest.class));
             case S_REGISTER:
-                return gson.fromJson(command, RegisterCommand.class);
+                return new RegisterCommand(gson.fromJson(command, RegisterRequest.class));
             case S_JOIN_GAME:
-                return gson.fromJson(command, JoinGameCommand.class);
+                return new JoinGameCommand(gson.fromJson(command, JoinGameRequest.class));
             case S_CLAIM_GRAY:
-                return gson.fromJson(command, ClaimGrayCommand.class);
+                return new ClaimGrayCommand(gson.fromJson(command, ClaimGrayRequest.class));
             case S_ASSIGN_DEST:
-                return gson.fromJson(command, AssignDestinationCardsCommand.class);
+                return new AssignDestinationCardsCommand(gson.fromJson(command, AssignDestinationCardsRequest.class));
             case S_ASSIGN_FIRST_DEST:
-                return gson.fromJson(command, AssignFirstDestinationCardsCommand.class);
+                return new AssignFirstDestinationCardsCommand(gson.fromJson(command, AssignFirstDestinationCardsRequest.class));
             case S_CLAIM_ROUTE:
-                return gson.fromJson(command, ClaimRouteCommand.class);
+                return new ClaimRouteCommand(gson.fromJson(command, ClaimRouteRequest.class));
             case S_CREATE_GAME:
-                return gson.fromJson(command, CreateGameCommand.class);
+                return new CreateGameCommand(gson.fromJson(command, CreateGameRequest.class));
             case S_SEND_MESSAGE:
-                return gson.fromJson(command, SendMessageCommand.class);
+                return new SendMessageCommand(gson.fromJson(command, SendMessageRequest.class));
             case S_DRAW_FROM_TRAIN_PILE:
-                return gson.fromJson(command, DrawTrainCarCardCommand.class);
+                return new DrawTrainCarCardCommand(gson.fromJson(command, DrawTrainCarCardRequest.class));
             case S_DRAW_FACE_UP_TRAIN_CAR_CARD:
-                return gson.fromJson(command, DrawFaceUpCommand.class);
+                return new DrawFaceUpCommand(gson.fromJson(command, DrawFaceUpRequest.class));
             case S_DRAW_THREE_DESTINATION_CARDS_FROM_DRAW_PILE:
-                return gson.fromJson(command, DrawDestinationCardsCommand.class);
+                return new DrawDestinationCardsCommand(gson.fromJson(command, DrawDestinationCardsRequest.class));
         }
         return null;
     }

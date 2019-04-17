@@ -11,7 +11,7 @@ import Service.GetCommandsService;
 
 public class GetCommandsCommand implements iServerCommand {
     private iRequest data;
-    private CommandType type = CommandType.S_POLL;
+    private ServerCommandType type = ServerCommandType.S_POLL;
     public GetCommandsCommand(iRequest request) {
         data = request;
     }

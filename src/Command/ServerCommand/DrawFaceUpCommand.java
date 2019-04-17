@@ -7,7 +7,7 @@ import Service.DrawFaceUpService;
 
 public class DrawFaceUpCommand implements iServerCommand {
     iRequest data;
-    private CommandType type = CommandType.S_DRAW_FACE_UP_TRAIN_CAR_CARD;
+    private ServerCommandType type = ServerCommandType.S_DRAW_FACE_UP_TRAIN_CAR_CARD;
     public DrawFaceUpCommand(iRequest req){
         data = req;
     }

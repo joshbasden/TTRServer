@@ -99,6 +99,7 @@ public class SQL implements Database {
 
     @Override
     public boolean initializeSchemas() throws DatabaseException {
+//        String drop = "Drop TABLE IF EXISTS Commands";
         String command =    "CREATE TABLE IF NOT EXISTS 'Commands' ('ID' INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "'Command' BLOB, 'GameName' TEXT, 'Type' TEXT)";
         String game = "CREATE TABLE IF NOT EXISTS 'Games' ('GameName' TEXT NOT NULL UNIQUE," +
@@ -108,6 +109,7 @@ public class SQL implements Database {
             Statement stmt = null;
             try {
                 stmt = conn.createStatement();
+//                stmt.executeUpdate(drop);
                 stmt.executeUpdate(game);
                 stmt.executeUpdate(command);
                 stmt.executeUpdate(user);

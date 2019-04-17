@@ -7,7 +7,7 @@ import Service.DrawTrainCarCardService;
 
 public class DrawTrainCarCardCommand implements iServerCommand {
     iRequest data;
-    private CommandType type = CommandType.S_DRAW_FROM_TRAIN_PILE;
+    private ServerCommandType type = ServerCommandType.S_DRAW_FROM_TRAIN_PILE;
     public DrawTrainCarCardCommand(iRequest req){
         data = req;
     }

@@ -37,6 +37,15 @@ public class PluginRegistry {
         // Load the jar file's plugin class and set the instance
         Class<? extends Database> databasePlugin = (Class<Database>) loader.loadClass(descriptor.getClassName());
         currentDatabase = databasePlugin.getDeclaredConstructor().newInstance();
+        try {
+            currentDatabase.openConnection();
+            currentDatabase.initializeSchemas();
+            currentDatabase.closeConnection(true);
+        }
+        catch (Exception e) {
+            currentDatabase.closeConnection(false);
+        }
+
         System.out.println("Using plugin " + name);
     }
 
