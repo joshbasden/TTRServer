@@ -7,7 +7,7 @@ import Service.AssignDestinationCardsService;
 
 public class AssignDestinationCardsCommand implements iServerCommand {
     private iRequest data;
-    private CommandType type = CommandType.S_ASSIGN_DEST;
+    private ServerCommandType type = ServerCommandType.S_ASSIGN_DEST;
     public AssignDestinationCardsCommand(iRequest request) {
         data = request;
     }

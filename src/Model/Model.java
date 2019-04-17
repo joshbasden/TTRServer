@@ -71,13 +71,13 @@ public class Model {
         List<StatsChange> changes = new ArrayList<>();
         changes.add(change);
         updatePlayerStatsCommand.setChanges(changes);
-        CommandData updateStatsCommandData = new CommandData();
+        ClientCommandData updateStatsCommandData = new ClientCommandData();
         updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
 
         AccountForDestinationDrawCommand accountForDestinationDrawCommand = new AccountForDestinationDrawCommand();
         accountForDestinationDrawCommand.setDeckSize(game.getDestinationDeckSize());
-        CommandData destinationCountCommandData = new CommandData();
+        ClientCommandData destinationCountCommandData = new ClientCommandData();
         destinationCountCommandData.setType(ClientCommandType.C_ACCOUNT_FOR_DESTINATION_DRAW);
         destinationCountCommandData.setData(new Gson().toJson(accountForDestinationDrawCommand));
 
@@ -135,13 +135,13 @@ public class Model {
         List<StatsChange> changes = new ArrayList<>();
         changes.add(change);
         updatePlayerStatsCommand.setChanges(changes);
-        CommandData updateStatsCommandData = new CommandData();
+        ClientCommandData updateStatsCommandData = new ClientCommandData();
         updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
         updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
 
         AccountForDestinationDrawCommand accountForDestinationDrawCommand = new AccountForDestinationDrawCommand();
         accountForDestinationDrawCommand.setDeckSize(game.getDestinationDeckSize());
-        CommandData destinationCountCommandData = new CommandData();
+        ClientCommandData destinationCountCommandData = new ClientCommandData();
         destinationCountCommandData.setType(ClientCommandType.C_ACCOUNT_FOR_DESTINATION_DRAW);
         destinationCountCommandData.setData(new Gson().toJson(accountForDestinationDrawCommand));
 
@@ -170,18 +170,18 @@ public class Model {
             event.setType(EventType.TURN);
             event.setContent(req.getUsername() + " claimed the route from " + route.getCity1().getName() + " to " + route.getCity2().getName() + ".");
             addEventCommand.setEvent(event);
-            CommandData eventCommandData = new CommandData();
+            ClientCommandData eventCommandData = new ClientCommandData();
             eventCommandData.setType(ClientCommandType.C_EVENT);
             eventCommandData.setData(new Gson().toJson(addEventCommand));
 
-            CommandData claimCommandData = new CommandData();
+            ClientCommandData claimCommandData = new ClientCommandData();
             claimCommandData.setType(ClientCommandType.C_CLAIM_ROUTE);
             ClaimRouteCommand claimRouteCommand = new ClaimRouteCommand();
             claimRouteCommand.setId(req.getId());
             claimRouteCommand.setUsername(username);
             claimCommandData.setData(new Gson().toJson(claimRouteCommand));
 
-            CommandData statsCommandData = new CommandData();
+            ClientCommandData statsCommandData = new ClientCommandData();
             StatsChange change1 = new StatsChange();
             StatsChange change2 = new StatsChange();
             StatsChange change3 = new StatsChange();
@@ -239,7 +239,7 @@ public class Model {
         game.setNumPlayers(numPlayers);
         game.setStarted(false);
         games.put(gameName, game);
-        CommandData commandData = new CommandData();
+        ClientCommandData commandData = new ClientCommandData();
         commandData.setType(ClientCommandType.C_CREATE_GAME);
         AddGameCommand addGameCommand = new AddGameCommand();
         GameInfo gameInfo = new GameInfo();
@@ -298,7 +298,7 @@ public class Model {
         eventCommand.setEvent(event);
 
         //check if I need to replace all train cards
-        CommandData commandDataReplace = new CommandData();
+        ClientCommandData commandDataReplace = new ClientCommandData();
         if (cards.size() == 5){
             ReplaceAllFaceUpCommand replaceAllCommand = new ReplaceAllFaceUpCommand();
             replaceAllCommand.setFaceUpCards(cards);
@@ -317,9 +317,9 @@ public class Model {
         updateStatsCommand.setUsername(player);
         updateStatsCommand.setChanges(statsChangeArray);
 
-        CommandData commandDataUpdate = new CommandData();
-        CommandData commandDataAccount = new CommandData();
-        CommandData commandDataEvent = new CommandData();
+        ClientCommandData commandDataUpdate = new ClientCommandData();
+        ClientCommandData commandDataAccount = new ClientCommandData();
+        ClientCommandData commandDataEvent = new ClientCommandData();
         commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
         commandDataAccount.setData(new Gson().toJson(accountForDraws));
         commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
@@ -375,9 +375,9 @@ public class Model {
         AddEventCommand eventCommand = new AddEventCommand();
         eventCommand.setEvent(event);
 
-        CommandData commandDataUpdate = new CommandData();
-        CommandData commandDataAccount = new CommandData();
-        CommandData commandDataEvent = new CommandData();
+        ClientCommandData commandDataUpdate = new ClientCommandData();
+        ClientCommandData commandDataAccount = new ClientCommandData();
+        ClientCommandData commandDataEvent = new ClientCommandData();
         commandDataAccount.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
         commandDataAccount.setData(new Gson().toJson(accountForDraws));
         commandDataUpdate.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
@@ -410,7 +410,7 @@ public class Model {
         String nextPlayer = game.getNextTurn(endTurnPlayer);
         AdvanceTurnCommand advanceTurnCommand = new AdvanceTurnCommand();
         advanceTurnCommand.setUsername(nextPlayer);
-        CommandData advanceCommandData = new CommandData();
+        ClientCommandData advanceCommandData = new ClientCommandData();
         advanceCommandData.setType(ClientCommandType.C_ADVANCE_TURN);
         if (!game.isStarted()) {
             endTurnResult.setSuccess(false);
@@ -518,7 +518,7 @@ public class Model {
             data.setContent(" " + data.getContent());
         }
         addEventCommand.setEvent(data);
-        CommandData commandData = new CommandData();
+        ClientCommandData commandData = new ClientCommandData();
         commandData.setType(ClientCommandType.C_EVENT);
         commandData.setData(new Gson().toJson(addEventCommand));
         game.addEvent(data);
@@ -534,6 +534,7 @@ public class Model {
     //HELPER FUNCTIONS
 
     private void initializeInfo() {
+        restarting = true;
         createUser("d", "d");
         createUser("d2", "d");
         createUser("d3", "d");
@@ -575,6 +576,7 @@ public class Model {
         createUser("j9", "j");
         createUser("j10", "j");
         createUser("j11", "j");
+        restarting = false;
         //createGame("game with two players", 2);
         //createGame("game with three players", 3);
         //createGame("game with four players", 4);
@@ -592,7 +594,7 @@ public class Model {
         for (Player player : game.getGamePlayers().values()) {
             userNamesOfPlayers.add(player.getUsername());
         }
-        CommandData commandData = new CommandData();
+        ClientCommandData commandData = new ClientCommandData();
         commandData.setType(ClientCommandType.C_BEGIN_PLAY);
         BeginGameCommand beginGameCommand = new BeginGameCommand();
         beginGameCommand.setGameName(gameName);
@@ -602,7 +604,7 @@ public class Model {
             users.get(user).addCommand(commandData);
         }
         game.setStarted(true);
-        commandData = new CommandData();
+        commandData = new ClientCommandData();
         commandData.setType(ClientCommandType.C_REMOVE_GAME);
         RemoveGameCommand removeGameCommand = new RemoveGameCommand();
         removeGameCommand.setGameName(gameName);
@@ -630,10 +632,10 @@ public class Model {
 
     public void addAllAddableGamesToCommandLists(String userName) {
         users.get(userName).clearCommands();
-        CommandData commandData;
+        ClientCommandData commandData;
         for (Game gameToCheck: games.values()) {
             if (!gameToCheck.isStarted()) {
-                commandData = new CommandData();
+                commandData = new ClientCommandData();
                 commandData.setType(ClientCommandType.C_CREATE_GAME);
                 AddGameCommand addGameCommand = new AddGameCommand();
                 GameInfo gameInfo = new GameInfo();
@@ -673,13 +675,13 @@ public class Model {
         endGameCommand.setSummary(gameSummary);
         endGameCommand.setWinner(gameSummary.getPlayers().get(0).getUsername());
         endGameCommand.setWinnerPoints(gameSummary.getPlayers().get(0).getTotalPoints());
-        CommandData endGameCommandData = new CommandData();
+        ClientCommandData endGameCommandData = new ClientCommandData();
         endGameCommandData.setType(ClientCommandType.C_END_GAME);
         endGameCommandData.setData(new Gson().toJson(endGameCommand));
         addCommandToAllPlayers(game, endGameCommandData);
     }
 
-    private void addCommandToAllPlayers(Game game, CommandData command){
+    private void addCommandToAllPlayers(Game game, ClientCommandData command){
         if (!restarting) {
             for(Player p: game.getGamePlayers().values()){
                 User user = users.get(p.getUsername());
@@ -699,11 +701,11 @@ public class Model {
             change.setAmount(4);
             changes.add(change);
             updatePlayerStatsCommand.setChanges(changes);
-            CommandData updateStatsCommandData = new CommandData();
+            ClientCommandData updateStatsCommandData = new ClientCommandData();
             updateStatsCommandData.setType(ClientCommandType.C_UPDATE_PLAYER_STATS);
             updateStatsCommandData.setData(new Gson().toJson(updatePlayerStatsCommand));
             addCommandToAllPlayers(game, updateStatsCommandData);
-            CommandData dealTrainCarCardsCommandData = new CommandData();
+            ClientCommandData dealTrainCarCardsCommandData = new ClientCommandData();
             DealTrainCarCardsCommand dealTrainCarCardsCommand = new DealTrainCarCardsCommand();
             List<TrainCarCard> cards = new ArrayList<>();
             TrainCarCard card;
@@ -731,7 +733,7 @@ public class Model {
         // add update train cards command
         AccountForTrainCarCardDrawCommand accountForDraws = new AccountForTrainCarCardDrawCommand();
         accountForDraws.setDeckSize(game.getTrainDeckSize());
-        CommandData updateCardNum = new CommandData();
+        ClientCommandData updateCardNum = new ClientCommandData();
         updateCardNum.setType(ClientCommandType.C_ACCOUNT_FOR_THE_FACT_THAT_SOMEONE_DREW_FROM_THE_TRAIN_CAR_CARD_DRAW_PILE);
         updateCardNum.setData(new Gson().toJson(accountForDraws));
         addCommandToAllPlayers(game, updateCardNum);

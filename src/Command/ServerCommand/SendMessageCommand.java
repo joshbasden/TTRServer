@@ -7,7 +7,7 @@ import Service.SendMessageService;
 
 public class SendMessageCommand implements iServerCommand {
     private iRequest data;
-    private CommandType type = CommandType.S_SEND_MESSAGE;
+    private ServerCommandType type = ServerCommandType.S_SEND_MESSAGE;
     public SendMessageCommand(iRequest request) {
         data = request;
     }

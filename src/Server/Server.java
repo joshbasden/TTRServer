@@ -40,16 +40,7 @@ public class Server {
 
         String portNumber = args[0];
         String databaseName = args[1];
-        Model model = Model.getInstance();
-        try {
-            int N = Integer.parseInt(args[2]);
-            model.setN(N);
-        }
-        catch (NumberFormatException e) {
-            e.printStackTrace();
-            System.out.println("The third argument must be a valid integer. Defaulting to 20.");
-            model.setN(20);
-        }
+
         try {
             PluginRegistry.instance.setDatabasePlugin(databaseName);
             new Server().run(portNumber);
@@ -58,6 +49,18 @@ public class Server {
         } catch (Exception e) {
             System.out.println("Usage: java TTRServer.jar <port> <plugin-name>");
             e.printStackTrace();
+        }
+
+        Model model = Model.getInstance();
+        try {
+            int N = Integer.parseInt(args[2]);
+            model.setN(N);
+            model.initialize();
+        }
+        catch (NumberFormatException e) {
+            e.printStackTrace();
+            System.out.println("The third argument must be a valid integer. Defaulting to 20.");
+            model.setN(20);
         }
     }
 }

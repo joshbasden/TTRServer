@@ -11,7 +11,7 @@ import Service.LoginService;
 
 public class LoginCommand implements iServerCommand {
     private iRequest data;
-    private CommandType type = CommandType.S_LOGIN;
+    private ServerCommandType type = ServerCommandType.S_LOGIN;
     public LoginCommand(iRequest request) {
         data = request;
     }
