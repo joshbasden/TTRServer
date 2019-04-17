@@ -5,7 +5,6 @@ import Model.Model;
 import Plugin.PluginDescriptor;
 import Plugin.PluginRegistry;
 import com.sun.net.httpserver.HttpServer;
-import sun.plugin2.main.server.Plugin;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
