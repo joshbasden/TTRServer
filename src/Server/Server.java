@@ -44,6 +44,7 @@ public class Server {
         try {
             int N = Integer.parseInt(args[2]);
             model.setN(N);
+            model.initialize();
         }
         catch (NumberFormatException e) {
             e.printStackTrace();

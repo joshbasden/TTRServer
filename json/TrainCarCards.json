@@ -1,73 +1,15 @@
 {
-    "cards": [
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
-        {
-            "type": "PURPLE"
-        },
+    "cards": [{
+        "type": "PURPLE"
+    },
         {
             "type": "WHITE"
         },
         {
-            "type": "WHITE"
+            "type": "PURPLE"
         },
         {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
-        },
-        {
-            "type": "WHITE"
+            "type": "BLUE"
         },
         {
             "type": "WHITE"
@@ -76,142 +18,58 @@
             "type": "BLUE"
         },
         {
-            "type": "BLUE"
+            "type": "PURPLE"
         },
         {
-            "type": "BLUE"
-        },
-        {
-            "type": "BLUE"
-        },
-        {
-            "type": "BLUE"
+            "type": "BLACK"
         },
         {
             "type": "BLUE"
         },
         {
-            "type": "BLUE"
+            "type": "RED"
         },
         {
-            "type": "BLUE"
+            "type": "WHITE"
         },
         {
-            "type": "BLUE"
-        },
-        {
-            "type": "BLUE"
-        },
-        {
-            "type": "BLUE"
+            "type": "YELLOW"
         },
         {
             "type": "BLUE"
         },
         {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
-        },
-        {
-            "type": "YELLOW"
+            "type": "WHITE"
         },
         {
             "type": "ORANGE"
         },
         {
-            "type": "ORANGE"
+            "type": "YELLOW"
+        },
+        {
+            "type": "BLUE"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "PURPLE"
         },
         {
             "type": "ORANGE"
         },
         {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
-        },
-        {
-            "type": "ORANGE"
+            "type": "GREEN"
         },
         {
             "type": "BLACK"
         },
         {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
-        },
-        {
-            "type": "BLACK"
+            "type": "WHITE"
         },
         {
             "type": "BLACK"
@@ -220,70 +78,241 @@
             "type": "RED"
         },
         {
+            "type": "ORANGE"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "BLUE"
+        },
+        {
+            "type": "PURPLE"
+        },
+        {
+            "type": "WHITE"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "RED"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "PURPLE"
+        },
+        {
+            "type": "BLUE"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "BLUE"
+        },
+        {
+            "type": "RED"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "PURPLE"
+        },
+        {
+            "type": "BLUE"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "RED"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "WHITE"
+        },
+        {
+            "type": "RED"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "PURPLE"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "BLUE"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "PURPLE"
+        },
+        {
+            "type": "RED"
+        },
+        {
+            "type": "BLUE"
+        },
+        {
+            "type": "RED"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "RED"
+        },
+        {
+            "type": "PURPLE"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "WHITE"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
+            "type": "ORANGE"
+        },
+        {
             "type": "RED"
         },
         {
             "type": "RED"
         },
         {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "WHITE"
+        },
+        {
+            "type": "YELLOW"
+        },
+        {
+            "type": "BLACK"
+        },
+        {
+            "type": "LOCOMOTIVE"
+        },
+        {
+            "type": "PURPLE"
+        },
+        {
+            "type": "GREEN"
+        },
+        {
             "type": "RED"
         },
         {
-            "type": "RED"
+            "type": "BLUE"
         },
         {
-            "type": "RED"
-        },
-        {
-            "type": "RED"
-        },
-        {
-            "type": "RED"
-        },
-        {
-            "type": "RED"
-        },
-        {
-            "type": "RED"
-        },
-        {
-            "type": "RED"
-        },
-        {
-            "type": "RED"
+            "type": "BLACK"
         },
         {
             "type": "GREEN"
         },
         {
-            "type": "GREEN"
+            "type": "WHITE"
         },
         {
-            "type": "GREEN"
+            "type": "PURPLE"
         },
         {
-            "type": "GREEN"
+            "type": "LOCOMOTIVE"
         },
         {
-            "type": "GREEN"
+            "type": "LOCOMOTIVE"
         },
         {
-            "type": "GREEN"
-        },
-        {
-            "type": "GREEN"
-        },
-        {
-            "type": "GREEN"
-        },
-        {
-            "type": "GREEN"
-        },
-        {
-            "type": "GREEN"
-        },
-        {
-            "type": "GREEN"
+            "type": "WHITE"
         },
         {
             "type": "GREEN"
@@ -292,43 +321,13 @@
             "type": "LOCOMOTIVE"
         },
         {
-            "type": "LOCOMOTIVE"
+            "type": "YELLOW"
         },
         {
             "type": "LOCOMOTIVE"
         },
         {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
-        },
-        {
-            "type": "LOCOMOTIVE"
+            "type": "WHITE"
         }
     ]
 }
