@@ -136,6 +136,35 @@ public class SQL implements Database {
     }
 
     @Override
+    public boolean clear() throws DatabaseException {
+        String dropComm = "DROP TABLE IF EXISTS Commands";
+        String dropUser = "DROP TABLE IF EXISTS Users";
+        String dropGame = "DROP TABLE IF EXISTS Games";
+
+        try {
+            Statement stmt = null;
+            try {
+                stmt = conn.createStatement();
+                stmt.executeUpdate(dropComm);
+                stmt.executeUpdate(dropUser);
+                stmt.executeUpdate(dropGame);
+
+                return true;
+            }
+            finally {
+                if (stmt != null) {
+                    stmt.close();
+                    stmt = null;
+                }
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseException("createTables failed ", e);
+        }
+
+    }
+
+    @Override
     public ArrayList<String> getUsers() throws DatabaseException {
         return userDAO.getUsers();
     }
