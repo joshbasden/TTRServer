@@ -1,5 +1,6 @@
 package Server;
 
+import Database.Database;
 import Model.Model;
 import Plugin.PluginDescriptor;
 import Plugin.PluginRegistry;
@@ -31,23 +32,42 @@ public class Server {
         System.out.println("Server started");
     }
 
+    private static void printUsage() {
+        System.out.println("Usage: java TTRServer.jar <port> <plugin-name>");
+    }
+
     public static void main(String[] args) {
         if (args[0].equals("register")) {
             PluginDescriptor descriptor = new PluginDescriptor(args[1], args[2], args[3], args[4]);
             PluginRegistry.instance.registerPlugin(descriptor);
             return;
+        } else if (args[0].equals("clear")) {
+            Database db = PluginRegistry.instance.getDatabase();
+            try {
+                PluginRegistry.instance.setDatabasePlugin(args[1]);
+                db = PluginRegistry.instance.getDatabase();
+                db.openConnection();
+                db.clear();
+                db.closeConnection(true);
+            } catch (Exception e) {
+                try {
+                    db.closeConnection(false);
+                } catch (Exception f) { return; }
+                printUsage();
+                e.printStackTrace();
+            }
+            return;
         }
 
         String portNumber = args[0];
         String databaseName = args[1];
-
         try {
             PluginRegistry.instance.setDatabasePlugin(databaseName);
             new Server().run(portNumber);
         } catch (PluginRegistry.PluginNotFoundException e) {
             System.out.println("Plugin " + databaseName + " is not registered.");
         } catch (Exception e) {
-            System.out.println("Usage: java TTRServer.jar <port> <plugin-name>");
+            printUsage();
             e.printStackTrace();
         }
 

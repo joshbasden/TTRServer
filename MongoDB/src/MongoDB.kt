@@ -95,7 +95,7 @@ class MongoDB : Database {
         try {
             val db: MongoDatabase = mongoClient!!.getDatabase("TTR")
             db.drop()
-            return true;
+            return true
         } catch (e: Exception) {
             println("Couldn't close connection")
             throw DatabaseException(e.message, e)
