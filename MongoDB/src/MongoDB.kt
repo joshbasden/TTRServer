@@ -90,6 +90,17 @@ class MongoDB : Database {
     override fun clearCommandsForGame(gameName: String?): Boolean {
         return commandDAO!!.clearCommandsForGame(gameName)
     }
+
+    override fun clear(): Boolean {
+        try {
+            val db: MongoDatabase = mongoClient!!.getDatabase("TTR")
+            db.drop()
+            return true;
+        } catch (e: Exception) {
+            println("Couldn't close connection")
+            throw DatabaseException(e.message, e)
+        }
+    }
 }
 
 fun main(args: Array<String>) {
