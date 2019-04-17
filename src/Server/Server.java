@@ -1,9 +1,11 @@
 package Server;
 
+import Database.Database;
 import Model.Model;
 import Plugin.PluginDescriptor;
 import Plugin.PluginRegistry;
 import com.sun.net.httpserver.HttpServer;
+import sun.plugin2.main.server.Plugin;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -41,10 +43,17 @@ public class Server {
             PluginRegistry.instance.registerPlugin(descriptor);
             return;
         } else if (args[0].equals("clear")) {
+            Database db = PluginRegistry.instance.getDatabase();
             try {
                 PluginRegistry.instance.setDatabasePlugin(args[1]);
-                PluginRegistry.instance.getDatabase().clear();
+                db = PluginRegistry.instance.getDatabase();
+                db.openConnection();
+                db.clear();
+                db.closeConnection(true);
             } catch (Exception e) {
+                try {
+                    db.closeConnection(false);
+                } catch (Exception f) { return; }
                 printUsage();
                 e.printStackTrace();
             }
