@@ -15,10 +15,10 @@ public class TrainCarCardDeck implements iDeck {
             addDiscardToTrainDeck();
         }
         int numRemaining = drawPile.size();
-        Random rand = new Random();
-        int randomCardIndex = rand.nextInt(numRemaining);
-        TrainCarCard card = (TrainCarCard) drawPile.get(randomCardIndex);
-        drawPile.remove(randomCardIndex);
+//        Random rand = new Random();
+//        int randomCardIndex = rand.nextInt(numRemaining);
+        TrainCarCard card = (TrainCarCard) drawPile.get(0);
+        drawPile.remove(0);
 
 //        if (drawPile.size() <= 5){
 //            addDiscardToTrainDeck();
