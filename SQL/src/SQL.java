@@ -71,8 +71,7 @@ public class SQL implements Database {
             return true;
         }
         catch (SQLException | ClassNotFoundException e) {
-            System.out.println("Could not open a connection");
-            return false;
+            throw new DatabaseException("Could not open a connection", e);
         }
     }
 
@@ -91,14 +90,14 @@ public class SQL implements Database {
             return true;
         }
         catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DatabaseException("error while closing connection", e);
         }
     }
 
 
     @Override
     public boolean initializeSchemas() throws DatabaseException {
+//        String dropComm = "DROP TABLE IF EXISTS Commands";
         String command =    "CREATE TABLE IF NOT EXISTS 'Commands' ('ID' INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "'Command' BLOB, 'GameName' TEXT, 'Type' TEXT)";
         String game = "CREATE TABLE IF NOT EXISTS 'Games' ('GameName' TEXT NOT NULL UNIQUE," +
@@ -108,6 +107,7 @@ public class SQL implements Database {
             Statement stmt = null;
             try {
                 stmt = conn.createStatement();
+//                stmt.executeUpdate(dropComm);
                 stmt.executeUpdate(game);
                 stmt.executeUpdate(command);
                 stmt.executeUpdate(user);
@@ -122,8 +122,7 @@ public class SQL implements Database {
             }
         }
         catch (SQLException e) {
-            System.out.println("createTables failed " + e.getMessage());
-            return false;
+            throw new DatabaseException("createTables failed ", e);
         }
     }
 
@@ -143,19 +142,27 @@ public class SQL implements Database {
     }
 
     public static void main(String[] args){
-//        SQL mongoDB = new SQL();
-//        try{
-//            mongoDB.openConnection();
-//            System.out.println(mongoDB.getUsers().toString());
-//            mongoDB.closeConnection(true);
-//        }catch (DatabaseException d){
-//            try{
-//                mongoDB.closeConnection(false);
-//                d.printStackTrace();
-//            }catch (DatabaseException e){
-//
-//            }
-//        }
+        SQL mongoDB = new SQL();
+        try{
+            mongoDB.openConnection();
+            mongoDB.initializeSchemas();
+            mongoDB.closeConnection(true);
+            mongoDB.openConnection();
+            mongoDB.addCommand("Dallin", "NewUser","bla");
+            mongoDB.closeConnection(true);
+            mongoDB.openConnection();
+            System.out.println();
+            System.out.println(mongoDB.getCommandsForGame("Dallin").toString());
+            System.out.println();
+            mongoDB.closeConnection(true);
+        }catch (DatabaseException d){
+            try{
+                mongoDB.closeConnection(false);
+                d.printStackTrace();
+            }catch (DatabaseException e){
+
+            }
+        }
 //        mongoDB.openConnection();
 //        mongoDB.initializeSchemas();
 //        mongoDB.closeConnection();
